@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>메모장</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Jua&display=swap" rel="stylesheet">
+
+<style>
+
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:'Jua',sans-serif;
+}
+
+body{
+height:100vh;
+display:flex;
+flex-direction:column;
+background:#fff8fc;
+}
+
+.topbar{
+background:white;
+padding:12px;
+display:flex;
+gap:10px;
+align-items:center;
+box-shadow:0 2px 10px rgba(0,0,0,.08);
+flex-wrap:wrap;
+}
+
+.title{
+font-size:22px;
+color:#ff66aa;
+margin-right:auto;
+}
+
+select,input[type="range"]{
+padding:8px;
+border-radius:10px;
+border:none;
+background:#f3f3f3;
+}
+
+textarea{
+flex:1;
+width:100%;
+border:none;
+outline:none;
+resize:none;
+padding:20px;
+font-size:22px;
+background:#fff8fc;
+}
+
+</style>
+</head>
+<body>
+
+<div class="topbar">
+
+<div class="title">📝 귀여운 메모장</div>
+
+<select id="bgColor">
+<option value="#fff8fc">핑크</option>
+<option value="#eef8ff">하늘</option>
+<option value="#f8fff0">연두</option>
+<option value="#fff6e9">크림</option>
+<option value="#ffffff">화이트</option>
+</select>
+
+<input
+type="range"
+id="fontSize"
+min="14"
+max="50"
+value="22">
+
+</div>
+
+<textarea
+id="memo"
+placeholder="메모를 입력하세요..."></textarea>
+
+<script>
+
+const memo =
+document.getElementById("memo");
+
+const fontSize =
+document.getElementById("fontSize");
+
+const bgColor =
+document.getElementById("bgColor");
+
+memo.value =
+localStorage.getItem("memo") || "";
+
+memo.style.fontSize =
+(localStorage.getItem("fontSize") || 22)+"px";
+
+fontSize.value =
+localStorage.getItem("fontSize") || 22;
+
+const savedBg =
+localStorage.getItem("bgColor") || "#fff8fc";
+
+memo.style.background = savedBg;
+document.body.style.background = savedBg;
+bgColor.value = savedBg;
+
+memo.addEventListener("input",()=>{
+
+localStorage.setItem(
+"memo",
+memo.value
+);
+
+});
+
+fontSize.addEventListener("input",()=>{
+
+memo.style.fontSize =
+fontSize.value+"px";
+
+localStorage.setItem(
+"fontSize",
+fontSize.value
+);
+
+});
+
+bgColor.addEventListener("change",()=>{
+
+memo.style.background =
+bgColor.value;
+
+document.body.style.background =
+bgColor.value;
+
+localStorage.setItem(
+"bgColor",
+bgColor.value
+);
+
+});
+
+</script>
+
+</body>
+</html>
