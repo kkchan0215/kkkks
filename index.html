@@ -5,6 +5,8 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>오늘의 영상</title>
 
+<link href="https://fonts.googleapis.com/css2?family=Gaegu:wght@700&display=swap" rel="stylesheet">
+
 <style>
 *{
     margin:0;
@@ -13,73 +15,46 @@
 }
 
 body{
-    background:#f7f7f7;
-    font-family:"맑은 고딕",sans-serif;
-    min-height:100vh;
+    width:100vw;
+    height:100vh;
+    overflow:hidden;
+    background:#FFF4B8;
     display:flex;
+    flex-direction:column;
     justify-content:center;
     align-items:center;
+    font-family:'Gaegu', cursive;
 }
 
-.container{
+h1{
+    font-size:55px;
+    margin-bottom:15px;
+}
+
+.video-box{
     width:95%;
     max-width:1000px;
-    background:white;
-    padding:30px;
-    border-radius:25px;
-    box-shadow:0 10px 30px rgba(0,0,0,0.1);
 }
 
-.title{
-    text-align:center;
-    font-size:48px;
-    font-weight:bold;
-    margin-bottom:20px;
-}
-
-.sub{
-    text-align:center;
-    color:#666;
-    margin-bottom:25px;
-}
-
-.video{
+iframe{
     width:100%;
     aspect-ratio:16/9;
     border:none;
-    border-radius:15px;
-}
-
-.footer{
-    text-align:center;
-    margin-top:15px;
-    color:#888;
-    font-size:14px;
+    border-radius:25px;
+    background:white;
 }
 </style>
 </head>
 <body>
 
-<div class="container">
+<h1>📺 오늘의 영상</h1>
 
-    <div class="title">🎬 오늘의 영상</div>
-
-    <div class="sub">
-        한화이글스 영상 예시
-    </div>
-
+<div class="video-box">
     <iframe
-        class="video"
-        src="https://www.youtube.com/embed/PDpZnUtI6ew"
+        src="https://www.youtube.com/embed/PDpZnUtI6ew?rel=0"
         title="오늘의 영상"
-        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
         allowfullscreen>
     </iframe>
-
-    <div class="footer">
-        영상은 언제든지 다른 유튜브 영상으로 변경 가능
-    </div>
-
 </div>
 
 </body>
