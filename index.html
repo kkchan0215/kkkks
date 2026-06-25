@@ -3,58 +3,81 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>오늘의 영상</title>
+<title>올리 숫자</title>
 
-<link href="https://fonts.googleapis.com/css2?family=Gaegu:wght@700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Jua&display=swap" rel="stylesheet">
 
 <style>
 body{
     margin:0;
-    background:#FFF4B8;
-    font-family:'Gaegu',cursive;
+    height:100vh;
     display:flex;
     justify-content:center;
     align-items:center;
-    min-height:100vh;
+    background:#fffafc;
+    font-family:'Jua', sans-serif;
+    overflow:hidden;
 }
 
-.container{
-    width:95%;
-    max-width:1000px;
+#number{
+    font-size:120px;
+    color:#ff6bb5;
+    user-select:none;
 }
 
-h1{
-    text-align:center;
-    font-size:55px;
-    margin-bottom:15px;
-}
-
-iframe{
-    width:100%;
-    aspect-ratio:16/9;
-    border:none;
-    border-radius:25px;
+#end{
+    position:fixed;
+    top:50%;
+    left:50%;
+    transform:translate(-50%,-50%);
+    font-size:70px;
+    color:#ff4081;
+    display:none;
 }
 </style>
 </head>
 <body>
 
-<div class="container">
-    <h1>📺 오늘의 영상</h1>
-
-    <iframe id="videoFrame" allowfullscreen></iframe>
-</div>
+<div id="number">0</div>
+<div id="end">🎉 끝! 100000 달성! 🎉</div>
 
 <script>
-// 여기에 유튜브 링크 전체를 넣으면 됨
-const youtubeLink = "https://youtu.be/Hoo-v7iToS4?si=nI9t2PipZoibh9bg";
+let num = 0;
+const max = 100000;
 
-const videoId = youtubeLink.match(
-    /(?:youtube\.com\/watch\?v=|youtu\.be\/)([^&]+)/
-)?.[1];
+const numberEl = document.getElementById("number");
+const endEl = document.getElementById("end");
 
-document.getElementById("videoFrame").src =
-    "https://www.youtube.com/embed/" + videoId + "?rel=0";
+function update() {
+    if(num >= max){
+        num = max;
+        numberEl.style.display = "none";
+        endEl.style.display = "block";
+    } else {
+        numberEl.textContent = num.toLocaleString();
+    }
+}
+
+document.addEventListener("keydown", (e) => {
+
+    if(num >= max) return;
+
+    if(e.code === "Space"){
+        e.preventDefault();
+        num += 1;
+    }
+
+    if(e.key === "1") num += 100;
+    if(e.key === "2") num += 500;
+    if(e.key === "3") num += 1000;
+    if(e.key === "4") num += 3000;
+    if(e.key === "5") num += 5000;
+    if(e.key === "6") num += 10000;
+
+    update();
+});
+
+update();
 </script>
 
 </body>
