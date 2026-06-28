@@ -3,9 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>올리 숫자</title>
-
-<link href="https://fonts.googleapis.com/css2?family=Jua&display=swap" rel="stylesheet">
+<title>유니콘 배지 인증</title>
 
 <style>
 body{
@@ -14,83 +12,91 @@ body{
     display:flex;
     justify-content:center;
     align-items:center;
-    background:#fffafc;
-    font-family:'Jua', sans-serif;
-    overflow:hidden;
+    background:#ffeef7;
+    font-family:"Malgun Gothic",sans-serif;
 }
 
-#number{
-    font-size:120px;
-    color:#ff6bb5;
-    user-select:none;
-}
-
-#end{
-    position:fixed;
-    top:50%;
-    left:50%;
-    transform:translate(-50%,-50%);
-    font-size:70px;
-    color:#ff4081;
-    display:none;
+.box{
+    background:white;
+    padding:40px;
+    border-radius:25px;
+    box-shadow:0 10px 30px rgba(0,0,0,.15);
     text-align:center;
+    width:330px;
+}
+
+h2{
+    color:#ff66b2;
+}
+
+input{
+    width:220px;
+    padding:15px;
+    font-size:28px;
+    text-align:center;
+    border-radius:15px;
+    border:2px solid #ffb6d9;
+    outline:none;
+}
+
+button{
+    margin-top:20px;
+    padding:12px 30px;
+    font-size:18px;
+    border:none;
+    border-radius:15px;
+    background:#ff66b2;
+    color:white;
+    cursor:pointer;
+}
+
+#result{
+    margin-top:25px;
+    font-size:24px;
+    font-weight:bold;
 }
 </style>
 </head>
+
 <body>
 
-<div id="number">0</div>
-<div id="end">🎉 끝! 100000 달성! 🎉</div>
+<div class="box">
+<h2>🦄 유니콘 배지 인증</h2>
+
+<input id="code" maxlength="4" placeholder="코드 입력">
+
+<br>
+
+<button onclick="checkCode()">인증</button>
+
+<div id="result"></div>
+
+</div>
 
 <script>
-let num = 0;
-const max = 100000;
 
-const numberEl = document.getElementById("number");
-const endEl = document.getElementById("end");
+const codes=[
+"5457",
+"2463",
+"6743",
+"9323",
+"0487"
+];
 
-function update() {
-    if(num < 0) num = 0;
+function checkCode(){
 
-    if(num >= max){
-        num = max;
-        numberEl.style.display = "none";
-        endEl.style.display = "block";
-    } else {
-        numberEl.textContent = num.toLocaleString();
-    }
+const input=document.getElementById("code").value.trim();
+
+if(codes.includes(input)){
+document.getElementById("result").innerHTML="✅ 인식되었습니다!";
+document.getElementById("result").style.color="green";
+}else{
+document.getElementById("result").innerHTML="❌ 인식되지 않았습니다.";
+document.getElementById("result").style.color="red";
 }
 
-document.addEventListener("keydown", (e) => {
+}
 
-    if(num >= max) return;
-
-    // 증가
-    if(e.code === "Space"){
-        e.preventDefault();
-        num += 1;
-    }
-
-    if(e.key === "1") num += 100;
-    if(e.key === "2") num += 500;
-    if(e.key === "3") num += 1000;
-    if(e.key === "4") num += 3000;
-    if(e.key === "5") num += 5000;
-    if(e.key === "6") num += 10000;
-
-    // 감소
-    if(e.key === "7") num -= 100;
-    if(e.key === "8") num -= 500;
-    if(e.key === "9") num -= 1000;
-    if(e.key === "0") num -= 3000;
-    if(e.key === "-") num -= 5000;
-    if(e.key === "=") num -= 10000;
-
-
-    update();
-});
-
-update();
 </script>
 
 </body>
