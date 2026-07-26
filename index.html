@@ -3,96 +3,153 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>유니콘 배지 인증</title>
+<title>영상 모음</title>
 
 <style>
 body{
     margin:0;
-    height:100vh;
-    display:flex;
-    justify-content:center;
-    align-items:center;
-    background:#ffeef7;
+    background:#f7f4ea;
     font-family:"Malgun Gothic",sans-serif;
 }
 
-.box{
-    background:white;
-    padding:40px;
-    border-radius:25px;
-    box-shadow:0 10px 30px rgba(0,0,0,.15);
+h1{
     text-align:center;
-    width:330px;
+    margin:30px;
 }
 
-h2{
-    color:#ff66b2;
+.grid{
+    width:1100px;
+    max-width:95%;
+    margin:auto;
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(320px,1fr));
+    gap:25px;
+}
+
+.card{
+    background:white;
+    border-radius:18px;
+    padding:15px;
+    box-shadow:0 5px 15px rgba(0,0,0,.15);
+}
+
+.card h2{
+    text-align:center;
+    font-size:20px;
+}
+
+iframe{
+    width:100%;
+    aspect-ratio:16/9;
+    border:none;
+    border-radius:12px;
 }
 
 input{
-    width:220px;
-    padding:15px;
-    font-size:28px;
-    text-align:center;
-    border-radius:15px;
-    border:2px solid #ffb6d9;
-    outline:none;
+    width:100%;
+    padding:12px;
+    border-radius:10px;
+    border:1px solid #ccc;
+    margin-bottom:10px;
+    font-size:16px;
 }
 
 button{
-    margin-top:20px;
-    padding:12px 30px;
-    font-size:18px;
+    width:100%;
+    padding:12px;
     border:none;
-    border-radius:15px;
-    background:#ff66b2;
+    border-radius:10px;
+    background:#4CAF50;
     color:white;
+    font-size:16px;
     cursor:pointer;
 }
 
-#result{
-    margin-top:25px;
-    font-size:24px;
-    font-weight:bold;
+button:hover{
+    background:#3d9242;
 }
 </style>
 </head>
 
 <body>
 
-<div class="box">
-<h2>🦄 유니콘 배지 인증</h2>
+<h1>🎬 영상 모음</h1>
 
-<input id="code" maxlength="4" placeholder="코드 입력">
+<div class="grid">
 
-<br>
+<div class="card">
+<h2>내 영상</h2>
 
-<button onclick="checkCode()">인증</button>
+<input id="link" placeholder="유튜브 링크 붙여넣기">
 
-<div id="result"></div>
+<button onclick="loadVideo()">영상 불러오기</button>
+
+<iframe id="player"></iframe>
+
+</div>
+
+<div class="card">
+<h2>펼쳐봐</h2>
+
+<iframe
+src="https://youtu.be/gPuVsMpMUjg?si=nS5tnmpgghSpLcFh"
+allowfullscreen>
+</iframe>
+
+</div>
+
+<div class="card">
+<h2>홀리 탐험대</h2>
+
+<iframe
+src="https://youtu.be/b8nno8ZbsAE?si=O0mcKfsj7jEjwLT9"
+allowfullscreen>
+</iframe>
+
+</div>
+
+<div class="card">
+<h2>하나님 부르심</h2>
+
+<iframe
+src="https://youtu.be/9pFKGv3E0wg?si=trbNj_fe1Z0bny23"
+allowfullscreen>
+</iframe>
+
+</div>
+
+<div class="card">
+<h2>구약 목록</h2>
+
+<iframe
+src="https://youtu.be/TMaigU5zH9o?si=Abyz0I3SlqZyWfY4"
+allowfullscreen>
+</iframe>
+
+</div>
 
 </div>
 
 <script>
 
-const codes=[
-"5457",
-"2463",
-"6743",
-"9323",
-"0487"
-];
+function loadVideo(){
 
-function checkCode(){
+let url=document.getElementById("link").value;
 
-const input=document.getElementById("code").value.trim();
+let id="";
 
-if(codes.includes(input)){
-document.getElementById("result").innerHTML="✅ 인식되었습니다!";
-document.getElementById("result").style.color="green";
-}else{
-document.getElementById("result").innerHTML="❌ 인식되지 않았습니다.";
-document.getElementById("result").style.color="red";
+if(url.includes("watch?v=")){
+id=url.split("watch?v=")[1].split("&")[0];
+}
+else if(url.includes("youtu.be/")){
+id=url.split("youtu.be/")[1].split("?")[0];
+}
+
+if(id!=""){
+document.getElementById("player").src="https://www.youtube.com/embed/"+id;
+}
+else{
+alert("올바른 유튜브 링크를 입력하세요.");
 }
 
 }
