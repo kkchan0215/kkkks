@@ -3,218 +3,358 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>타이머 + 음성 읽기</title>
-
+<title>가상 통장</title>
 <style>
+*{box-sizing:border-box}
 body{
-    margin:0;
-    background:#FFF7F0;
-    font-family:"맑은 고딕",sans-serif;
-    display:flex;
-    justify-content:center;
-    align-items:center;
-    height:100vh;
+  margin:0;
+  background:#f4f6fb;
+  font-family:Arial,"Noto Sans KR",sans-serif;
+  color:#20242c;
 }
-
-.box{
-    width:420px;
-    background:white;
-    border-radius:25px;
-    padding:30px;
-    box-shadow:0 10px 30px rgba(0,0,0,.15);
-    text-align:center;
+.container{
+  width:min(430px,100%);
+  min-height:100vh;
+  margin:auto;
+  background:#fff;
+  padding:25px 20px 40px;
 }
-
+.badge{
+  display:inline-block;
+  padding:6px 10px;
+  border-radius:20px;
+  background:#fff0c7;
+  color:#8b6500;
+  font-size:12px;
+  font-weight:bold;
+  margin-bottom:15px;
+}
 h1{
-    margin-top:0;
-    color:#ff7d7d;
+  margin:0 0 20px;
+  font-size:25px;
 }
-
-#timer{
-    font-size:70px;
-    font-weight:bold;
-    margin:20px 0;
+.account{
+  background:linear-gradient(135deg,#667eea,#764ba2);
+  color:white;
+  border-radius:24px;
+  padding:25px;
+  box-shadow:0 10px 25px #667eea33;
 }
-
-button{
-    margin:5px;
-    padding:12px 18px;
-    font-size:17px;
-    border:none;
-    border-radius:12px;
-    cursor:pointer;
+.account-name{
+  font-size:14px;
+  opacity:.85;
 }
-
-.start{background:#77dd77;}
-.pause{background:#ffd966;}
-.reset{background:#ff8a8a;}
-.speak{background:#87cefa;}
-.stop{background:#c9c9c9;}
-
-textarea{
-    margin-top:20px;
-    width:100%;
-    height:100px;
-    resize:none;
-    border-radius:10px;
-    border:2px solid #ddd;
-    padding:10px;
-    font-size:17px;
-    box-sizing:border-box;
+.balance{
+  font-size:34px;
+  font-weight:800;
+  margin-top:12px;
 }
+.account-number{
+  margin-top:15px;
+  font-size:14px;
+  opacity:.85;
+}
+.send-btn{
+  width:100%;
+  border:0;
+  border-radius:16px;
+  padding:17px;
+  margin-top:18px;
+  background:#111827;
+  color:#fff;
+  font-size:17px;
+  font-weight:bold;
+  cursor:pointer;
+}
+.send-btn:active{transform:scale(.98)}
 
-.slider{
-    width:100%;
+.panel{
+  display:none;
+  margin-top:20px;
+  padding:22px;
+  border:1px solid #e7e9ee;
+  border-radius:20px;
+  background:#fafbfc;
+}
+.panel.show{display:block}
+.panel h2{
+  margin:0 0 18px;
+  font-size:20px;
+}
+label{
+  display:block;
+  font-size:13px;
+  font-weight:bold;
+  margin:13px 0 7px;
+}
+input{
+  width:100%;
+  padding:14px;
+  border:1px solid #d9dce3;
+  border-radius:12px;
+  font-size:16px;
+  outline:none;
+}
+input:focus{border-color:#667eea}
+.confirm{
+  width:100%;
+  border:0;
+  margin-top:18px;
+  padding:15px;
+  border-radius:13px;
+  background:#667eea;
+  color:white;
+  font-size:16px;
+  font-weight:bold;
+  cursor:pointer;
+}
+.cancel{
+  width:100%;
+  border:0;
+  margin-top:8px;
+  padding:12px;
+  background:transparent;
+  color:#777;
+  cursor:pointer;
+}
+.message{
+  display:none;
+  margin-top:15px;
+  padding:14px;
+  border-radius:12px;
+  font-size:14px;
+}
+.success{
+  display:block;
+  background:#e9f9ef;
+  color:#18753c;
+}
+.error{
+  display:block;
+  background:#fff0f0;
+  color:#c62828;
+}
+.history{
+  margin-top:25px;
+}
+.history h2{
+  font-size:18px;
+}
+.empty{
+  color:#999;
+  text-align:center;
+  padding:25px 0;
+  font-size:14px;
+}
+.item{
+  padding:15px 0;
+  border-bottom:1px solid #eee;
+}
+.item-top{
+  display:flex;
+  justify-content:space-between;
+}
+.item-name{font-weight:bold}
+.item-amount{
+  color:#e14b4b;
+  font-weight:bold;
+}
+.item-info{
+  color:#999;
+  font-size:12px;
+  margin-top:5px;
+}
+.reset{
+  width:100%;
+  margin-top:20px;
+  padding:11px;
+  border:1px solid #ddd;
+  background:white;
+  border-radius:10px;
+  color:#777;
 }
 </style>
 </head>
 
 <body>
 
-<div class="box">
+<div class="container">
 
-<h1>⏱️ 타이머</h1>
+  <div class="badge">DEMO · 가상 송금</div>
 
-<div id="timer">05:00</div>
+  <h1>내 통장</h1>
 
-<button class="start" onclick="startTimer()">▶ 시작</button>
-<button class="pause" onclick="pauseTimer()">⏸ 일시정지</button>
-<button class="reset" onclick="resetTimer()">🔄 초기화</button>
+  <div class="account">
+    <div class="account-name">남장재님의 통장</div>
+    <div class="balance" id="balance">100,000원</div>
+    <div class="account-number">가상계좌 123-456-789012</div>
+  </div>
 
-<hr>
+  <button class="send-btn" onclick="openSend()">송금하기</button>
 
-<h2>🔊 음성 읽기</h2>
+  <div class="panel" id="sendPanel">
+    <h2>송금하기</h2>
 
-<textarea id="text" placeholder="읽을 내용을 입력하세요"></textarea>
+    <label>받는 분</label>
+    <input id="receiver" type="text" placeholder="이름을 입력하세요">
 
-<br><br>
+    <label>계좌번호</label>
+    <input id="account" type="text" inputmode="numeric"
+           placeholder="계좌번호를 입력하세요">
 
-속도
-<input class="slider" type="range" min="0.5" max="1.5" value="0.9" step="0.1" id="speed">
+    <label>송금 금액</label>
+    <input id="amount" type="number" min="1"
+           placeholder="금액을 입력하세요">
 
-<br><br>
+    <button class="confirm" onclick="sendMoney()">송금하기</button>
+    <button class="cancel" onclick="closeSend()">취소</button>
 
-<button class="speak" onclick="speak()">🔊 읽기</button>
-<button class="stop" onclick="stopSpeak()">⏹ 정지</button>
+    <div id="message" class="message"></div>
+  </div>
+
+  <div class="history">
+    <h2>최근 송금 내역</h2>
+    <div id="historyList">
+      <div class="empty">아직 송금 내역이 없습니다.</div>
+    </div>
+  </div>
+
+  <button class="reset" onclick="resetAccount()">
+    잔액 100,000원으로 초기화
+  </button>
 
 </div>
 
 <script>
+let balance = 100000;
 
-let total=300;
-let current=300;
-let timer;
+const balanceEl = document.getElementById("balance");
+const panel = document.getElementById("sendPanel");
+const message = document.getElementById("message");
+const historyList = document.getElementById("historyList");
 
-function update(){
-    let m=Math.floor(current/60);
-    let s=current%60;
+let history = [];
 
-    document.getElementById("timer").textContent=
-        String(m).padStart(2,"0")+":"+
-        String(s).padStart(2,"0");
+function updateBalance(){
+  balanceEl.textContent =
+    balance.toLocaleString("ko-KR") + "원";
 }
 
-update();
-
-function startTimer(){
-
-    if(timer) return;
-
-    timer=setInterval(()=>{
-
-        if(current>0){
-            current--;
-            update();
-        }else{
-
-            clearInterval(timer);
-            timer=null;
-
-            alert("⏰ 시간이 종료되었습니다!");
-
-            speakEnd();
-
-        }
-
-    },1000);
-
+function openSend(){
+  panel.classList.add("show");
+  message.className = "message";
+  message.textContent = "";
 }
 
-function pauseTimer(){
-    clearInterval(timer);
-    timer=null;
+function closeSend(){
+  panel.classList.remove("show");
 }
 
-function resetTimer(){
-    clearInterval(timer);
-    timer=null;
-    current=total;
-    update();
+function sendMoney(){
+
+  const receiver =
+    document.getElementById("receiver").value.trim();
+
+  const account =
+    document.getElementById("account").value.trim();
+
+  const amount =
+    Number(document.getElementById("amount").value);
+
+  message.className = "message";
+  message.textContent = "";
+
+  if(!receiver){
+    showError("받는 분 이름을 입력해주세요.");
+    return;
+  }
+
+  if(!account){
+    showError("계좌번호를 입력해주세요.");
+    return;
+  }
+
+  if(!amount || amount <= 0){
+    showError("송금 금액을 입력해주세요.");
+    return;
+  }
+
+  if(amount > balance){
+    showError("잔액이 부족합니다.");
+    return;
+  }
+
+  // 실제 송금 없이 화면상의 잔액만 차감
+  balance -= amount;
+
+  history.unshift({
+    receiver: receiver,
+    account: account,
+    amount: amount,
+    time: new Date().toLocaleTimeString("ko-KR", {
+      hour:"2-digit",
+      minute:"2-digit"
+    })
+  });
+
+  updateBalance();
+  updateHistory();
+
+  message.className = "message success";
+  message.textContent =
+    "가상 송금이 완료되었습니다!";
+
+  document.getElementById("receiver").value = "";
+  document.getElementById("account").value = "";
+  document.getElementById("amount").value = "";
 }
 
-function speak(){
-
-    speechSynthesis.cancel();
-
-    let txt=document.getElementById("text").value;
-
-    if(txt.trim()=="") return;
-
-    let utter=new SpeechSynthesisUtterance(txt);
-
-    utter.lang="ko-KR";
-
-    utter.rate=parseFloat(document.getElementById("speed").value);
-
-    utter.pitch=1.1;
-
-    utter.volume=1;
-
-    let voices=speechSynthesis.getVoices();
-
-    let female=voices.find(v=>
-        v.name.includes("Heami")||
-        v.name.includes("Yuna")||
-        v.name.includes("Google 한국의")||
-        v.name.includes("Female")||
-        v.name.includes("Siri")
-    );
-
-    if(female) utter.voice=female;
-
-    speechSynthesis.speak(utter);
-
+function showError(text){
+  message.className = "message error";
+  message.textContent = text;
 }
 
-function stopSpeak(){
-    speechSynthesis.cancel();
+function updateHistory(){
+
+  if(history.length === 0){
+    historyList.innerHTML =
+      '<div class="empty">아직 송금 내역이 없습니다.</div>';
+    return;
+  }
+
+  historyList.innerHTML = history.map(item => `
+    <div class="item">
+      <div class="item-top">
+        <div class="item-name">${escapeHTML(item.receiver)}</div>
+        <div class="item-amount">
+          -${item.amount.toLocaleString("ko-KR")}원
+        </div>
+      </div>
+      <div class="item-info">
+        ${escapeHTML(item.account)} · ${item.time}
+      </div>
+    </div>
+  `).join("");
 }
 
-function speakEnd(){
-
-    speechSynthesis.cancel();
-
-    let utter=new SpeechSynthesisUtterance("시간이 종료되었습니다.");
-
-    utter.lang="ko-KR";
-    utter.rate=0.9;
-    utter.pitch=1.1;
-
-    speechSynthesis.speak(utter);
-
+function escapeHTML(text){
+  return text
+    .replaceAll("&","&amp;")
+    .replaceAll("<","&lt;")
+    .replaceAll(">","&gt;")
+    .replaceAll('"',"&quot;")
+    .replaceAll("'","&#039;");
 }
 
-speechSynthesis.onvoiceschanged=function(){};
+function resetAccount(){
+  balance = 100000;
+  history = [];
+  updateBalance();
+  updateHistory();
+  closeSend();
+}
 
-document.getElementById("text").addEventListener("keydown",function(e){
-
-    if(e.key==="Enter" && !e.shiftKey){
-        e.preventDefault();
-        speak();
-    }
-
-});
-
+updateBalance();
 </script>
 
 </body>
