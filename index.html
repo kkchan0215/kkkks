@@ -1,361 +1,149 @@
-<!DOCTYPE html>
-<html lang="ko">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>가상 통장</title>
-<style>
-*{box-sizing:border-box}
-body{
-  margin:0;
-  background:#f4f6fb;
-  font-family:Arial,"Noto Sans KR",sans-serif;
-  color:#20242c;
-}
-.container{
-  width:min(430px,100%);
-  min-height:100vh;
-  margin:auto;
-  background:#fff;
-  padding:25px 20px 40px;
-}
-.badge{
-  display:inline-block;
-  padding:6px 10px;
-  border-radius:20px;
-  background:#fff0c7;
-  color:#8b6500;
-  font-size:12px;
-  font-weight:bold;
-  margin-bottom:15px;
-}
-h1{
-  margin:0 0 20px;
-  font-size:25px;
-}
-.account{
-  background:linear-gradient(135deg,#667eea,#764ba2);
-  color:white;
-  border-radius:24px;
-  padding:25px;
-  box-shadow:0 10px 25px #667eea33;
-}
-.account-name{
-  font-size:14px;
-  opacity:.85;
-}
-.balance{
-  font-size:34px;
-  font-weight:800;
-  margin-top:12px;
-}
-.account-number{
-  margin-top:15px;
-  font-size:14px;
-  opacity:.85;
-}
-.send-btn{
-  width:100%;
-  border:0;
-  border-radius:16px;
-  padding:17px;
-  margin-top:18px;
-  background:#111827;
-  color:#fff;
-  font-size:17px;
-  font-weight:bold;
-  cursor:pointer;
-}
-.send-btn:active{transform:scale(.98)}
+<!-- 관리자 버튼 -->
+<button class="admin-btn" onclick="openAdmin()">관리자</button>
 
-.panel{
-  display:none;
-  margin-top:20px;
-  padding:22px;
-  border:1px solid #e7e9ee;
-  border-radius:20px;
-  background:#fafbfc;
-}
-.panel.show{display:block}
-.panel h2{
-  margin:0 0 18px;
-  font-size:20px;
-}
-label{
-  display:block;
-  font-size:13px;
-  font-weight:bold;
-  margin:13px 0 7px;
-}
-input{
-  width:100%;
-  padding:14px;
-  border:1px solid #d9dce3;
-  border-radius:12px;
-  font-size:16px;
-  outline:none;
-}
-input:focus{border-color:#667eea}
-.confirm{
-  width:100%;
-  border:0;
-  margin-top:18px;
-  padding:15px;
-  border-radius:13px;
-  background:#667eea;
-  color:white;
-  font-size:16px;
-  font-weight:bold;
-  cursor:pointer;
-}
-.cancel{
-  width:100%;
-  border:0;
-  margin-top:8px;
-  padding:12px;
-  background:transparent;
-  color:#777;
-  cursor:pointer;
-}
-.message{
-  display:none;
-  margin-top:15px;
-  padding:14px;
-  border-radius:12px;
-  font-size:14px;
-}
-.success{
-  display:block;
-  background:#e9f9ef;
-  color:#18753c;
-}
-.error{
-  display:block;
-  background:#fff0f0;
-  color:#c62828;
-}
-.history{
-  margin-top:25px;
-}
-.history h2{
-  font-size:18px;
-}
-.empty{
-  color:#999;
-  text-align:center;
-  padding:25px 0;
-  font-size:14px;
-}
-.item{
-  padding:15px 0;
-  border-bottom:1px solid #eee;
-}
-.item-top{
-  display:flex;
-  justify-content:space-between;
-}
-.item-name{font-weight:bold}
-.item-amount{
-  color:#e14b4b;
-  font-weight:bold;
-}
-.item-info{
-  color:#999;
-  font-size:12px;
-  margin-top:5px;
-}
-.reset{
-  width:100%;
-  margin-top:20px;
-  padding:11px;
-  border:1px solid #ddd;
-  background:white;
-  border-radius:10px;
-  color:#777;
-}
-</style>
-</head>
+<div class="admin-panel" id="adminPanel">
+  <div class="admin-box">
+    <h2>🔐 관리자</h2>
 
-<body>
+    <div id="loginArea">
+      <p>관리자 비밀번호</p>
+      <input id="adminPw" type="password" placeholder="비밀번호">
+      <button onclick="loginAdmin()">확인</button>
+      <div id="pwError"></div>
+    </div>
 
-<div class="container">
+    <div id="controlArea" style="display:none;">
+      <p>현재 잔액</p>
+      <div id="adminBalance" class="admin-balance">100,000원</div>
 
-  <div class="badge">DEMO · 가상 송금</div>
+      <p>잔액 설정</p>
+      <input id="newBalance" type="number" placeholder="새 잔액">
 
-  <h1>내 통장</h1>
-
-  <div class="account">
-    <div class="account-name">리노님의 통장</div>
-    <div class="balance" id="balance">100,000,000,000원</div>
-    <div class="account-number">가상계좌 123-456-789012</div>
-  </div>
-
-  <button class="send-btn" onclick="openSend()">송금하기</button>
-
-  <div class="panel" id="sendPanel">
-    <h2>송금하기</h2>
-
-    <label>받는 분</label>
-    <input id="receiver" type="text" placeholder="이름을 입력하세요">
-
-    <label>계좌번호</label>
-    <input id="account" type="text" inputmode="numeric"
-           placeholder="계좌번호를 입력하세요">
-
-    <label>송금 금액</label>
-    <input id="amount" type="number" min="1"
-           placeholder="금액을 입력하세요">
-
-    <button class="confirm" onclick="sendMoney()">송금하기</button>
-    <button class="cancel" onclick="closeSend()">취소</button>
-
-    <div id="message" class="message"></div>
-  </div>
-
-  <div class="history">
-    <h2>최근 송금 내역</h2>
-    <div id="historyList">
-      <div class="empty">아직 송금 내역이 없습니다.</div>
+      <button onclick="changeBalance()">잔액 변경</button>
+      <button onclick="closeAdmin()">닫기</button>
     </div>
   </div>
-
-  <button class="reset" onclick="resetAccount()">
-    잔액 100,000원으로 초기화
-  </button>
-
 </div>
+
+<style>
+.admin-btn{
+  position:fixed;
+  right:8px;
+  bottom:8px;
+  border:0;
+  background:#ddd;
+  color:#777;
+  font-size:10px;
+  padding:5px 8px;
+  border-radius:8px;
+  opacity:.65;
+}
+
+.admin-panel{
+  display:none;
+  position:fixed;
+  inset:0;
+  background:rgba(0,0,0,.45);
+  align-items:center;
+  justify-content:center;
+  z-index:9999;
+}
+
+.admin-box{
+  width:calc(100% - 40px);
+  max-width:350px;
+  background:white;
+  border-radius:20px;
+  padding:22px;
+  box-shadow:0 15px 40px rgba(0,0,0,.25);
+}
+
+.admin-box h2{
+  margin-top:0;
+}
+
+.admin-box input{
+  width:100%;
+  padding:13px;
+  box-sizing:border-box;
+  border:1px solid #ddd;
+  border-radius:10px;
+  margin:7px 0 12px;
+  font-size:16px;
+}
+
+.admin-box button{
+  width:100%;
+  border:0;
+  border-radius:10px;
+  padding:13px;
+  margin-top:7px;
+  background:#222;
+  color:white;
+  font-weight:bold;
+}
+
+.admin-balance{
+  font-size:25px;
+  font-weight:bold;
+  margin:10px 0 18px;
+}
+
+#pwError{
+  color:#e53935;
+  font-size:13px;
+  margin-top:8px;
+}
+</style>
 
 <script>
 let balance = 100000;
 
-const balanceEl = document.getElementById("balance");
-const panel = document.getElementById("sendPanel");
-const message = document.getElementById("message");
-const historyList = document.getElementById("historyList");
-
-let history = [];
-
 function updateBalance(){
-  balanceEl.textContent =
+  document.getElementById("balance").textContent =
+    balance.toLocaleString("ko-KR") + "원";
+
+  document.getElementById("adminBalance").textContent =
     balance.toLocaleString("ko-KR") + "원";
 }
 
-function openSend(){
-  panel.classList.add("show");
-  message.className = "message";
-  message.textContent = "";
+function openAdmin(){
+  document.getElementById("adminPanel").style.display = "flex";
+  document.getElementById("loginArea").style.display = "block";
+  document.getElementById("controlArea").style.display = "none";
+  document.getElementById("adminPw").value = "";
+  document.getElementById("pwError").textContent = "";
 }
 
-function closeSend(){
-  panel.classList.remove("show");
+function loginAdmin(){
+  const pw = document.getElementById("adminPw").value;
+
+  if(pw === "5555000"){
+    document.getElementById("loginArea").style.display = "none";
+    document.getElementById("controlArea").style.display = "block";
+    updateBalance();
+  }else{
+    document.getElementById("pwError").textContent =
+      "비밀번호가 올바르지 않습니다.";
+  }
 }
 
-function sendMoney(){
+function changeBalance(){
+  const value = Number(document.getElementById("newBalance").value);
 
-  const receiver =
-    document.getElementById("receiver").value.trim();
-
-  const account =
-    document.getElementById("account").value.trim();
-
-  const amount =
-    Number(document.getElementById("amount").value);
-
-  message.className = "message";
-  message.textContent = "";
-
-  if(!receiver){
-    showError("받는 분 이름을 입력해주세요.");
+  if(!Number.isFinite(value) || value < 0){
+    alert("올바른 금액을 입력해주세요.");
     return;
   }
 
-  if(!account){
-    showError("계좌번호를 입력해주세요.");
-    return;
-  }
-
-  if(!amount || amount <= 0){
-    showError("송금 금액을 입력해주세요.");
-    return;
-  }
-
-  if(amount > balance){
-    showError("잔액이 부족합니다.");
-    return;
-  }
-
-  // 실제 송금 없이 화면상의 잔액만 차감
-  balance -= amount;
-
-  history.unshift({
-    receiver: receiver,
-    account: account,
-    amount: amount,
-    time: new Date().toLocaleTimeString("ko-KR", {
-      hour:"2-digit",
-      minute:"2-digit"
-    })
-  });
-
+  balance = Math.floor(value);
   updateBalance();
-  updateHistory();
 
-  message.className = "message success";
-  message.textContent =
-    "가상 송금이 완료되었습니다!";
-
-  document.getElementById("receiver").value = "";
-  document.getElementById("account").value = "";
-  document.getElementById("amount").value = "";
+  document.getElementById("newBalance").value = "";
+  alert("가상 잔액이 변경되었습니다.");
 }
 
-function showError(text){
-  message.className = "message error";
-  message.textContent = text;
+function closeAdmin(){
+  document.getElementById("adminPanel").style.display = "none";
 }
-
-function updateHistory(){
-
-  if(history.length === 0){
-    historyList.innerHTML =
-      '<div class="empty">아직 송금 내역이 없습니다.</div>';
-    return;
-  }
-
-  historyList.innerHTML = history.map(item => `
-    <div class="item">
-      <div class="item-top">
-        <div class="item-name">${escapeHTML(item.receiver)}</div>
-        <div class="item-amount">
-          -${item.amount.toLocaleString("ko-KR")}원
-        </div>
-      </div>
-      <div class="item-info">
-        ${escapeHTML(item.account)} · ${item.time}
-      </div>
-    </div>
-  `).join("");
-}
-
-function escapeHTML(text){
-  return text
-    .replaceAll("&","&amp;")
-    .replaceAll("<","&lt;")
-    .replaceAll(">","&gt;")
-    .replaceAll('"',"&quot;")
-    .replaceAll("'","&#039;");
-}
-
-function resetAccount(){
-  balance = 100000;
-  history = [];
-  updateBalance();
-  updateHistory();
-  closeSend();
-}
-
-updateBalance();
 </script>
-
-</body>
-</html>
