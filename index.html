@@ -4,47 +4,364 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>가상 계좌</title>
+
 <style>
-*{box-sizing:border-box}
-body{margin:0;background:#f3f5f9;font-family:Arial,"Noto Sans KR",sans-serif;color:#20242c}
-.wrap{width:100%;max-width:430px;min-height:100vh;margin:auto;background:#fff;padding:22px 18px 70px}
-.badge{display:inline-block;background:#fff1c9;color:#856300;padding:6px 10px;border-radius:20px;font-size:11px;font-weight:bold}
-h1{margin:14px 0 18px;font-size:25px}
-.slider{display:flex;align-items:center;gap:8px}
-.arrow{width:38px;height:38px;min-width:38px;border:0;border-radius:50%;background:#eef0f5;font-size:23px;cursor:pointer}
-.card{flex:1;min-width:0;background:linear-gradient(135deg,#667eea,#764ba2);color:#fff;border-radius:23px;padding:23px 20px;box-shadow:0 12px 28px #667eea33}
-.owner{font-size:15px;font-weight:bold}
-.bank{font-size:12px;margin-top:5px;opacity:.8}
-.balance{font-size:32px;font-weight:800;margin-top:13px;white-space:nowrap}
-.account{margin-top:15px;font-size:12px;opacity:.8}
-.page{text-align:center;margin-top:10px;color:#999;font-size:12px}
-.send{width:100%;border:0;border-radius:15px;padding:16px;margin-top:17px;background:#111827;color:#fff;font-size:17px;font-weight:bold}
-.panel{display:none;margin-top:17px;padding:20px;border:1px solid #e6e8ed;border-radius:19px;background:#fafbfc}
-.panel.show{display:block}
-h2{font-size:19px;margin:0 0 15px}
-label{display:block;font-size:13px;font-weight:bold;margin:12px 0 7px}
-input{width:100%;padding:13px;border:1px solid #d9dce3;border-radius:11px;font-size:16px;outline:none}
-.confirm{width:100%;border:0;border-radius:11px;padding:14px;margin-top:16px;background:#667eea;color:white;font-size:16px;font-weight:bold}
-.cancel{width:100%;border:0;background:transparent;color:#777;padding:11px}
-.msg{display:none;padding:12px;margin-top:10px;border-radius:10px;font-size:13px}
-.ok{display:block;background:#e8f8ee;color:#19743c}
-.err{display:block;background:#fff0f0;color:#c62828}
-.history{margin-top:25px}
-.empty{text-align:center;color:#999;padding:25px 0;font-size:14px}
-.item{padding:13px 0;border-bottom:1px solid #eee}
-.row{display:flex;justify-content:space-between;gap:10px}
-.name{font-weight:bold}.minus{color:#d94b4b;font-weight:bold}.plus{color:#25864a;font-weight:bold}
-.info{margin-top:5px;color:#999;font-size:12px}
-.admin-btn{position:fixed;right:7px;bottom:7px;border:0;background:#ddd;color:#666;padding:5px 8px;border-radius:8px;font-size:10px;opacity:.65;z-index:1000}
-.admin-panel{display:none;position:fixed;inset:0;background:rgba(0,0,0,.45);align-items:center;justify-content:center;z-index:9999}
-.admin-box{width:calc(100% - 36px);max-width:380px;max-height:90vh;overflow:auto;background:white;border-radius:20px;padding:21px}
-.admin-box h2{margin-bottom:16px}
-.admin-box p{font-size:13px;font-weight:bold;margin:12px 0 6px}
-.admin-box input{margin-bottom:4px}
-.admin-box button{width:100%;border:0;border-radius:10px;padding:12px;margin-top:7px;background:#222;color:white;font-weight:bold}
-.gray{background:#eee!important;color:#555!important}.red{background:#e54848!important}
-.admin-balance{font-size:25px;font-weight:bold;margin:7px 0 15px}
-.admin-account{padding:13px 0;border-bottom:1px solid #eee;font-size:13px}
+*{
+  box-sizing:border-box;
+}
+
+body{
+  margin:0;
+  background:#eef1f6;
+  font-family:Arial,"Noto Sans KR",sans-serif;
+  color:#20242c;
+}
+
+button,
+input{
+  font-family:inherit;
+}
+
+.wrap{
+  width:100%;
+  max-width:440px;
+  min-height:100vh;
+  margin:auto;
+  background:#fff;
+  padding:22px 18px 80px;
+}
+
+.badge{
+  display:inline-block;
+  background:#fff0c7;
+  color:#856300;
+  padding:6px 10px;
+  border-radius:20px;
+  font-size:11px;
+  font-weight:bold;
+}
+
+h1{
+  margin:14px 0 18px;
+  font-size:25px;
+}
+
+.slider{
+  display:flex;
+  align-items:center;
+  gap:8px;
+}
+
+.arrow{
+  width:38px;
+  height:38px;
+  min-width:38px;
+  border:0;
+  border-radius:50%;
+  background:#eef0f5;
+  font-size:24px;
+  cursor:pointer;
+}
+
+.card{
+  flex:1;
+  min-width:0;
+  color:white;
+  border-radius:25px;
+  padding:21px;
+  background:linear-gradient(135deg,#667eea,#764ba2);
+  box-shadow:0 14px 30px #667eea38;
+}
+
+.bank-logo{
+  display:flex;
+  align-items:center;
+  gap:8px;
+  font-size:14px;
+  font-weight:bold;
+}
+
+.logo{
+  width:31px;
+  height:31px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  background:rgba(255,255,255,.2);
+  border-radius:10px;
+  font-size:19px;
+}
+
+.owner{
+  margin-top:15px;
+  font-size:15px;
+  font-weight:bold;
+}
+
+.balance{
+  margin-top:12px;
+  font-size:32px;
+  font-weight:800;
+  white-space:nowrap;
+}
+
+.account{
+  margin-top:15px;
+  font-size:12px;
+  opacity:.8;
+  word-break:break-all;
+}
+
+.page{
+  text-align:center;
+  margin-top:10px;
+  color:#999;
+  font-size:12px;
+}
+
+.send{
+  width:100%;
+  border:0;
+  border-radius:15px;
+  padding:16px;
+  margin-top:17px;
+  background:#111827;
+  color:#fff;
+  font-size:17px;
+  font-weight:bold;
+  cursor:pointer;
+}
+
+.panel{
+  display:none;
+  margin-top:17px;
+  padding:20px;
+  border:1px solid #e5e7eb;
+  border-radius:19px;
+  background:#fafbfc;
+}
+
+.panel.show{
+  display:block;
+}
+
+h2{
+  font-size:19px;
+  margin:0 0 15px;
+}
+
+label{
+  display:block;
+  font-size:13px;
+  font-weight:bold;
+  margin:12px 0 7px;
+}
+
+input{
+  width:100%;
+  padding:13px;
+  border:1px solid #d9dce3;
+  border-radius:11px;
+  font-size:16px;
+  outline:none;
+}
+
+input:focus{
+  border-color:#667eea;
+}
+
+.confirm{
+  width:100%;
+  border:0;
+  border-radius:11px;
+  padding:14px;
+  margin-top:16px;
+  background:#667eea;
+  color:#fff;
+  font-size:16px;
+  font-weight:bold;
+  cursor:pointer;
+}
+
+.cancel{
+  width:100%;
+  border:0;
+  background:transparent;
+  color:#777;
+  padding:11px;
+  cursor:pointer;
+}
+
+.msg{
+  display:none;
+  padding:12px;
+  margin-top:10px;
+  border-radius:10px;
+  font-size:13px;
+}
+
+.ok{
+  display:block;
+  background:#e8f8ee;
+  color:#19743c;
+}
+
+.err{
+  display:block;
+  background:#fff0f0;
+  color:#c62828;
+}
+
+.history{
+  margin-top:27px;
+}
+
+.empty{
+  text-align:center;
+  color:#999;
+  padding:25px 0;
+  font-size:14px;
+}
+
+.item{
+  padding:13px 0;
+  border-bottom:1px solid #eee;
+}
+
+.row{
+  display:flex;
+  justify-content:space-between;
+  gap:10px;
+}
+
+.name{
+  font-weight:bold;
+}
+
+.minus{
+  color:#d94b4b;
+  font-weight:bold;
+}
+
+.plus{
+  color:#25864a;
+  font-weight:bold;
+}
+
+.info{
+  margin-top:5px;
+  color:#999;
+  font-size:12px;
+}
+
+.admin-btn{
+  position:fixed;
+  right:7px;
+  bottom:7px;
+  border:0;
+  background:#ddd;
+  color:#666;
+  padding:5px 8px;
+  border-radius:8px;
+  font-size:10px;
+  opacity:.65;
+  z-index:1000;
+  cursor:pointer;
+}
+
+.admin-panel{
+  display:none;
+  position:fixed;
+  inset:0;
+  background:rgba(0,0,0,.45);
+  align-items:center;
+  justify-content:center;
+  z-index:9999;
+}
+
+.admin-box{
+  width:calc(100% - 36px);
+  max-width:390px;
+  max-height:92vh;
+  overflow:auto;
+  background:white;
+  border-radius:20px;
+  padding:21px;
+}
+
+.admin-box h2{
+  margin-bottom:16px;
+}
+
+.admin-box p{
+  font-size:13px;
+  font-weight:bold;
+  margin:13px 0 6px;
+}
+
+.admin-box input{
+  margin-bottom:5px;
+}
+
+.admin-box button{
+  width:100%;
+  border:0;
+  border-radius:10px;
+  padding:12px;
+  margin-top:7px;
+  background:#222;
+  color:white;
+  font-weight:bold;
+  cursor:pointer;
+}
+
+.gray{
+  background:#eee !important;
+  color:#555 !important;
+}
+
+.red{
+  background:#e54848 !important;
+}
+
+.admin-balance{
+  font-size:25px;
+  font-weight:bold;
+  margin:7px 0 15px;
+}
+
+.admin-account{
+  padding:14px 0;
+  border-bottom:1px solid #eee;
+  font-size:13px;
+}
+
+.admin-account button{
+  margin-top:8px;
+}
+
+.admin-logo-preview{
+  font-size:25px;
+  margin:5px 0;
+}
+
+.bank-list{
+  margin-top:10px;
+  border-top:1px solid #eee;
+}
+
+.bank-row{
+  display:flex;
+  align-items:center;
+  gap:10px;
+  padding:10px 0;
+  border-bottom:1px solid #eee;
+  font-size:13px;
+}
+
+.bank-row span:first-child{
+  font-size:22px;
+}
 </style>
 </head>
 
@@ -52,508 +369,1348 @@ input{width:100%;padding:13px;border:1px solid #d9dce3;border-radius:11px;font-s
 
 <div class="wrap">
 
-<div class="badge">DEMO · 가상 계좌</div>
-<h1>내 계좌</h1>
+  <div class="badge">
+    DEMO · 가상 계좌
+  </div>
 
-<div class="slider">
-<button class="arrow" onclick="prev()">‹</button>
+  <h1>내 계좌</h1>
 
-<div class="card">
-<div class="owner" id="owner">강리노님의 계좌</div>
-<div class="bank" id="bank">대한은행</div>
-<div class="balance" id="balance">100,000원</div>
-<div class="account" id="account">계좌번호 482-731-905164</div>
+  <div class="slider">
+
+    <button class="arrow" onclick="prevAccount()">‹</button>
+
+    <div class="card">
+
+      <div class="bank-logo">
+        <div class="logo" id="bankLogo">🏦</div>
+        <div id="bankName">대한은행</div>
+      </div>
+
+      <div class="owner" id="owner">
+        강리노님의 계좌
+      </div>
+
+      <div class="balance" id="balance">
+        100,000원
+      </div>
+
+      <div class="account" id="account">
+        계좌번호 482-731-905164
+      </div>
+
+    </div>
+
+    <button class="arrow" onclick="nextAccount()">›</button>
+
+  </div>
+
+  <div class="page" id="page">
+    1 / 1
+  </div>
+
+
+  <button class="send" onclick="openSend()">
+    송금하기
+  </button>
+
+
+  <div class="panel" id="sendPanel">
+
+    <h2>💸 가상 송금</h2>
+
+    <label>받는 계좌번호</label>
+
+    <input
+      id="toAccount"
+      placeholder="계좌번호 입력"
+    >
+
+    <label>송금 금액</label>
+
+    <input
+      id="amount"
+      type="number"
+      min="1"
+      placeholder="송금할 금액"
+    >
+
+    <label>내 계좌 비밀번호</label>
+
+    <input
+      id="sendPassword"
+      type="password"
+      placeholder="비밀번호"
+    >
+
+    <button class="confirm" onclick="sendMoney()">
+      송금하기
+    </button>
+
+    <button class="cancel" onclick="closeSend()">
+      취소
+    </button>
+
+    <div id="message" class="msg"></div>
+
+  </div>
+
+
+  <div class="history">
+
+    <h2>최근 거래 내역</h2>
+
+    <div id="historyList">
+      <div class="empty">
+        아직 거래 내역이 없습니다.
+      </div>
+    </div>
+
+  </div>
+
 </div>
 
-<button class="arrow" onclick="next()">›</button>
-</div>
 
-<div class="page" id="page">1 / 1</div>
+<button class="admin-btn" onclick="openAdmin()">
+  관리자
+</button>
 
-<button class="send" onclick="openSend()">송금하기</button>
-
-<div class="panel" id="sendPanel">
-<h2>💸 가상 송금</h2>
-
-<label>받는 계좌번호</label>
-<input id="toAccount" placeholder="계좌번호">
-
-<label>송금 금액</label>
-<input id="amount" type="number" min="1" placeholder="금액">
-
-<label>내 계좌 비밀번호</label>
-<input id="password" type="password" placeholder="비밀번호">
-
-<button class="confirm" onclick="sendMoney()">송금하기</button>
-<button class="cancel" onclick="closeSend()">취소</button>
-
-<div id="message" class="msg"></div>
-</div>
-
-<div class="history">
-<h2>최근 거래 내역</h2>
-<div id="history">
-<div class="empty">아직 거래 내역이 없습니다.</div>
-</div>
-</div>
-
-</div>
-
-<button class="admin-btn" onclick="openAdmin()">관리자</button>
 
 <div class="admin-panel" id="adminPanel">
-<div class="admin-box">
 
-<div id="login">
-<h2>🔐 관리자</h2>
-<p>관리자 비밀번호</p>
-<input id="adminPw" type="password" placeholder="비밀번호">
-<button onclick="loginAdmin()">확인</button>
-<div id="pwError" style="color:red;font-size:13px;margin-top:7px"></div>
-<button class="gray" onclick="closeAdmin()">닫기</button>
+  <div class="admin-box">
+
+    <div id="loginArea">
+
+      <h2>🔐 관리자</h2>
+
+      <p>관리자 비밀번호</p>
+
+      <input
+        id="adminPw"
+        type="password"
+        placeholder="비밀번호"
+      >
+
+      <button onclick="loginAdmin()">
+        확인
+      </button>
+
+      <div
+        id="pwError"
+        style="color:#e53935;font-size:13px;margin-top:7px">
+      </div>
+
+      <button class="gray" onclick="closeAdmin()">
+        닫기
+      </button>
+
+    </div>
+
+
+    <div id="controlArea" style="display:none">
+
+      <h2>⚙️ 계좌 관리</h2>
+
+      <p>현재 선택된 계좌</p>
+
+      <div id="selectedName"></div>
+
+      <div class="admin-balance" id="adminBalance">
+        100,000원
+      </div>
+
+
+      <p>잔액 변경</p>
+
+      <input
+        id="newBalance"
+        type="number"
+        min="0"
+        placeholder="새 잔액"
+      >
+
+      <button onclick="changeBalance()">
+        잔액 변경
+      </button>
+
+
+      <p>새 계좌 만들기</p>
+
+      <input
+        id="newOwner"
+        placeholder="계좌 주인 이름"
+      >
+
+      <input
+        id="newBank"
+        placeholder="은행 이름 (비워두면 랜덤)"
+      >
+
+      <input
+        id="newAccount"
+        placeholder="계좌번호 (비워두면 랜덤)"
+      >
+
+      <input
+        id="newMoney"
+        type="number"
+        min="0"
+        placeholder="초기 잔액"
+      >
+
+      <input
+        id="newPassword"
+        type="password"
+        placeholder="계좌 비밀번호"
+      >
+
+      <input
+        id="newLogo"
+        maxlength="2"
+        placeholder="은행 마크 (비워두면 자동)"
+      >
+
+      <button onclick="addAccount()">
+        ＋ 새 계좌 만들기
+      </button>
+
+
+      <p>계좌 목록</p>
+
+      <div id="accountList"></div>
+
+
+      <p>등록된 은행 마크</p>
+
+      <div
+        class="bank-list"
+        id="bankList">
+      </div>
+
+
+      <button class="gray" onclick="closeAdmin()">
+        닫기
+      </button>
+
+    </div>
+
+  </div>
+
 </div>
 
-<div id="controls" style="display:none">
-
-<h2>⚙️ 계좌 관리</h2>
-
-<p>현재 선택된 계좌</p>
-<div id="selectedName"></div>
-<div class="admin-balance" id="adminBalance">100,000원</div>
-
-<p>잔액 변경</p>
-<input id="newBalance" type="number" min="0" placeholder="새 잔액">
-<button onclick="changeBalance()">잔액 변경</button>
-
-<p>새 계좌 만들기</p>
-
-<input id="newOwner" placeholder="계좌 주인 이름">
-
-<input id="newBank" placeholder="은행 이름 (비워두면 랜덤)">
-
-<input id="newAccount" placeholder="계좌번호 (비워두면 랜덤)">
-
-<input id="newMoney" type="number" min="0" placeholder="초기 잔액">
-
-<input id="newPassword" type="password" placeholder="계좌 비밀번호">
-
-<button onclick="addAccount()">＋ 새 계좌 만들기</button>
-
-<p>계좌 목록</p>
-<div id="accountList"></div>
-
-<button class="gray" onclick="closeAdmin()">닫기</button>
-
-</div>
-</div>
-</div>
 
 <script>
 
-let accounts=[{
-  owner:"강리노",
-  bank:"대한은행",
-  number:"482-731-905164",
-  password:"1234",
-  money:100000,
-  history:[]
-}];
+/* =================================
+   저장 키
+================================= */
 
-let current=0;
+const STORAGE_KEY = "virtual_bank_demo_v3";
 
-const banks=[
-  "대한은행",
-  "두리은행",
-  "수난은행"
+
+/* =================================
+   기본 은행 마크
+================================= */
+
+const defaultLogos = [
+  "🏦",
+  "🔵",
+  "🟢",
+  "🟣",
+  "🟠",
+  "🔷",
+  "⭐",
+  "✨",
+  "💠",
+  "🌟"
 ];
 
-function update(){
 
-  let a=accounts[current];
+/* =================================
+   기본 데이터 불러오기
+================================= */
 
-  document.getElementById("owner").textContent=
-    a.owner+"님의 계좌";
+let saved = null;
 
-  document.getElementById("bank").textContent=
-    a.bank;
-
-  document.getElementById("balance").textContent=
-    a.money.toLocaleString("ko-KR")+"원";
-
-  document.getElementById("account").textContent=
-    "계좌번호 "+a.number;
-
-  document.getElementById("page").textContent=
-    (current+1)+" / "+accounts.length;
-
-  renderHistory();
-  updateAdmin();
-
-}
-
-function next(){
-  if(accounts.length<2)return;
-  current=(current+1)%accounts.length;
-  closeSend();
-  update();
-}
-
-function prev(){
-  if(accounts.length<2)return;
-  current=(current-1+accounts.length)%accounts.length;
-  closeSend();
-  update();
-}
-
-function openSend(){
-  document.getElementById("sendPanel").classList.add("show");
-}
-
-function closeSend(){
-  document.getElementById("sendPanel").classList.remove("show");
-}
-
-function msg(text,good){
-  let m=document.getElementById("message");
-  m.className="msg "+(good?"ok":"err");
-  m.textContent=text;
-}
-
-function findAccount(number){
-  return accounts.find(a=>a.number===number);
-}
-
-function sendMoney(){
-
-  let sender=accounts[current];
-
-  let number=document.getElementById("toAccount").value.trim();
-  let money=Number(document.getElementById("amount").value);
-  let pw=document.getElementById("password").value;
-
-  let receiver=findAccount(number);
-
-  if(!receiver){
-    msg("등록되지 않은 가상 계좌입니다.",false);
-    return;
-  }
-
-  if(receiver===sender){
-    msg("현재 계좌로는 송금할 수 없습니다.",false);
-    return;
-  }
-
-  if(!money||money<=0){
-    msg("송금 금액을 입력해주세요.",false);
-    return;
-  }
-
-  if(money>sender.money){
-    msg("잔액이 부족합니다.",false);
-    return;
-  }
-
-  if(pw!==sender.password){
-    msg("계좌 비밀번호가 올바르지 않습니다.",false);
-    return;
-  }
-
-  sender.money-=money;
-  receiver.money+=money;
-
-  let time=new Date().toLocaleTimeString("ko-KR",{
-    hour:"2-digit",
-    minute:"2-digit"
-  });
-
-  sender.history.unshift({
-    type:"send",
-    name:receiver.owner,
-    number:receiver.number,
-    money:money,
-    time:time
-  });
-
-  receiver.history.unshift({
-    type:"receive",
-    name:sender.owner,
-    number:sender.number,
-    money:money,
-    time:time
-  });
-
-  update();
-
-  msg(
-    receiver.owner+"님의 계좌로 "+
-    money.toLocaleString("ko-KR")+
-    "원을 송금했습니다.",
-    true
+try{
+  saved = JSON.parse(
+    localStorage.getItem(STORAGE_KEY)
   );
-
-  document.getElementById("toAccount").value="";
-  document.getElementById("amount").value="";
-  document.getElementById("password").value="";
+}catch(e){
+  saved = null;
 }
 
-function renderHistory(){
 
-  let a=accounts[current];
-  let box=document.getElementById("history");
+let data = saved || {
 
-  if(a.history.length===0){
-    box.innerHTML=
-      '<div class="empty">아직 거래 내역이 없습니다.</div>';
-    return;
-  }
+  accounts:[
 
-  box.innerHTML=a.history.map(x=>`
-
-    <div class="item">
-
-      <div class="row">
-
-        <span class="name">
-          ${x.type==="send"?"송금 → ":"입금 ← "}
-          ${escapeHTML(x.name)}
-        </span>
-
-        <span class="${x.type==="send"?"minus":"plus"}">
-          ${x.type==="send"?"-":"+"}
-          ${x.money.toLocaleString("ko-KR")}원
-        </span>
-
-      </div>
-
-      <div class="info">
-        ${escapeHTML(x.number)} · ${x.time}
-      </div>
-
-    </div>
-
-  `).join("");
-}
-
-function escapeHTML(x){
-  return String(x)
-    .replaceAll("&","&amp;")
-    .replaceAll("<","&lt;")
-    .replaceAll(">","&gt;")
-    .replaceAll('"',"&quot;")
-    .replaceAll("'","&#039;");
-}
-
-function randomAccount(){
-
-  let n="";
-
-  for(let i=0;i<12;i++){
-    n+=Math.floor(Math.random()*10);
-  }
-
-  return n.slice(0,3)+"-"+
-         n.slice(3,6)+"-"+
-         n.slice(6);
-}
-
-function randomBank(){
-  return banks[
-    Math.floor(Math.random()*banks.length)
-  ];
-}
-
-function openAdmin(){
-
-  document.getElementById("adminPanel").style.display="flex";
-  document.getElementById("login").style.display="block";
-  document.getElementById("controls").style.display="none";
-  document.getElementById("adminPw").value="";
-
-}
-
-function loginAdmin(){
-
-  if(document.getElementById("adminPw").value==="5555000"){
-
-    document.getElementById("login").style.display="none";
-    document.getElementById("controls").style.display="block";
-    updateAdmin();
-
-  }else{
-
-    document.getElementById("pwError").textContent=
-      "비밀번호가 올바르지 않습니다.";
-
-  }
-}
-
-function updateAdmin(){
-
-  let a=accounts[current];
-
-  document.getElementById("selectedName").textContent=
-    a.owner+"님의 계좌";
-
-  document.getElementById("adminBalance").textContent=
-    a.money.toLocaleString("ko-KR")+"원";
-
-  let list=document.getElementById("accountList");
-
-  list.innerHTML=accounts.map((x,i)=>`
-
-    <div class="admin-account">
-
-      <b>${escapeHTML(x.owner)}님의 계좌</b><br>
-      ${escapeHTML(x.bank)}<br>
-      ${escapeHTML(x.number)}<br>
-      잔액: ${x.money.toLocaleString("ko-KR")}원
-
-      <button onclick="selectAccount(${i})">
-        이 계좌 보기
-      </button>
-
-      <button class="red"
-        onclick="deleteAccount(${i})">
-        계좌 삭제
-      </button>
-
-    </div>
-
-  `).join("");
-}
-
-function changeBalance(){
-
-  let n=Number(document.getElementById("newBalance").value);
-
-  if(!Number.isFinite(n)||n<0){
-    alert("올바른 금액을 입력해주세요.");
-    return;
-  }
-
-  accounts[current].money=Math.floor(n);
-
-  document.getElementById("newBalance").value="";
-
-  update();
-
-  alert("가상 잔액이 변경되었습니다.");
-}
-
-function addAccount(){
-
-  let owner=
-    document.getElementById("newOwner").value.trim();
-
-  let bank=
-    document.getElementById("newBank").value.trim();
-
-  let number=
-    document.getElementById("newAccount").value.trim();
-
-  let money=
-    Number(document.getElementById("newMoney").value);
-
-  let password=
-    document.getElementById("newPassword").value;
-
-  if(!owner){
-    alert("계좌 주인 이름을 입력해주세요.");
-    return;
-  }
-
-  if(!bank){
-    bank=randomBank();
-  }
-
-  if(!number){
-    number=randomAccount();
-  }
-
-  if(accounts.some(x=>x.number===number)){
-    alert("이미 사용 중인 계좌번호입니다.");
-    return;
-  }
-
-  if(!Number.isFinite(money)||money<0){
-    alert("올바른 초기 잔액을 입력해주세요.");
-    return;
-  }
-
-  if(!password){
-    alert("계좌 비밀번호를 입력해주세요.");
-    return;
-  }
-
-  accounts.push({
-    owner:owner,
-    bank:bank,
-    number:number,
-    password:password,
-    money:Math.floor(money),
-    history:[]
-  });
-
-  current=accounts.length-1;
-
-  document.getElementById("newOwner").value="";
-  document.getElementById("newBank").value="";
-  document.getElementById("newAccount").value="";
-  document.getElementById("newMoney").value="";
-  document.getElementById("newPassword").value="";
-
-  update();
-
-  alert(
-    owner+"님의 가상 계좌가 만들어졌습니다.\n"+
-    bank+"\n"+
-    number
-  );
-}
-
-function selectAccount(i){
-  current=i;
-  update();
-}
-
-function deleteAccount(i){
-
-  if(!confirm(
-    accounts[i].owner+
-    "님의 가상 계좌를 삭제할까요?"
-  ))return;
-
-  accounts.splice(i,1);
-
-  if(accounts.length===0){
-
-    accounts.push({
+    {
       owner:"강리노",
       bank:"대한은행",
       number:"482-731-905164",
       password:"1234",
       money:100000,
       history:[]
+    }
+
+  ],
+
+  bankLogos:{
+    "대한은행":"🏦"
+  },
+
+  current:0
+
+};
+
+
+let accounts = data.accounts || [];
+
+let bankLogos = data.bankLogos || {};
+
+let current = Number.isInteger(data.current)
+  ? data.current
+  : 0;
+
+
+if(accounts.length===0){
+
+  accounts.push({
+
+    owner:"강리노",
+    bank:"대한은행",
+    number:"482-731-905164",
+    password:"1234",
+    money:100000,
+    history:[]
+
+  });
+
+}
+
+
+if(!bankLogos["대한은행"]){
+  bankLogos["대한은행"]="🏦";
+}
+
+
+if(current >= accounts.length){
+  current=0;
+}
+
+
+/* =================================
+   저장
+================================= */
+
+function saveData(){
+
+  const saveObject = {
+
+    accounts:accounts,
+
+    bankLogos:bankLogos,
+
+    current:current
+
+  };
+
+  localStorage.setItem(
+    STORAGE_KEY,
+    JSON.stringify(saveObject)
+  );
+
+}
+
+
+/* =================================
+   HTML 안전 처리
+================================= */
+
+function escapeHTML(text){
+
+  return String(text)
+    .replaceAll("&","&amp;")
+    .replaceAll("<","&lt;")
+    .replaceAll(">","&gt;")
+    .replaceAll('"',"&quot;")
+    .replaceAll("'","&#039;");
+
+}
+
+
+/* =================================
+   은행 마크 만들기
+================================= */
+
+function getBankLogo(bank){
+
+  if(bankLogos[bank]){
+    return bankLogos[bank];
+  }
+
+
+  const used = Object.values(bankLogos);
+
+  let available =
+    defaultLogos.find(
+      logo => !used.includes(logo)
+    );
+
+
+  if(!available){
+    available="🏦";
+  }
+
+
+  bankLogos[bank]=available;
+
+  saveData();
+
+  return available;
+
+}
+
+
+/* =================================
+   화면 업데이트
+================================= */
+
+function update(){
+
+  const a=accounts[current];
+
+  const logo=getBankLogo(a.bank);
+
+  document.getElementById(
+    "bankLogo"
+  ).textContent=logo;
+
+  document.getElementById(
+    "bankName"
+  ).textContent=a.bank;
+
+  document.getElementById(
+    "owner"
+  ).textContent=a.owner+"님의 계좌";
+
+  document.getElementById(
+    "balance"
+  ).textContent=
+    a.money.toLocaleString("ko-KR")+"원";
+
+  document.getElementById(
+    "account"
+  ).textContent=
+    "계좌번호 "+a.number;
+
+  document.getElementById(
+    "page"
+  ).textContent=
+    (current+1)+" / "+accounts.length;
+
+
+  renderHistory();
+
+  updateAdmin();
+
+  saveData();
+
+}
+
+
+/* =================================
+   좌우 이동
+================================= */
+
+function nextAccount(){
+
+  if(accounts.length<2) return;
+
+  current++;
+
+  if(current>=accounts.length){
+    current=0;
+  }
+
+  closeSend();
+
+  update();
+
+}
+
+
+function prevAccount(){
+
+  if(accounts.length<2) return;
+
+  current--;
+
+  if(current<0){
+    current=accounts.length-1;
+  }
+
+  closeSend();
+
+  update();
+
+}
+
+
+/* =================================
+   송금
+================================= */
+
+function openSend(){
+
+  document
+    .getElementById("sendPanel")
+    .classList.add("show");
+
+}
+
+
+function closeSend(){
+
+  document
+    .getElementById("sendPanel")
+    .classList.remove("show");
+
+}
+
+
+function showMessage(text,good){
+
+  const box=
+    document.getElementById("message");
+
+  box.className=
+    "msg "+(good?"ok":"err");
+
+  box.textContent=text;
+
+}
+
+
+function findAccount(number){
+
+  return accounts.find(
+    a => a.number===number
+  );
+
+}
+
+
+function sendMoney(){
+
+  const sender=accounts[current];
+
+  const receiverNumber=
+    document
+      .getElementById("toAccount")
+      .value
+      .trim();
+
+  const amount=
+    Number(
+      document
+        .getElementById("amount")
+        .value
+    );
+
+  const password=
+    document
+      .getElementById("sendPassword")
+      .value;
+
+
+  const receiver=
+    findAccount(receiverNumber);
+
+
+  if(!receiver){
+
+    showMessage(
+      "등록되지 않은 가상 계좌입니다.",
+      false
+    );
+
+    return;
+
+  }
+
+
+  if(receiver===sender){
+
+    showMessage(
+      "현재 계좌로는 송금할 수 없습니다.",
+      false
+    );
+
+    return;
+
+  }
+
+
+  if(!amount || amount<=0){
+
+    showMessage(
+      "송금 금액을 입력해주세요.",
+      false
+    );
+
+    return;
+
+  }
+
+
+  if(amount>sender.money){
+
+    showMessage(
+      "잔액이 부족합니다.",
+      false
+    );
+
+    return;
+
+  }
+
+
+  if(password!==sender.password){
+
+    showMessage(
+      "계좌 비밀번호가 올바르지 않습니다.",
+      false
+    );
+
+    return;
+
+  }
+
+
+  sender.money-=amount;
+
+  receiver.money+=amount;
+
+
+  const time=
+    new Date().toLocaleTimeString(
+      "ko-KR",
+      {
+        hour:"2-digit",
+        minute:"2-digit"
+      }
+    );
+
+
+  sender.history.unshift({
+
+    type:"send",
+
+    name:receiver.owner,
+
+    number:receiver.number,
+
+    money:amount,
+
+    time:time
+
+  });
+
+
+  receiver.history.unshift({
+
+    type:"receive",
+
+    name:sender.owner,
+
+    number:sender.number,
+
+    money:amount,
+
+    time:time
+
+  });
+
+
+  saveData();
+
+  update();
+
+
+  showMessage(
+    receiver.owner+
+    "님의 계좌로 "+
+    amount.toLocaleString("ko-KR")+
+    "원을 송금했습니다.",
+    true
+  );
+
+
+  document.getElementById(
+    "toAccount"
+  ).value="";
+
+  document.getElementById(
+    "amount"
+  ).value="";
+
+  document.getElementById(
+    "sendPassword"
+  ).value="";
+
+}
+
+
+/* =================================
+   거래 내역
+================================= */
+
+function renderHistory(){
+
+  const a=accounts[current];
+
+  const box=
+    document.getElementById(
+      "historyList"
+    );
+
+
+  if(!a.history || a.history.length===0){
+
+    box.innerHTML=
+      '<div class="empty">아직 거래 내역이 없습니다.</div>';
+
+    return;
+
+  }
+
+
+  box.innerHTML=
+    a.history.map(item=>`
+
+      <div class="item">
+
+        <div class="row">
+
+          <span class="name">
+
+            ${
+              item.type==="send"
+              ? "송금 → "
+              : "입금 ← "
+            }
+
+            ${escapeHTML(item.name)}
+
+          </span>
+
+          <span class="${
+            item.type==="send"
+            ? "minus"
+            : "plus"
+          }">
+
+            ${
+              item.type==="send"
+              ? "-"
+              : "+"
+            }
+
+            ${item.money.toLocaleString("ko-KR")}원
+
+          </span>
+
+        </div>
+
+        <div class="info">
+
+          ${escapeHTML(item.number)}
+          · ${escapeHTML(item.time)}
+
+        </div>
+
+      </div>
+
+    `).join("");
+
+}
+
+
+/* =================================
+   관리자 열기
+================================= */
+
+function openAdmin(){
+
+  document.getElementById(
+    "adminPanel"
+  ).style.display="flex";
+
+  document.getElementById(
+    "loginArea"
+  ).style.display="block";
+
+  document.getElementById(
+    "controlArea"
+  ).style.display="none";
+
+  document.getElementById(
+    "adminPw"
+  ).value="";
+
+}
+
+
+/* =================================
+   관리자 로그인
+================================= */
+
+function loginAdmin(){
+
+  const pw=
+    document.getElementById(
+      "adminPw"
+    ).value;
+
+
+  if(pw==="5555000"){
+
+    document.getElementById(
+      "loginArea"
+    ).style.display="none";
+
+    document.getElementById(
+      "controlArea"
+    ).style.display="block";
+
+    updateAdmin();
+
+  }else{
+
+    document.getElementById(
+      "pwError"
+    ).textContent=
+      "비밀번호가 올바르지 않습니다.";
+
+  }
+
+}
+
+
+/* =================================
+   관리자 정보
+================================= */
+
+function updateAdmin(){
+
+  const a=accounts[current];
+
+  document.getElementById(
+    "selectedName"
+  ).textContent=
+    a.owner+"님의 계좌";
+
+  document.getElementById(
+    "adminBalance"
+  ).textContent=
+    a.money.toLocaleString("ko-KR")+"원";
+
+
+  const list=
+    document.getElementById(
+      "accountList"
+    );
+
+
+  list.innerHTML=
+    accounts.map(
+      (x,i)=>`
+
+        <div class="admin-account">
+
+          <b>
+            ${escapeHTML(x.owner)}님의 계좌
+          </b>
+
+          <br>
+
+          ${getBankLogo(x.bank)}
+          ${escapeHTML(x.bank)}
+
+          <br>
+
+          ${escapeHTML(x.number)}
+
+          <br>
+
+          잔액:
+          ${x.money.toLocaleString("ko-KR")}원
+
+
+          <button
+            onclick="selectAccount(${i})">
+
+            이 계좌 보기
+
+          </button>
+
+
+          <button
+            class="red"
+            onclick="deleteAccount(${i})">
+
+            계좌 삭제
+
+          </button>
+
+        </div>
+
+      `
+    ).join("");
+
+
+  renderBankList();
+
+}
+
+
+/* =================================
+   은행 목록
+================================= */
+
+function renderBankList(){
+
+  const box=
+    document.getElementById(
+      "bankList"
+    );
+
+
+  const names=
+    Object.keys(bankLogos);
+
+
+  box.innerHTML=
+    names.map(
+      name=>`
+
+        <div class="bank-row">
+
+          <span>
+            ${getBankLogo(name)}
+          </span>
+
+          <b>
+            ${escapeHTML(name)}
+          </b>
+
+        </div>
+
+      `
+    ).join("");
+
+}
+
+
+/* =================================
+   잔액 변경
+================================= */
+
+function changeBalance(){
+
+  const value=
+    Number(
+      document
+        .getElementById("newBalance")
+        .value
+    );
+
+
+  if(!Number.isFinite(value)||value<0){
+
+    alert(
+      "0원 이상의 금액을 입력해주세요."
+    );
+
+    return;
+
+  }
+
+
+  accounts[current].money=
+    Math.floor(value);
+
+
+  document.getElementById(
+    "newBalance"
+  ).value="";
+
+
+  saveData();
+
+  update();
+
+
+  alert(
+    "가상 잔액이 변경되었습니다."
+  );
+
+}
+
+
+/* =================================
+   랜덤 계좌번호
+================================= */
+
+function randomAccount(){
+
+  let n="";
+
+
+  do{
+
+    n="";
+
+    for(let i=0;i<12;i++){
+
+      n+=
+        Math.floor(
+          Math.random()*10
+        );
+
+    }
+
+    n=
+      n.slice(0,3)+
+      "-"+
+      n.slice(3,6)+
+      "-"+
+      n.slice(6);
+
+  }while(
+    accounts.some(
+      a=>a.number===n
+    )
+  );
+
+
+  return n;
+
+}
+
+
+/* =================================
+   랜덤 은행
+================================= */
+
+function randomBank(){
+
+  const names=[
+    "대한은행",
+    "두리은행",
+    "수난은행"
+  ];
+
+
+  return names[
+    Math.floor(
+      Math.random()*names.length
+    )
+  ];
+
+}
+
+
+/* =================================
+   새 계좌 만들기
+================================= */
+
+function addAccount(){
+
+  const owner=
+    document
+      .getElementById("newOwner")
+      .value
+      .trim();
+
+
+  let bank=
+    document
+      .getElementById("newBank")
+      .value
+      .trim();
+
+
+  let number=
+    document
+      .getElementById("newAccount")
+      .value
+      .trim();
+
+
+  const money=
+    Number(
+      document
+        .getElementById("newMoney")
+        .value
+    );
+
+
+  const password=
+    document
+      .getElementById("newPassword")
+      .value;
+
+
+  const customLogo=
+    document
+      .getElementById("newLogo")
+      .value
+      .trim();
+
+
+  if(!owner){
+
+    alert(
+      "계좌 주인 이름을 입력해주세요."
+    );
+
+    return;
+
+  }
+
+
+  if(!bank){
+
+    bank=randomBank();
+
+  }
+
+
+  if(!number){
+
+    number=randomAccount();
+
+  }
+
+
+  if(accounts.some(
+    a=>a.number===number
+  )){
+
+    alert(
+      "이미 사용 중인 계좌번호입니다."
+    );
+
+    return;
+
+  }
+
+
+  if(!Number.isFinite(money)||money<0){
+
+    alert(
+      "올바른 초기 잔액을 입력해주세요."
+    );
+
+    return;
+
+  }
+
+
+  if(!password){
+
+    alert(
+      "계좌 비밀번호를 입력해주세요."
+    );
+
+    return;
+
+  }
+
+
+  /*
+    같은 은행 이름이면 기존 마크 유지.
+    처음 만든 은행이면 직접 지정한 마크 사용.
+    마크도 비워두면 자동 배정.
+  */
+
+  if(!bankLogos[bank]){
+
+    if(customLogo){
+
+      bankLogos[bank]=customLogo;
+
+    }else{
+
+      getBankLogo(bank);
+
+    }
+
+  }
+
+
+  accounts.push({
+
+    owner:owner,
+
+    bank:bank,
+
+    number:number,
+
+    password:password,
+
+    money:Math.floor(money),
+
+    history:[]
+
+  });
+
+
+  current=accounts.length-1;
+
+
+  document.getElementById(
+    "newOwner"
+  ).value="";
+
+  document.getElementById(
+    "newBank"
+  ).value="";
+
+  document.getElementById(
+    "newAccount"
+  ).value="";
+
+  document.getElementById(
+    "newMoney"
+  ).value="";
+
+  document.getElementById(
+    "newPassword"
+  ).value="";
+
+  document.getElementById(
+    "newLogo"
+  ).value="";
+
+
+  saveData();
+
+  update();
+
+
+  alert(
+    owner+
+    "님의 가상 계좌가 만들어졌습니다.\n\n"+
+    bank+" "+getBankLogo(bank)+"\n"+
+    number
+  );
+
+}
+
+
+/* =================================
+   계좌 선택
+================================= */
+
+function selectAccount(index){
+
+  current=index;
+
+  saveData();
+
+  update();
+
+}
+
+
+/* =================================
+   계좌 삭제
+================================= */
+
+function deleteAccount(index){
+
+  const target=
+    accounts[index];
+
+
+  if(!confirm(
+    target.owner+
+    "님의 가상 계좌를 삭제할까요?"
+  )){
+
+    return;
+
+  }
+
+
+  accounts.splice(index,1);
+
+
+  if(accounts.length===0){
+
+    accounts.push({
+
+      owner:"강리노",
+
+      bank:"대한은행",
+
+      number:"482-731-905164",
+
+      password:"1234",
+
+      money:100000,
+
+      history:[]
+
     });
 
   }
 
+
   if(current>=accounts.length){
-    current=accounts.length-1;
+
+    current=
+      accounts.length-1;
+
   }
+
+
+  saveData();
 
   update();
 
-  alert("가상 계좌가 삭제되었습니다.");
+
+  alert(
+    "가상 계좌가 삭제되었습니다."
+  );
+
 }
 
+
+/* =================================
+   관리자 닫기
+================================= */
+
 function closeAdmin(){
-  document.getElementById("adminPanel").style.display="none";
+
+  document.getElementById(
+    "adminPanel"
+  ).style.display="none";
+
 }
+
+
+/* =================================
+   시작
+================================= */
 
 update();
 
 </script>
 
 </body>
-</html>
+  </html>
