@@ -8,24 +8,20 @@
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Jua&display=swap');
 
-*{
-  box-sizing:border-box;
-}
+*{box-sizing:border-box}
 
 body{
   margin:0;
-  background:#f4f5fb;
+  background:#f3f5fb;
   color:#30313a;
   font-family:'Jua','Arial',sans-serif;
 }
 
-button,input{
+button,input,select{
   font-family:inherit;
 }
 
-button{
-  cursor:pointer;
-}
+button{cursor:pointer}
 
 .wrap{
   width:100%;
@@ -46,8 +42,8 @@ button{
 }
 
 h1{
-  font-size:29px;
   margin:15px 0 20px;
+  font-size:29px;
 }
 
 .slider{
@@ -141,9 +137,7 @@ h1{
   border:1px solid #e8e8f0;
 }
 
-.panel.show{
-  display:block;
-}
+.panel.show{display:block}
 
 h2{
   margin:0 0 15px;
@@ -156,7 +150,7 @@ label{
   font-size:14px;
 }
 
-input{
+input,select{
   width:100%;
   padding:13px;
   border-radius:13px;
@@ -166,7 +160,7 @@ input{
   background:#fff;
 }
 
-input:focus{
+input:focus,select:focus{
   border-color:#8496ff;
 }
 
@@ -231,17 +225,9 @@ input:focus{
   gap:10px;
 }
 
-.name{
-  font-size:15px;
-}
-
-.minus{
-  color:#df6262;
-}
-
-.plus{
-  color:#35a36a;
-}
+.name{font-size:15px}
+.minus{color:#df6262}
+.plus{color:#35a36a}
 
 .info{
   margin-top:5px;
@@ -300,17 +286,17 @@ input:focus{
 }
 
 .gray{
-  background:#eee !important;
-  color:#666 !important;
+  background:#eee!important;
+  color:#666!important;
 }
 
 .red{
-  background:#e85b5b !important;
+  background:#e85b5b!important;
 }
 
 .reset{
-  margin-top:20px !important;
-  background:#ff7070 !important;
+  margin-top:20px!important;
+  background:#ff7070!important;
 }
 
 .warning{
@@ -347,1025 +333,1142 @@ input:focus{
 
 <div class="wrap">
 
-  <div class="badge">☁️ 말랑 가상계좌</div>
+<div class="badge">☁️ 말랑 가상계좌</div>
 
-  <h1>내 계좌 💳</h1>
+<h1>내 계좌 💳</h1>
 
-  <div class="slider">
+<div class="slider">
 
-    <button class="arrow" onclick="prevAccount()">‹</button>
+<button class="arrow" onclick="prevAccount()">‹</button>
 
-    <div class="card">
+<div class="card">
 
-      <div class="bank-logo">
-        <div class="logo" id="bankLogo">🏦</div>
-        <div id="bankName">대한은행</div>
-      </div>
+<div class="bank-logo">
+<div class="logo" id="bankLogo">🏦</div>
+<div id="bankName">대한은행</div>
+</div>
 
-      <div class="owner" id="owner">
-        강리노님의 계좌
-      </div>
+<div class="owner" id="owner">
+강리노님의 계좌
+</div>
 
-      <div class="balance" id="balance">
-        100,000원
-      </div>
+<div class="balance" id="balance">
+100,000원
+</div>
 
-      <div class="account" id="account">
-        계좌번호 482-731-905164
-      </div>
+<div class="account" id="account">
+계좌번호 482-731-905164
+</div>
 
-    </div>
+</div>
 
-    <button class="arrow" onclick="nextAccount()">›</button>
+<button class="arrow" onclick="nextAccount()">›</button>
 
-  </div>
+</div>
 
-  <div class="page" id="page">1 / 1</div>
+<div class="page" id="page">1 / 1</div>
 
-  <button class="send" onclick="openSend()">
-    💸 송금하기
-  </button>
-
-
-  <div class="panel" id="sendPanel">
-
-    <h2>💌 가상 송금</h2>
-
-    <label>받는 계좌번호</label>
-    <input id="toAccount" placeholder="계좌번호를 입력해줘">
-
-    <label>송금 금액</label>
-    <input id="amount" type="number" min="1" placeholder="얼마를 보낼까?">
-
-    <label>내 계좌 비밀번호</label>
-    <input id="sendPassword" type="password" placeholder="비밀번호">
-
-    <button class="confirm" onclick="sendMoney()">
-      💸 송금하기
-    </button>
-
-    <button class="cancel" onclick="closeSend()">
-      취소
-    </button>
-
-    <div id="message" class="msg"></div>
-
-  </div>
+<button class="send" onclick="openSend()">
+💸 송금하기
+</button>
 
 
-  <div class="history">
+<div class="panel" id="sendPanel">
 
-    <h2>📜 거래 내역</h2>
+<h2>💌 가상 송금</h2>
 
-    <div id="historyList"></div>
+<label>🏦 받는 은행</label>
 
-  </div>
+<select id="toBank"></select>
+
+<label>🔢 받는 계좌번호</label>
+
+<input
+id="toAccount"
+placeholder="계좌번호를 입력해줘">
+
+<label>💰 송금 금액</label>
+
+<input
+id="amount"
+type="number"
+min="1"
+placeholder="얼마를 보낼까?">
+
+<label>🔐 내 계좌 비밀번호</label>
+
+<input
+id="sendPassword"
+type="password"
+placeholder="비밀번호">
+
+<button class="confirm" onclick="sendMoney()">
+💸 송금하기
+</button>
+
+<button class="cancel" onclick="closeSend()">
+취소
+</button>
+
+<div id="message" class="msg"></div>
+
+</div>
+
+
+<div class="history">
+
+<h2>📜 거래 내역</h2>
+
+<div id="historyList"></div>
+
+</div>
 
 </div>
 
 
 <button class="admin-btn" onclick="openAdmin()">
-  관리자
+관리자
 </button>
 
 
 <div class="admin-panel" id="adminPanel">
 
-  <div class="admin-box">
+<div class="admin-box">
 
-    <div id="loginArea">
+<div id="loginArea">
 
-      <h2>🔐 관리자 공간</h2>
+<h2>🔐 관리자 공간</h2>
 
-      <p>관리자 비밀번호</p>
+<p>관리자 비밀번호</p>
 
-      <input
-        id="adminPw"
-        type="password"
-        placeholder="비밀번호"
-      >
+<input
+id="adminPw"
+type="password"
+placeholder="비밀번호">
 
-      <button onclick="loginAdmin()">
-        🔓 들어가기
-      </button>
+<button onclick="loginAdmin()">
+🔓 들어가기
+</button>
 
-      <div id="pwError"
-           style="color:#e55555;font-size:13px;margin-top:7px">
-      </div>
+<div id="pwError"
+style="color:#e55555;font-size:13px;margin-top:7px">
+</div>
 
-      <button class="gray" onclick="closeAdmin()">
-        닫기
-      </button>
+<button class="gray" onclick="closeAdmin()">
+닫기
+</button>
 
-    </div>
-
-
-    <div id="controlArea" style="display:none">
-
-      <h2>⚙️ 계좌 관리</h2>
-
-      <p>현재 계좌</p>
-
-      <div id="selectedName"></div>
-
-      <div class="admin-balance" id="adminBalance">
-        100,000원
-      </div>
+</div>
 
 
-      <p>잔액 변경</p>
+<div id="controlArea" style="display:none">
 
-      <input
-        id="newBalance"
-        type="number"
-        min="0"
-        placeholder="새 잔액"
-      >
+<h2>⚙️ 계좌 관리</h2>
 
-      <button onclick="changeBalance()">
-        💰 잔액 바꾸기
-      </button>
+<p>현재 계좌</p>
 
+<div id="selectedName"></div>
 
-      <p>새 계좌 만들기</p>
-
-      <input id="newOwner"
-             placeholder="계좌 주인 이름">
-
-      <input id="newBank"
-             placeholder="은행 이름 · 비워두면 랜덤">
-
-      <input id="newAccount"
-             placeholder="계좌번호 · 비워두면 랜덤">
-
-      <input id="newMoney"
-             type="number"
-             min="0"
-             placeholder="초기 잔액">
-
-      <input id="newPassword"
-             type="password"
-             placeholder="계좌 비밀번호">
-
-      <input id="newLogo"
-             maxlength="2"
-             placeholder="은행 마크 · 비워두면 자동">
+<div class="admin-balance" id="adminBalance">
+100,000원
+</div>
 
 
-      <button onclick="addAccount()">
-        ✨ 새 계좌 만들기
-      </button>
+<p>잔액 변경</p>
+
+<input
+id="newBalance"
+type="number"
+min="0"
+placeholder="새 잔액">
+
+<button onclick="changeBalance()">
+💰 잔액 바꾸기
+</button>
 
 
-      <p>계좌 목록</p>
+<p>새 계좌 만들기</p>
 
-      <div id="accountList"></div>
+<input
+id="newOwner"
+placeholder="계좌 주인 이름">
+
+<input
+id="newBank"
+placeholder="은행 이름 · 비워두면 랜덤">
+
+<input
+id="newAccount"
+placeholder="계좌번호 · 비워두면 랜덤">
+
+<input
+id="newMoney"
+type="number"
+min="0"
+placeholder="초기 잔액">
+
+<input
+id="newPassword"
+type="password"
+placeholder="계좌 비밀번호">
+
+<input
+id="newLogo"
+maxlength="2"
+placeholder="은행 마크 · 비워두면 자동">
+
+<button onclick="addAccount()">
+✨ 새 계좌 만들기
+</button>
 
 
-      <p>🏦 등록된 은행 마크</p>
+<p>계좌 목록</p>
 
-      <div id="bankList"></div>
-
-
-      <div class="warning">
-        ⚠️ <b>주의</b><br>
-        아래 초기화 버튼을 누르면 모든 가상 계좌,
-        잔액, 송금 내역, 은행 마크가 삭제되고
-        처음 상태로 돌아가요.
-      </div>
-
-      <button class="reset" onclick="resetAllData()">
-        🗑️ 전체 데이터 초기화
-      </button>
+<div id="accountList"></div>
 
 
-      <button class="gray" onclick="closeAdmin()">
-        닫기
-      </button>
+<p>🏦 등록된 은행</p>
 
-    </div>
+<div id="bankList"></div>
 
-  </div>
+
+<div class="warning">
+⚠️ <b>주의</b><br>
+초기화하면 모든 가상 계좌,
+잔액, 송금 내역, 은행 마크가
+삭제되고 처음 상태로 돌아가요.
+</div>
+
+<button class="reset" onclick="resetAllData()">
+🗑️ 전체 데이터 초기화
+</button>
+
+<button class="gray" onclick="closeAdmin()">
+닫기
+</button>
+
+</div>
+
+</div>
 
 </div>
 
 
 <script>
 
-const STORAGE_KEY="cute_virtual_bank_v1";
+const STORAGE_KEY="cute_virtual_bank_v2";
 
 const defaultLogos=[
-  "🏦","🔵","🟢","🟣","🟠",
-  "🔷","⭐","✨","💠","🌟"
+"🏦","🔵","🟢","🟣","🟠",
+"🔷","⭐","✨","💠","🌟"
 ];
 
 const defaultData={
-  accounts:[
-    {
-      owner:"강리노",
-      bank:"대한은행",
-      number:"482-731-905164",
-      password:"1234",
-      money:100000,
-      history:[]
-    }
-  ],
-  bankLogos:{
-    "대한은행":"🏦"
-  },
-  current:0
+accounts:[
+{
+owner:"강리노",
+bank:"대한은행",
+number:"482-731-905164",
+password:"1234",
+money:100000,
+history:[]
+}
+],
+bankLogos:{
+"대한은행":"🏦"
+},
+current:0
 };
 
 
 let data=null;
 
 try{
-  data=JSON.parse(
-    localStorage.getItem(STORAGE_KEY)
-  );
+data=JSON.parse(
+localStorage.getItem(STORAGE_KEY)
+);
 }catch(e){
-  data=null;
+data=null;
 }
 
 if(!data){
-  data=defaultData;
+data=defaultData;
 }
 
-let accounts=data.accounts || [];
-let bankLogos=data.bankLogos || {};
-let current=data.current || 0;
+let accounts=data.accounts||[];
+let bankLogos=data.bankLogos||{};
+let current=data.current||0;
 
 
 if(accounts.length===0){
-  accounts=JSON.parse(
-    JSON.stringify(defaultData.accounts)
-  );
+accounts=JSON.parse(
+JSON.stringify(defaultData.accounts)
+);
 }
 
 if(!bankLogos["대한은행"]){
-  bankLogos["대한은행"]="🏦";
+bankLogos["대한은행"]="🏦";
 }
 
 if(current>=accounts.length){
-  current=0;
+current=0;
 }
 
 
 function saveData(){
 
-  localStorage.setItem(
-    STORAGE_KEY,
-    JSON.stringify({
-      accounts,
-      bankLogos,
-      current
-    })
-  );
+localStorage.setItem(
+STORAGE_KEY,
+JSON.stringify({
+accounts,
+bankLogos,
+current
+})
+);
 
 }
 
 
 function escapeHTML(text){
 
-  return String(text)
-    .replaceAll("&","&amp;")
-    .replaceAll("<","&lt;")
-    .replaceAll(">","&gt;")
-    .replaceAll('"',"&quot;")
-    .replaceAll("'","&#039;");
+return String(text)
+.replaceAll("&","&amp;")
+.replaceAll("<","&lt;")
+.replaceAll(">","&gt;")
+.replaceAll('"',"&quot;")
+.replaceAll("'","&#039;");
 
 }
 
 
 function getBankLogo(bank){
 
-  if(bankLogos[bank]){
-    return bankLogos[bank];
-  }
+if(bankLogos[bank]){
+return bankLogos[bank];
+}
 
-  const used=Object.values(bankLogos);
+const used=Object.values(bankLogos);
 
-  let logo=defaultLogos.find(
-    x=>!used.includes(x)
-  );
+let logo=defaultLogos.find(
+x=>!used.includes(x)
+);
 
-  if(!logo){
-    logo="🏦";
-  }
+if(!logo){
+logo="🏦";
+}
 
-  bankLogos[bank]=logo;
+bankLogos[bank]=logo;
 
-  saveData();
+saveData();
 
-  return logo;
+return logo;
+
+}
+
+
+function getBanks(){
+
+const names=[];
+
+accounts.forEach(a=>{
+if(!names.includes(a.bank)){
+names.push(a.bank);
+}
+});
+
+return names;
+
+}
+
+
+function updateBankSelect(){
+
+const select=
+document.getElementById("toBank");
+
+const banks=getBanks();
+
+select.innerHTML=
+banks.map(bank=>`
+
+<option value="${escapeHTML(bank)}">
+${getBankLogo(bank)} ${escapeHTML(bank)}
+</option>
+
+`).join("");
 
 }
 
 
 function update(){
 
-  const a=accounts[current];
+const a=accounts[current];
 
-  document.getElementById("bankLogo").textContent=
-    getBankLogo(a.bank);
+document.getElementById("bankLogo").textContent=
+getBankLogo(a.bank);
 
-  document.getElementById("bankName").textContent=
-    a.bank;
+document.getElementById("bankName").textContent=
+a.bank;
 
-  document.getElementById("owner").textContent=
-    a.owner+"님의 계좌";
+document.getElementById("owner").textContent=
+a.owner+"님의 계좌";
 
-  document.getElementById("balance").textContent=
-    a.money.toLocaleString("ko-KR")+"원";
+document.getElementById("balance").textContent=
+a.money.toLocaleString("ko-KR")+"원";
 
-  document.getElementById("account").textContent=
-    "계좌번호 "+a.number;
+document.getElementById("account").textContent=
+"계좌번호 "+a.number;
 
-  document.getElementById("page").textContent=
-    (current+1)+" / "+accounts.length;
+document.getElementById("page").textContent=
+(current+1)+" / "+accounts.length;
 
-  renderHistory();
-  updateAdmin();
-  saveData();
+updateBankSelect();
+
+renderHistory();
+updateAdmin();
+saveData();
 
 }
 
 
 function nextAccount(){
 
-  if(accounts.length<2)return;
+if(accounts.length<2)return;
 
-  current++;
+current++;
 
-  if(current>=accounts.length){
-    current=0;
-  }
+if(current>=accounts.length){
+current=0;
+}
 
-  closeSend();
-  update();
+closeSend();
+update();
 
 }
 
 
 function prevAccount(){
 
-  if(accounts.length<2)return;
+if(accounts.length<2)return;
 
-  current--;
+current--;
 
-  if(current<0){
-    current=accounts.length-1;
-  }
+if(current<0){
+current=accounts.length-1;
+}
 
-  closeSend();
-  update();
+closeSend();
+update();
 
 }
 
 
 function openSend(){
 
-  document
-    .getElementById("sendPanel")
-    .classList.add("show");
+updateBankSelect();
+
+document
+.getElementById("sendPanel")
+.classList.add("show");
 
 }
 
 
 function closeSend(){
 
-  document
-    .getElementById("sendPanel")
-    .classList.remove("show");
+document
+.getElementById("sendPanel")
+.classList.remove("show");
 
 }
 
 
 function showMessage(text,good){
 
-  const box=document.getElementById("message");
+const box=
+document.getElementById("message");
 
-  box.className=
-    "msg "+(good?"ok":"err");
+box.className=
+"msg "+(good?"ok":"err");
 
-  box.textContent=text;
+box.textContent=text;
 
 }
 
 
 function sendMoney(){
 
-  const sender=accounts[current];
+const sender=accounts[current];
 
-  const number=
-    document.getElementById("toAccount")
-    .value.trim();
+const bank=
+document.getElementById("toBank").value;
 
-  const money=
-    Number(
-      document.getElementById("amount").value
-    );
+const number=
+document.getElementById("toAccount")
+.value.trim();
 
-  const password=
-    document.getElementById("sendPassword")
-    .value;
+const money=
+Number(
+document.getElementById("amount").value
+);
 
-  const receiver=
-    accounts.find(
-      a=>a.number===number
-    );
+const password=
+document.getElementById("sendPassword")
+.value;
 
 
-  if(!receiver){
-    showMessage(
-      "등록되지 않은 가상 계좌야 😢",
-      false
-    );
-    return;
-  }
-
-  if(receiver===sender){
-    showMessage(
-      "현재 계좌로는 송금할 수 없어.",
-      false
-    );
-    return;
-  }
-
-  if(!money || money<=0){
-    showMessage(
-      "송금 금액을 입력해줘.",
-      false
-    );
-    return;
-  }
-
-  if(money>sender.money){
-    showMessage(
-      "잔액이 부족해 😢",
-      false
-    );
-    return;
-  }
-
-  if(password!==sender.password){
-    showMessage(
-      "비밀번호가 맞지 않아.",
-      false
-    );
-    return;
-  }
+const receiver=
+accounts.find(
+a=>a.bank===bank &&
+a.number===number
+);
 
 
-  sender.money-=money;
-  receiver.money+=money;
+if(!receiver){
+
+showMessage(
+"해당 은행의 계좌를 찾을 수 없어 😢",
+false
+);
+
+return;
+
+}
 
 
-  const time=
-    new Date().toLocaleTimeString(
-      "ko-KR",
-      {
-        hour:"2-digit",
-        minute:"2-digit"
-      }
-    );
+if(receiver===sender){
+
+showMessage(
+"현재 계좌로는 송금할 수 없어.",
+false
+);
+
+return;
+
+}
 
 
-  sender.history.unshift({
-    type:"send",
-    name:receiver.owner,
-    number:receiver.number,
-    money,
-    time
-  });
+if(!money||money<=0){
+
+showMessage(
+"송금 금액을 입력해줘.",
+false
+);
+
+return;
+
+}
 
 
-  receiver.history.unshift({
-    type:"receive",
-    name:sender.owner,
-    number:sender.number,
-    money,
-    time
-  });
+if(money>sender.money){
+
+showMessage(
+"잔액이 부족해 😢",
+false
+);
+
+return;
+
+}
 
 
-  saveData();
-  update();
+if(password!==sender.password){
+
+showMessage(
+"비밀번호가 맞지 않아.",
+false
+);
+
+return;
+
+}
 
 
-  showMessage(
-    "✨ "+receiver.owner+
-    "님의 계좌로 "+
-    money.toLocaleString("ko-KR")+
-    "원을 보냈어!",
-    true
-  );
+sender.money-=money;
+receiver.money+=money;
 
 
-  document.getElementById("toAccount").value="";
-  document.getElementById("amount").value="";
-  document.getElementById("sendPassword").value="";
+const time=
+new Date().toLocaleTimeString(
+"ko-KR",
+{
+hour:"2-digit",
+minute:"2-digit"
+}
+);
+
+
+sender.history.unshift({
+
+type:"send",
+name:receiver.owner,
+bank:receiver.bank,
+number:receiver.number,
+money,
+time
+
+});
+
+
+receiver.history.unshift({
+
+type:"receive",
+name:sender.owner,
+bank:sender.bank,
+number:sender.number,
+money,
+time
+
+});
+
+
+saveData();
+update();
+
+
+showMessage(
+"✨ "+receiver.owner+
+"님의 "+receiver.bank+
+" 계좌로 "+
+money.toLocaleString("ko-KR")+
+"원을 보냈어!",
+true
+);
+
+
+document.getElementById("toAccount").value="";
+document.getElementById("amount").value="";
+document.getElementById("sendPassword").value="";
 
 }
 
 
 function renderHistory(){
 
-  const box=
-    document.getElementById("historyList");
+const box=
+document.getElementById("historyList");
 
-  const a=accounts[current];
-
-
-  if(!a.history || a.history.length===0){
-
-    box.innerHTML=
-      '<div class="empty">아직 거래 내역이 없어 ☁️</div>';
-
-    return;
-  }
+const a=accounts[current];
 
 
-  box.innerHTML=a.history.map(x=>`
+if(!a.history||a.history.length===0){
 
-    <div class="item">
+box.innerHTML=
+'<div class="empty">아직 거래 내역이 없어 ☁️</div>';
 
-      <div class="row">
+return;
 
-        <span class="name">
-          ${
-            x.type==="send"
-            ?"💸 송금 → "
-            :"💰 입금 ← "
-          }
-          ${escapeHTML(x.name)}
-        </span>
+}
 
-        <span class="${
-          x.type==="send"
-          ?"minus"
-          :"plus"
-        }">
 
-          ${
-            x.type==="send"
-            ?"-"
-            :"+"
-          }
+box.innerHTML=a.history.map(x=>`
 
-          ${x.money.toLocaleString("ko-KR")}원
+<div class="item">
 
-        </span>
+<div class="row">
 
-      </div>
+<span class="name">
 
-      <div class="info">
-        ${escapeHTML(x.number)}
-        · ${escapeHTML(x.time)}
-      </div>
+${
+x.type==="send"
+?"💸 송금 → "
+:"💰 입금 ← "
+}
 
-    </div>
+${escapeHTML(x.name)}
 
-  `).join("");
+</span>
+
+<span class="${
+x.type==="send"
+?"minus"
+:"plus"
+}">
+
+${
+x.type==="send"
+?"-"
+:"+"
+}
+
+${x.money.toLocaleString("ko-KR")}원
+
+</span>
+
+</div>
+
+<div class="info">
+
+${escapeHTML(x.bank)}
+ ·
+${escapeHTML(x.number)}
+ ·
+${escapeHTML(x.time)}
+
+</div>
+
+</div>
+
+`).join("");
 
 }
 
 
 function openAdmin(){
 
-  document.getElementById("adminPanel")
-    .style.display="flex";
+document.getElementById("adminPanel")
+.style.display="flex";
 
-  document.getElementById("loginArea")
-    .style.display="block";
+document.getElementById("loginArea")
+.style.display="block";
 
-  document.getElementById("controlArea")
-    .style.display="none";
+document.getElementById("controlArea")
+.style.display="none";
 
-  document.getElementById("adminPw").value="";
+document.getElementById("adminPw").value="";
 
 }
 
 
 function loginAdmin(){
 
-  const pw=
-    document.getElementById("adminPw").value;
+const pw=
+document.getElementById("adminPw").value;
 
 
-  if(pw==="5555000"){
+if(pw==="5555000"){
 
-    document.getElementById("loginArea")
-      .style.display="none";
+document.getElementById("loginArea")
+.style.display="none";
 
-    document.getElementById("controlArea")
-      .style.display="block";
+document.getElementById("controlArea")
+.style.display="block";
 
-    updateAdmin();
+updateAdmin();
 
-  }else{
+}else{
 
-    document.getElementById("pwError")
-      .textContent=
-      "비밀번호가 틀렸어 😢";
+document.getElementById("pwError")
+.textContent=
+"비밀번호가 틀렸어 😢";
 
-  }
+}
 
 }
 
 
 function updateAdmin(){
 
-  const a=accounts[current];
+const a=accounts[current];
 
-  document.getElementById("selectedName")
-    .textContent=
-    a.owner+"님의 계좌";
+document.getElementById("selectedName")
+.textContent=
+a.owner+"님의 계좌";
 
-  document.getElementById("adminBalance")
-    .textContent=
-    a.money.toLocaleString("ko-KR")+"원";
-
-
-  document.getElementById("accountList")
-    .innerHTML=
-    accounts.map((x,i)=>`
-
-      <div class="admin-account">
-
-        <b>
-          ${escapeHTML(x.owner)}님의 계좌
-        </b>
-
-        <br>
-
-        ${getBankLogo(x.bank)}
-        ${escapeHTML(x.bank)}
-
-        <br>
-
-        ${escapeHTML(x.number)}
-
-        <br>
-
-        잔액:
-        ${x.money.toLocaleString("ko-KR")}원
-
-        <button onclick="selectAccount(${i})">
-          👀 이 계좌 보기
-        </button>
-
-        <button
-          class="red"
-          onclick="deleteAccount(${i})">
-          🗑️ 계좌 삭제
-        </button>
-
-      </div>
-
-    `).join("");
+document.getElementById("adminBalance")
+.textContent=
+a.money.toLocaleString("ko-KR")+"원";
 
 
-  document.getElementById("bankList")
-    .innerHTML=
-    Object.keys(bankLogos).map(name=>`
+document.getElementById("accountList")
+.innerHTML=
+accounts.map((x,i)=>`
 
-      <div class="bank-row">
+<div class="admin-account">
 
-        <span>
-          ${getBankLogo(name)}
-        </span>
+<b>
+${escapeHTML(x.owner)}님의 계좌
+</b>
 
-        <b>
-          ${escapeHTML(name)}
-        </b>
+<br>
 
-      </div>
+${getBankLogo(x.bank)}
+${escapeHTML(x.bank)}
 
-    `).join("");
+<br>
+
+${escapeHTML(x.number)}
+
+<br>
+
+잔액:
+${x.money.toLocaleString("ko-KR")}원
+
+<button onclick="selectAccount(${i})">
+👀 이 계좌 보기
+</button>
+
+<button
+class="red"
+onclick="deleteAccount(${i})">
+🗑️ 계좌 삭제
+</button>
+
+</div>
+
+`).join("");
+
+
+document.getElementById("bankList")
+.innerHTML=
+getBanks().map(bank=>`
+
+<div class="bank-row">
+
+<span>
+${getBankLogo(bank)}
+</span>
+
+<b>
+${escapeHTML(bank)}
+</b>
+
+</div>
+
+`).join("");
 
 }
 
 
 function changeBalance(){
 
-  const value=
-    Number(
-      document.getElementById("newBalance").value
-    );
+const value=
+Number(
+document.getElementById("newBalance").value
+);
 
+if(!Number.isFinite(value)||value<0){
 
-  if(!Number.isFinite(value)||value<0){
+alert(
+"0원 이상의 금액을 입력해줘."
+);
 
-    alert("0원 이상의 금액을 입력해줘.");
+return;
 
-    return;
-  }
+}
 
+accounts[current].money=
+Math.floor(value);
 
-  accounts[current].money=
-    Math.floor(value);
+document.getElementById(
+"newBalance"
+).value="";
 
-  document.getElementById("newBalance").value="";
+saveData();
+update();
 
-  saveData();
-  update();
-
-  alert("💰 잔액을 바꿨어!");
+alert("💰 잔액을 바꿨어!");
 
 }
 
 
 function randomAccount(){
 
-  let number;
+let number;
 
-  do{
+do{
 
-    let n="";
+let n="";
 
-    for(let i=0;i<12;i++){
-      n+=Math.floor(Math.random()*10);
-    }
+for(let i=0;i<12;i++){
+n+=Math.floor(Math.random()*10);
+}
 
-    number=
-      n.slice(0,3)+"-"+
-      n.slice(3,6)+"-"+
-      n.slice(6);
+number=
+n.slice(0,3)+"-"+
+n.slice(3,6)+"-"+
+n.slice(6);
 
-  }while(
-    accounts.some(
-      a=>a.number===number
-    )
-  );
+}while(
+accounts.some(
+a=>a.number===number
+)
+);
 
-  return number;
+return number;
 
 }
 
 
 function randomBank(){
 
-  const banks=[
-    "대한은행",
-    "두리은행",
-    "수난은행"
-  ];
+const banks=[
+"대한은행",
+"두리은행",
+"수난은행"
+];
 
-  return banks[
-    Math.floor(
-      Math.random()*banks.length
-    )
-  ];
+return banks[
+Math.floor(
+Math.random()*banks.length
+)
+];
 
 }
 
 
 function addAccount(){
 
-  const owner=
-    document.getElementById("newOwner")
-    .value.trim();
+const owner=
+document.getElementById("newOwner")
+.value.trim();
 
-  let bank=
-    document.getElementById("newBank")
-    .value.trim();
+let bank=
+document.getElementById("newBank")
+.value.trim();
 
-  let number=
-    document.getElementById("newAccount")
-    .value.trim();
+let number=
+document.getElementById("newAccount")
+.value.trim();
 
-  const money=
-    Number(
-      document.getElementById("newMoney")
-      .value
-    );
+const money=
+Number(
+document.getElementById("newMoney")
+.value
+);
 
-  const password=
-    document.getElementById("newPassword")
-    .value;
+const password=
+document.getElementById("newPassword")
+.value;
 
-  const logo=
-    document.getElementById("newLogo")
-    .value.trim();
-
-
-  if(!owner){
-    alert("계좌 주인 이름을 입력해줘.");
-    return;
-  }
-
-  if(!bank){
-    bank=randomBank();
-  }
-
-  if(!number){
-    number=randomAccount();
-  }
-
-  if(accounts.some(
-    a=>a.number===number
-  )){
-    alert("이미 있는 계좌번호야.");
-    return;
-  }
-
-  if(!Number.isFinite(money)||money<0){
-    alert("올바른 잔액을 입력해줘.");
-    return;
-  }
-
-  if(!password){
-    alert("계좌 비밀번호를 입력해줘.");
-    return;
-  }
+const logo=
+document.getElementById("newLogo")
+.value.trim();
 
 
-  /*
-    같은 은행 이름이면
-    기존 마크를 그대로 사용
-  */
+if(!owner){
 
-  if(!bankLogos[bank]){
+alert(
+"계좌 주인 이름을 입력해줘."
+);
 
-    if(logo){
-      bankLogos[bank]=logo;
-    }else{
-      getBankLogo(bank);
-    }
+return;
 
-  }
+}
 
 
-  accounts.push({
-
-    owner,
-    bank,
-    number,
-    password,
-    money:Math.floor(money),
-    history:[]
-
-  });
+if(!bank){
+bank=randomBank();
+}
 
 
-  current=accounts.length-1;
+if(!number){
+number=randomAccount();
+}
 
 
-  [
-    "newOwner",
-    "newBank",
-    "newAccount",
-    "newMoney",
-    "newPassword",
-    "newLogo"
-  ].forEach(id=>{
-    document.getElementById(id).value="";
-  });
+if(accounts.some(
+a=>a.bank===bank &&
+a.number===number
+)){
+
+alert(
+"이미 있는 은행+계좌번호야."
+);
+
+return;
+
+}
 
 
-  saveData();
-  update();
+if(!Number.isFinite(money)||money<0){
+
+alert(
+"올바른 잔액을 입력해줘."
+);
+
+return;
+
+}
 
 
-  alert(
-    "✨ "+owner+
-    "님의 가상 계좌를 만들었어!\n\n"+
-    getBankLogo(bank)+" "+bank+
-    "\n"+number
-  );
+if(!password){
+
+alert(
+"계좌 비밀번호를 입력해줘."
+);
+
+return;
+
+}
+
+
+/*
+같은 은행 이름이면
+기존 마크를 유지
+*/
+
+if(!bankLogos[bank]){
+
+if(logo){
+bankLogos[bank]=logo;
+}else{
+getBankLogo(bank);
+}
+
+}
+
+
+accounts.push({
+
+owner,
+bank,
+number,
+password,
+money:Math.floor(money),
+history:[]
+
+});
+
+
+current=accounts.length-1;
+
+
+[
+"newOwner",
+"newBank",
+"newAccount",
+"newMoney",
+"newPassword",
+"newLogo"
+].forEach(id=>{
+document.getElementById(id).value="";
+});
+
+
+saveData();
+update();
+
+
+alert(
+"✨ "+owner+
+"님의 계좌를 만들었어!\n\n"+
+getBankLogo(bank)+" "+bank+
+"\n"+number
+);
 
 }
 
 
 function selectAccount(index){
 
-  current=index;
+current=index;
 
-  saveData();
-  update();
+saveData();
+update();
 
 }
 
 
 function deleteAccount(index){
 
-  const target=accounts[index];
+const target=accounts[index];
 
-  if(!confirm(
-    "🗑️ "+target.owner+
-    "님의 계좌를 삭제할까?"
-  )){
-    return;
-  }
+if(!confirm(
+"🗑️ "+target.owner+
+"님의 계좌를 삭제할까?"
+)){
 
+return;
 
-  accounts.splice(index,1);
-
-
-  if(accounts.length===0){
-
-    accounts=[
-      {
-        owner:"강리노",
-        bank:"대한은행",
-        number:"482-731-905164",
-        password:"1234",
-        money:100000,
-        history:[]
-      }
-    ];
-
-  }
+}
 
 
-  if(current>=accounts.length){
-    current=accounts.length-1;
-  }
+accounts.splice(index,1);
 
 
-  saveData();
-  update();
+if(accounts.length===0){
+
+accounts=[
+{
+owner:"강리노",
+bank:"대한은행",
+number:"482-731-905164",
+password:"1234",
+money:100000,
+history:[]
+}
+];
+
+}
 
 
-  alert("🗑️ 계좌를 삭제했어.");
+if(current>=accounts.length){
+current=accounts.length-1;
+}
+
+
+saveData();
+update();
+
+alert(
+"🗑️ 계좌를 삭제했어."
+);
 
 }
 
 
 function resetAllData(){
 
-  const warning=
+const first=confirm(
 `⚠️ 정말 전체 초기화할까?
 
 모든 가상 계좌
 잔액
 송금 내역
 은행 마크
-관리자에서 만든 계좌
-
 가 전부 삭제되고 처음 상태로 돌아가.
 
-이 작업은 되돌릴 수 없어.`;
+이 작업은 되돌릴 수 없어.`
+);
+
+if(!first)return;
 
 
-  const first=
-    confirm(warning);
+const second=confirm(
+"🚨 마지막 확인!\n\n"+
+"정말 모든 데이터를 초기화할까?"
+);
+
+if(!second)return;
 
 
-  if(!first){
-    return;
-  }
+localStorage.removeItem(STORAGE_KEY);
 
 
-  const second=
-    confirm(
-      "🚨 마지막 확인!\n\n"+
-      "정말 모든 데이터를 초기화할까?"
-    );
+accounts=
+JSON.parse(
+JSON.stringify(
+defaultData.accounts
+)
+);
+
+bankLogos=
+JSON.parse(
+JSON.stringify(
+defaultData.bankLogos
+)
+);
+
+current=0;
 
 
-  if(!second){
-    return;
-  }
+saveData();
+update();
 
 
-  localStorage.removeItem(STORAGE_KEY);
-
-
-  accounts=
-    JSON.parse(
-      JSON.stringify(
-        defaultData.accounts
-      )
-    );
-
-  bankLogos=
-    JSON.parse(
-      JSON.stringify(
-        defaultData.bankLogos
-      )
-    );
-
-  current=0;
-
-
-  saveData();
-  update();
-
-
-  alert(
-    "✨ 초기화 완료!\n"+
-    "처음 상태로 돌아왔어."
-  );
+alert(
+"✨ 초기화 완료!\n"+
+"처음 상태로 돌아왔어."
+);
 
 }
 
 
 function closeAdmin(){
 
-  document.getElementById("adminPanel")
-    .style.display="none";
+document.getElementById("adminPanel")
+.style.display="none";
 
 }
 
