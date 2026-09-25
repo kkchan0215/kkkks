@@ -20,7 +20,7 @@ body{
   max-width:430px;
   min-height:100vh;
   margin:auto;
-  background:white;
+  background:#fff;
   padding:22px 18px 70px;
   overflow:hidden;
 }
@@ -40,8 +40,6 @@ h1{
   font-size:25px;
 }
 
-/* 통장 영역 */
-
 .bank-slider{
   display:flex;
   align-items:center;
@@ -55,19 +53,15 @@ h1{
   border:0;
   border-radius:50%;
   background:#eef0f5;
-  font-size:22px;
+  font-size:23px;
   cursor:pointer;
-}
-
-.arrow:active{
-  transform:scale(.9);
 }
 
 .card{
   flex:1;
   min-width:0;
   background:linear-gradient(135deg,#667eea,#764ba2);
-  color:white;
+  color:#fff;
   border-radius:23px;
   padding:23px 20px;
   box-shadow:0 12px 28px #667eea33;
@@ -99,8 +93,6 @@ h1{
   font-size:12px;
 }
 
-/* 송금 */
-
 .send{
   width:100%;
   border:0;
@@ -108,7 +100,7 @@ h1{
   padding:16px;
   margin-top:17px;
   background:#111827;
-  color:white;
+  color:#fff;
   font-size:17px;
   font-weight:bold;
   cursor:pointer;
@@ -148,6 +140,10 @@ input{
   outline:none;
 }
 
+input:focus{
+  border-color:#667eea;
+}
+
 .confirm{
   width:100%;
   border:0;
@@ -158,6 +154,7 @@ input{
   color:white;
   font-size:16px;
   font-weight:bold;
+  cursor:pointer;
 }
 
 .cancel{
@@ -166,6 +163,7 @@ input{
   background:transparent;
   color:#777;
   padding:11px;
+  cursor:pointer;
 }
 
 .msg{
@@ -188,8 +186,6 @@ input{
   color:#c62828;
 }
 
-/* 내역 */
-
 .history{
   margin-top:25px;
 }
@@ -209,6 +205,7 @@ input{
 .row{
   display:flex;
   justify-content:space-between;
+  gap:10px;
 }
 
 .name{
@@ -216,8 +213,15 @@ input{
 }
 
 .amount{
-  color:#d94b4b;
   font-weight:bold;
+}
+
+.minus{
+  color:#d94b4b;
+}
+
+.plus{
+  color:#25864a;
 }
 
 .info{
@@ -225,8 +229,6 @@ input{
   color:#999;
   font-size:12px;
 }
-
-/* 관리자 */
 
 .admin-btn{
   position:fixed;
@@ -240,6 +242,7 @@ input{
   font-size:10px;
   opacity:.65;
   z-index:1000;
+  cursor:pointer;
 }
 
 .admin-panel{
@@ -254,7 +257,7 @@ input{
 
 .admin-box{
   width:calc(100% - 36px);
-  max-width:370px;
+  max-width:380px;
   max-height:90vh;
   overflow:auto;
   background:white;
@@ -285,11 +288,16 @@ input{
   background:#222;
   color:white;
   font-weight:bold;
+  cursor:pointer;
 }
 
 .gray{
   background:#eee !important;
   color:#555 !important;
+}
+
+.red{
+  background:#e54848 !important;
 }
 
 .admin-balance{
@@ -298,21 +306,18 @@ input{
   margin:7px 0 15px;
 }
 
-.admin-list{
-  margin-top:18px;
-  border-top:1px solid #eee;
-}
-
 .admin-account{
-  padding:12px 0;
+  padding:13px 0;
   border-bottom:1px solid #eee;
   font-size:13px;
 }
 
-.delete{
-  background:#e54848 !important;
-  padding:8px !important;
-  font-size:12px;
+.admin-account button{
+  margin-top:8px;
+}
+
+small{
+  color:#888;
 }
 </style>
 </head>
@@ -325,7 +330,6 @@ input{
 
   <h1>내 통장</h1>
 
-  <!-- 통장 넘기기 -->
   <div class="bank-slider">
 
     <button class="arrow" onclick="previousBank()">‹</button>
@@ -355,28 +359,42 @@ input{
   </div>
 
 
-  <!-- 송금 -->
   <button class="send" onclick="openSend()">
     송금하기
   </button>
 
+
+  <!-- 송금창 -->
+
   <div class="panel" id="sendPanel">
 
-    <h2>송금하기</h2>
+    <h2>💸 가상 송금</h2>
 
-    <label>받는 분</label>
-    <input id="receiver" placeholder="이름을 입력하세요">
+    <label>받는 분 계좌번호</label>
 
-    <label>계좌번호</label>
-    <input id="receiverAccount"
-           inputmode="numeric"
-           placeholder="계좌번호를 입력하세요">
+    <input
+      id="receiverAccount"
+      inputmode="numeric"
+      placeholder="예: 482-731-905164"
+    >
 
     <label>송금 금액</label>
-    <input id="amount"
-           type="number"
-           min="1"
-           placeholder="금액을 입력하세요">
+
+    <input
+      id="amount"
+      type="number"
+      min="1"
+      placeholder="송금할 금액"
+    >
+
+    <label>내 통장 비밀번호</label>
+
+    <input
+      id="sendPassword"
+      type="password"
+      inputmode="numeric"
+      placeholder="비밀번호"
+    >
 
     <button class="confirm" onclick="sendMoney()">
       송금하기
@@ -391,14 +409,15 @@ input{
   </div>
 
 
-  <!-- 송금 내역 -->
+  <!-- 거래 내역 -->
+
   <div class="history">
 
-    <h2>최근 송금 내역</h2>
+    <h2>최근 거래 내역</h2>
 
     <div id="historyList">
       <div class="empty">
-        아직 송금 내역이 없습니다.
+        아직 거래 내역이 없습니다.
       </div>
     </div>
 
@@ -408,35 +427,39 @@ input{
 
 
 <!-- 관리자 버튼 -->
+
 <button class="admin-btn" onclick="openAdmin()">
   관리자
 </button>
 
 
-<!-- 관리자 -->
+<!-- 관리자 창 -->
+
 <div class="admin-panel" id="adminPanel">
 
   <div class="admin-box">
 
-    <!-- 비밀번호 -->
+    <!-- 관리자 로그인 -->
+
     <div id="loginArea">
 
       <h2>🔐 관리자</h2>
 
-      <p>비밀번호</p>
+      <p>관리자 비밀번호</p>
 
       <input
         id="adminPw"
         type="password"
-        placeholder="관리자 비밀번호"
+        placeholder="비밀번호"
       >
 
       <button onclick="loginAdmin()">
         확인
       </button>
 
-      <div id="pwError"
-           style="color:#e53935;font-size:13px;margin-top:7px">
+      <div
+        id="pwError"
+        style="color:#e53935;font-size:13px;margin-top:7px">
       </div>
 
       <button class="gray" onclick="closeAdmin()">
@@ -447,24 +470,25 @@ input{
 
 
     <!-- 관리자 기능 -->
+
     <div id="controlArea" style="display:none">
 
       <h2>⚙️ 통장 관리</h2>
 
       <p>현재 선택된 통장</p>
 
-      <div id="selectedAdminName"
-           style="font-weight:bold">
+      <div id="selectedAdminName">
         강리노님의 통장
       </div>
 
-      <div class="admin-balance"
-           id="adminBalance">
+      <div class="admin-balance" id="adminBalance">
         100,000원
       </div>
 
 
-      <p>선택된 통장 잔액 변경</p>
+      <!-- 잔액 변경 -->
+
+      <p>잔액 변경</p>
 
       <input
         id="newBalance"
@@ -477,6 +501,8 @@ input{
         잔액 변경
       </button>
 
+
+      <!-- 새 통장 -->
 
       <p>새 통장 만들기</p>
 
@@ -492,12 +518,25 @@ input{
         placeholder="초기 잔액"
       >
 
+      <input
+        id="newAccount"
+        placeholder="계좌번호 (비워두면 랜덤)"
+      >
+
+      <input
+        id="newPassword"
+        type="password"
+        placeholder="통장 비밀번호"
+      >
+
       <button onclick="addBank()">
-        + 새 통장 만들기
+        ＋ 새 통장 만들기
       </button>
 
 
-      <div class="admin-list">
+      <!-- 통장 목록 -->
+
+      <div style="margin-top:20px">
 
         <p>통장 목록</p>
 
@@ -506,8 +545,7 @@ input{
       </div>
 
 
-      <button class="gray"
-              onclick="closeAdmin()">
+      <button class="gray" onclick="closeAdmin()">
         닫기
       </button>
 
@@ -521,7 +559,7 @@ input{
 <script>
 
 /* =========================
-   통장 데이터
+   가상 통장 데이터
 ========================= */
 
 let banks = [
@@ -529,6 +567,7 @@ let banks = [
   {
     name:"강리노",
     account:"482-731-905164",
+    password:"1234",
     balance:100000,
     history:[]
   }
@@ -576,7 +615,7 @@ function nextBank(){
   currentBank++;
 
   if(currentBank >= banks.length){
-    currentBank = 0;
+    currentBank=0;
   }
 
   closeSend();
@@ -597,7 +636,7 @@ function previousBank(){
   currentBank--;
 
   if(currentBank < 0){
-    currentBank = banks.length - 1;
+    currentBank=banks.length-1;
   }
 
   closeSend();
@@ -617,6 +656,10 @@ function openSend(){
     .getElementById("sendPanel")
     .classList.add("show");
 
+  document
+    .getElementById("message")
+    .className="msg";
+
 }
 
 
@@ -633,7 +676,7 @@ function closeSend(){
    메시지
 ========================= */
 
-function message(text,good){
+function showMessage(text,good){
 
   const box =
     document.getElementById("message");
@@ -641,23 +684,31 @@ function message(text,good){
   box.className =
     "msg " + (good ? "ok" : "err");
 
-  box.textContent = text;
+  box.textContent=text;
 
 }
 
 
 /* =========================
-   송금
+   가상 계좌 찾기
+========================= */
+
+function findBank(account){
+
+  return banks.find(
+    bank => bank.account === account
+  );
+
+}
+
+
+/* =========================
+   가상 송금
 ========================= */
 
 function sendMoney(){
 
-  const bank = banks[currentBank];
-
-  const receiver =
-    document
-      .getElementById("receiver")
-      .value.trim();
+  const sender = banks[currentBank];
 
   const receiverAccount =
     document
@@ -671,11 +722,16 @@ function sendMoney(){
         .value
     );
 
+  const password =
+    document
+      .getElementById("sendPassword")
+      .value;
 
-  if(!receiver){
 
-    message(
-      "받는 분 이름을 입력해주세요.",
+  if(!receiverAccount){
+
+    showMessage(
+      "받는 통장의 계좌번호를 입력해주세요.",
       false
     );
 
@@ -683,10 +739,25 @@ function sendMoney(){
   }
 
 
-  if(!receiverAccount){
+  const receiver =
+    findBank(receiverAccount);
 
-    message(
-      "계좌번호를 입력해주세요.",
+
+  if(!receiver){
+
+    showMessage(
+      "등록되지 않은 가상 계좌입니다.",
+      false
+    );
+
+    return;
+  }
+
+
+  if(receiver === sender){
+
+    showMessage(
+      "현재 통장으로는 송금할 수 없습니다.",
       false
     );
 
@@ -696,7 +767,7 @@ function sendMoney(){
 
   if(!amount || amount <= 0){
 
-    message(
+    showMessage(
       "송금 금액을 입력해주세요.",
       false
     );
@@ -705,9 +776,9 @@ function sendMoney(){
   }
 
 
-  if(amount > bank.balance){
+  if(amount > sender.balance){
 
-    message(
+    showMessage(
       "잔액이 부족합니다.",
       false
     );
@@ -716,28 +787,64 @@ function sendMoney(){
   }
 
 
-  /* 실제 송금 없이
-     현재 가상 통장의 잔액만 감소 */
+  if(password !== sender.password){
 
-  bank.balance -= amount;
+    showMessage(
+      "통장 비밀번호가 올바르지 않습니다.",
+      false
+    );
+
+    return;
+  }
 
 
-  bank.history.unshift({
+  /* 돈 이동 */
 
-    receiver:receiver,
+  sender.balance -= amount;
 
-    account:receiverAccount,
+  receiver.balance += amount;
+
+
+  const time =
+    new Date().toLocaleTimeString(
+      "ko-KR",
+      {
+        hour:"2-digit",
+        minute:"2-digit"
+      }
+    );
+
+
+  /* 보내는 통장 */
+
+  sender.history.unshift({
+
+    type:"send",
+
+    name:receiver.name,
+
+    account:receiver.account,
 
     amount:amount,
 
-    time:new Date()
-      .toLocaleTimeString(
-        "ko-KR",
-        {
-          hour:"2-digit",
-          minute:"2-digit"
-        }
-      )
+    time:time
+
+  });
+
+
+  /* 받는 통장 */
+
+  receiver.history.unshift({
+
+    type:"receive",
+
+    name:sender.name,
+
+    account:sender.account,
+
+    amount:amount,
+
+    time:time
 
   });
 
@@ -745,21 +852,32 @@ function sendMoney(){
   updateBank();
 
 
-  message(
-    "가상 송금이 완료되었습니다!",
+  showMessage(
+    receiver.name +
+    "님의 통장으로 " +
+    amount.toLocaleString("ko-KR") +
+    "원을 송금했습니다.",
     true
   );
 
 
-  document.getElementById("receiver").value="";
-  document.getElementById("receiverAccount").value="";
-  document.getElementById("amount").value="";
+  document.getElementById(
+    "receiverAccount"
+  ).value="";
+
+  document.getElementById(
+    "amount"
+  ).value="";
+
+  document.getElementById(
+    "sendPassword"
+  ).value="";
 
 }
 
 
 /* =========================
-   송금 내역
+   HTML 안전 처리
 ========================= */
 
 function escapeHTML(text){
@@ -774,37 +892,47 @@ function escapeHTML(text){
 }
 
 
+/* =========================
+   거래 내역
+========================= */
+
 function updateHistory(){
 
-  const bank = banks[currentBank];
+  const bank=banks[currentBank];
 
-  const list =
+  const list=
     document.getElementById("historyList");
 
 
-  if(bank.history.length === 0){
+  if(bank.history.length===0){
 
-    list.innerHTML =
-      '<div class="empty">아직 송금 내역이 없습니다.</div>';
+    list.innerHTML=
+      '<div class="empty">아직 거래 내역이 없습니다.</div>';
 
     return;
 
   }
 
 
-  list.innerHTML =
-    bank.history.map(item => `
+  list.innerHTML=
+    bank.history.map(item=>`
 
       <div class="item">
 
         <div class="row">
 
           <span class="name">
-            ${escapeHTML(item.receiver)}
+            ${item.type==="send" ? "송금 → " : "입금 ← "}
+            ${escapeHTML(item.name)}
           </span>
 
-          <span class="amount">
-            -${item.amount.toLocaleString("ko-KR")}원
+          <span class="amount ${
+            item.type==="send" ? "minus" : "plus"
+          }">
+
+            ${item.type==="send" ? "-" : "+"}
+            ${item.amount.toLocaleString("ko-KR")}원
+
           </span>
 
         </div>
@@ -827,21 +955,21 @@ function updateHistory(){
 
 function openAdmin(){
 
-  document
-    .getElementById("adminPanel")
-    .style.display="flex";
+  document.getElementById(
+    "adminPanel"
+  ).style.display="flex";
 
-  document
-    .getElementById("loginArea")
-    .style.display="block";
+  document.getElementById(
+    "loginArea"
+  ).style.display="block";
 
-  document
-    .getElementById("controlArea")
-    .style.display="none";
+  document.getElementById(
+    "controlArea"
+  ).style.display="none";
 
-  document
-    .getElementById("adminPw")
-    .value="";
+  document.getElementById(
+    "adminPw"
+  ).value="";
 
 }
 
@@ -853,20 +981,20 @@ function openAdmin(){
 function loginAdmin(){
 
   const pw =
-    document
-      .getElementById("adminPw")
-      .value;
+    document.getElementById(
+      "adminPw"
+    ).value;
 
 
-  if(pw === "5555000"){
+  if(pw==="5555000"){
 
-    document
-      .getElementById("loginArea")
-      .style.display="none";
+    document.getElementById(
+      "loginArea"
+    ).style.display="none";
 
-    document
-      .getElementById("controlArea")
-      .style.display="block";
+    document.getElementById(
+      "controlArea"
+    ).style.display="block";
 
     updateAdminInfo();
 
@@ -874,9 +1002,9 @@ function loginAdmin(){
 
   else{
 
-    document
-      .getElementById("pwError")
-      .textContent =
+    document.getElementById(
+      "pwError"
+    ).textContent=
       "비밀번호가 올바르지 않습니다.";
 
   }
@@ -890,18 +1018,18 @@ function loginAdmin(){
 
 function updateAdminInfo(){
 
-  const bank = banks[currentBank];
+  const bank=banks[currentBank];
 
-  document
-    .getElementById("selectedAdminName")
-    .textContent =
-    bank.name + "님의 통장";
+  document.getElementById(
+    "selectedAdminName"
+  ).textContent=
+    bank.name+"님의 통장";
 
-  document
-    .getElementById("adminBalance")
-    .textContent =
+  document.getElementById(
+    "adminBalance"
+  ).textContent=
     bank.balance.toLocaleString("ko-KR")
-    + "원";
+    +"원";
 
   updateAdminList();
 
@@ -914,38 +1042,67 @@ function updateAdminInfo(){
 
 function changeBalance(){
 
-  const value =
+  const value=
     Number(
-      document
-        .getElementById("newBalance")
-        .value
+      document.getElementById(
+        "newBalance"
+      ).value
     );
 
 
-  if(!Number.isFinite(value) || value < 0){
+  if(!Number.isFinite(value)||value<0){
 
     alert(
       "0원 이상의 금액을 입력해주세요."
     );
 
     return;
-
   }
 
 
-  banks[currentBank].balance =
+  banks[currentBank].balance=
     Math.floor(value);
 
 
-  document
-    .getElementById("newBalance")
-    .value="";
+  document.getElementById(
+    "newBalance"
+  ).value="";
 
 
   updateBank();
 
+
   alert(
     "가상 잔액이 변경되었습니다."
+  );
+
+}
+
+
+/* =========================
+   랜덤 계좌번호
+========================= */
+
+function createAccountNumber(){
+
+  let number="";
+
+  for(let i=0;i<12;i++){
+
+    number +=
+      Math.floor(
+        Math.random()*10
+      );
+
+  }
+
+
+  return (
+    number.slice(0,3)
+    +"-"+
+    number.slice(3,6)
+    +"-"+
+    number.slice(6)
   );
 
 }
@@ -957,17 +1114,30 @@ function changeBalance(){
 
 function addBank(){
 
-  const name =
-    document
-      .getElementById("newName")
-      .value.trim();
+  const name=
+    document.getElementById(
+      "newName"
+    ).value.trim();
 
-  const amount =
+
+  const amount=
     Number(
-      document
-        .getElementById("newAmount")
-        .value
+      document.getElementById(
+        "newAmount"
+      ).value
     );
+
+
+  let account=
+    document.getElementById(
+      "newAccount"
+    ).value.trim();
+
+
+  const password=
+    document.getElementById(
+      "newPassword"
+    ).value;
 
 
   if(!name){
@@ -977,26 +1147,57 @@ function addBank(){
     );
 
     return;
-
   }
 
 
-  if(!Number.isFinite(amount) || amount < 0){
+  if(
+    !Number.isFinite(amount)
+    ||
+    amount<0
+  ){
 
     alert(
       "올바른 초기 잔액을 입력해주세요."
     );
 
     return;
+  }
+
+
+  if(!password){
+
+    alert(
+      "통장 비밀번호를 설정해주세요."
+    );
+
+    return;
+  }
+
+
+  /* 계좌번호를 안 넣으면 랜덤 */
+
+  if(!account){
+
+    account=
+      createAccountNumber();
 
   }
 
 
-  /* 자동으로 숫자를 섞어
-     가상 계좌번호 생성 */
+  /* 중복 계좌번호 검사 */
 
-  const account =
-    createAccountNumber();
+  if(
+    banks.some(
+      bank=>bank.account===account
+    )
+  ){
+
+    alert(
+      "이미 사용 중인 계좌번호입니다."
+    );
+
+    return;
+  }
 
 
   banks.push({
@@ -1005,6 +1206,8 @@ function addBank(){
 
     account:account,
 
+    password:password,
+
     balance:Math.floor(amount),
 
     history:[]
@@ -1012,54 +1215,33 @@ function addBank(){
   });
 
 
-  /* 새로 만든 통장으로 이동 */
-
-  currentBank = banks.length - 1;
+  currentBank=banks.length-1;
 
 
-  document
-    .getElementById("newName")
-    .value="";
+  document.getElementById(
+    "newName"
+  ).value="";
 
-  document
-    .getElementById("newAmount")
-    .value="";
+  document.getElementById(
+    "newAmount"
+  ).value="";
+
+  document.getElementById(
+    "newAccount"
+  ).value="";
+
+  document.getElementById(
+    "newPassword"
+  ).value="";
 
 
   updateBank();
 
 
   alert(
-    name +
-    "님의 새 가상 통장이 만들어졌습니다."
-  );
-
-}
-
-
-/* =========================
-   가상 계좌번호 생성
-========================= */
-
-function createAccountNumber(){
-
-  let a="";
-
-  for(let i=0;i<12;i++){
-
-    a += Math.floor(
-      Math.random()*10
-    );
-
-  }
-
-
-  return (
-    a.slice(0,3) +
-    "-" +
-    a.slice(3,6) +
-    "-" +
-    a.slice(6)
+    name+
+    "님의 가상 통장이 만들어졌습니다.\n"+
+    "계좌번호: "+account
   );
 
 }
@@ -1071,59 +1253,64 @@ function createAccountNumber(){
 
 function updateAdminList(){
 
-  const list =
-    document.getElementById("adminList");
+  const list=
+    document.getElementById(
+      "adminList"
+    );
 
 
-  list.innerHTML =
-    banks.map((bank,index)=>`
+  list.innerHTML=
+    banks.map(
+      (bank,index)=>`
 
-      <div class="admin-account">
+        <div class="admin-account">
 
-        <b>
-          ${escapeHTML(bank.name)}님의 통장
-        </b>
+          <b>
+            ${escapeHTML(bank.name)}님의 통장
+          </b>
 
-        <br>
+          <br>
 
-        ${bank.account}
+          계좌번호:
+          ${escapeHTML(bank.account)}
 
-        <br>
+          <br>
 
-        잔액:
-        ${bank.balance.toLocaleString("ko-KR")}원
+          잔액:
+          ${bank.balance.toLocaleString("ko-KR")}원
 
-        <button
-          onclick="selectBank(${index})">
-          이 통장 보기
-        </button>
+          <br>
 
-        ${
-          index > 0
-          ?
-          `<button
-             class="delete"
-             onclick="deleteBank(${index})">
-             통장 삭제
-           </button>`
-          :
-          ""
-        }
+          <small>
+            비밀번호 설정됨
+          </small>
 
-      </div>
+          <button
+            onclick="selectBank(${index})">
+            이 통장 보기
+          </button>
 
-    `).join("");
+          <button
+            class="red"
+            onclick="deleteBank(${index})">
+            통장 삭제
+          </button>
+
+        </div>
+
+      `
+    ).join("");
 
 }
 
 
 /* =========================
-   관리자에서 통장 선택
+   통장 선택
 ========================= */
 
 function selectBank(index){
 
-  currentBank = index;
+  currentBank=index;
 
   updateBank();
 
@@ -1136,41 +1323,56 @@ function selectBank(index){
 
 function deleteBank(index){
 
-  if(index === 0){
-
-    alert(
-      "첫 번째 강리노님의 통장은 삭제할 수 없습니다."
-    );
-
-    return;
-
-  }
+  const bank=banks[index];
 
 
   if(
     !confirm(
-      banks[index].name +
-      "님의 통장을 삭제할까요?"
+      bank.name+
+      "님의 가상 통장을 삭제할까요?"
     )
   ){
 
     return;
-
   }
 
 
   banks.splice(index,1);
 
 
-  if(currentBank >= banks.length){
+  if(banks.length===0){
 
-    currentBank =
-      banks.length - 1;
+    banks.push({
+
+      name:"강리노",
+
+      account:"482-731-905164",
+
+      password:"1234",
+
+      balance:100000,
+
+      history:[]
+
+    });
+
+  }
+
+
+  if(currentBank>=banks.length){
+
+    currentBank=
+      banks.length-1;
 
   }
 
 
   updateBank();
+
+
+  alert(
+    "가상 통장이 삭제되었습니다."
+  );
 
 }
 
@@ -1181,14 +1383,14 @@ function deleteBank(index){
 
 function closeAdmin(){
 
-  document
-    .getElementById("adminPanel")
-    .style.display="none";
+  document.getElementById(
+    "adminPanel"
+  ).style.display="none";
 
 }
 
 
-/* 처음 실행 */
+/* 시작 */
 
 updateBank();
 
