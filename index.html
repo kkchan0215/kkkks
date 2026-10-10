@@ -1,1958 +1,498 @@
+
 <!DOCTYPE html>
 <html lang="ko">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#f4f6fb">
 <title>가상은행</title>
-
 <style>
-*{
-  box-sizing:border-box;
-  -webkit-tap-highlight-color:transparent;
-}
-
-body{
-  margin:0;
-  background:#f5f7fb;
-  color:#20242b;
-  font-family:
-    "Pretendard",
-    "Apple SD Gothic Neo",
-    "Noto Sans KR",
-    Arial,
-    sans-serif;
-}
-
-button,input,select{
-  font:inherit;
-}
-
-button{
-  border:0;
-  cursor:pointer;
-}
-
-.header{
-  height:72px;
-  background:white;
-  border-bottom:1px solid #e9edf3;
-  display:flex;
-  align-items:center;
-  justify-content:space-between;
-  padding:0 22px;
-  position:sticky;
-  top:0;
-  z-index:20;
-}
-
-.logo{
-  display:flex;
-  align-items:center;
-  gap:10px;
-  font-size:21px;
-  font-weight:900;
-}
-
-.logoIcon{
-  width:40px;
-  height:40px;
-  border-radius:14px;
-  background:#111827;
-  color:white;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-}
-
-.gear{
-  width:42px;
-  height:42px;
-  border-radius:14px;
-  background:#f2f4f8;
-  font-size:20px;
-}
-
-.container{
-  max-width:620px;
-  margin:auto;
-  padding:24px 16px 80px;
-}
-
-.sectionTitle{
-  font-size:13px;
-  color:#8a929f;
-  font-weight:800;
-  margin:0 0 10px 5px;
-}
-
-.personBox,
-.accountSelector{
-  background:white;
-  border-radius:20px;
-  padding:12px;
-  box-shadow:0 5px 20px rgba(30,40,60,.05);
-  margin-bottom:14px;
-}
-
-.personRow,
-.accountRow{
-  display:flex;
-  align-items:center;
-  gap:8px;
-}
-
-.arrow{
-  width:44px;
-  height:44px;
-  flex-shrink:0;
-  border-radius:14px;
-  background:#f1f3f7;
-  font-size:22px;
-  font-weight:900;
-}
-
-.personName{
-  flex:1;
-  text-align:center;
-  font-size:18px;
-  font-weight:900;
-}
-
-.accountInfo{
-  flex:1;
-  min-width:0;
-  text-align:center;
-}
-
-.accountBank{
-  font-size:12px;
-  color:#858d99;
-  font-weight:700;
-}
-
-.accountNick{
-  margin-top:2px;
-  font-size:17px;
-  font-weight:900;
-}
-
-.accountCount{
-  font-size:11px;
-  color:#9aa1ac;
-  margin-top:2px;
-}
-
-.bankCard{
-  position:relative;
-  overflow:hidden;
-  min-width:0;
-  background:#151922;
-  color:white;
-  border-radius:28px;
-  padding:25px;
-  min-height:245px;
-  box-shadow:0 18px 40px rgba(20,25,35,.18);
-  margin-bottom:15px;
-}
-
-.bankCard::before,
-.bankCard::after{
-  content:"";
-  position:absolute;
-  border-radius:50%;
-  pointer-events:none;
-}
-
-.bankCard::before{
-  width:220px;
-  height:220px;
-  right:-90px;
-  top:-80px;
-  background:rgba(255,255,255,.08);
-}
-
-.bankCard::after{
-  width:180px;
-  height:180px;
-  left:-100px;
-  bottom:-110px;
-  background:rgba(255,255,255,.05);
-}
-
-.cardTop{
-  position:relative;
-  z-index:2;
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
-}
-
-.bankMark{
-  width:48px;
-  height:48px;
-  border-radius:50%;
-  background:var(--ball);
-  box-shadow:
-    inset -7px -8px 14px rgba(0,0,0,.15),
-    inset 6px 5px 12px rgba(255,255,255,.3),
-    0 8px 20px rgba(0,0,0,.2);
-}
-
-.bankName{
-  font-size:14px;
-  font-weight:800;
-}
-
-.owner{
-  position:relative;
-  z-index:2;
-  margin-top:25px;
-  font-size:13px;
-  color:#c9ced8;
-}
-
-.nickname{
-  position:relative;
-  z-index:2;
-  margin-top:4px;
-  font-size:18px;
-  font-weight:900;
-}
-
-.accountNumber{
-  position:relative;
-  z-index:2;
-  width:100%;
-  min-width:0;
-  margin-top:20px;
-  font-size:15px;
-  line-height:1.6;
-  font-weight:700;
-  letter-spacing:.5px;
-  overflow-wrap:anywhere;
-  word-break:break-all;
-}
-
-.balanceLabel{
-  position:relative;
-  z-index:2;
-  margin-top:17px;
-  color:#aeb5c1;
-  font-size:11px;
-}
-
-.balance{
-  position:relative;
-  z-index:2;
-  margin-top:3px;
-  font-size:27px;
-  font-weight:900;
-}
-
-.actions{
-  display:grid;
-  grid-template-columns:1fr 1fr;
-  gap:10px;
-}
-
-.action{
-  height:54px;
-  border-radius:17px;
-  background:white;
-  font-weight:900;
-  box-shadow:0 5px 20px rgba(30,40,60,.05);
-}
-
-.action.primary{
-  background:#111827;
-  color:white;
-}
-
-.summary{
-  margin-top:20px;
-  background:white;
-  border-radius:22px;
-  padding:19px;
-  box-shadow:0 5px 20px rgba(30,40,60,.05);
-}
-
-.summaryTitle{
-  font-size:13px;
-  color:#9299a5;
-  font-weight:800;
-}
-
-.summaryMoney{
-  margin-top:5px;
-  font-size:25px;
-  font-weight:900;
-}
-
-.history{
-  margin-top:20px;
-}
-
-.historyHeader{
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
-  margin-bottom:9px;
-}
-
-.historyTitle{
-  font-size:16px;
-  font-weight:900;
-}
-
-.historyList{
-  background:white;
-  border-radius:22px;
-  overflow:hidden;
-  box-shadow:0 5px 20px rgba(30,40,60,.05);
-}
-
-.historyItem{
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
-  padding:17px;
-  border-bottom:1px solid #f0f2f5;
-}
-
-.historyItem:last-child{
-  border-bottom:0;
-}
-
-.historyLeft{
-  min-width:0;
-}
-
-.historyTitleText{
-  font-size:14px;
-  font-weight:800;
-}
-
-.historyDate{
-  margin-top:4px;
-  font-size:11px;
-  color:#9ca3af;
-}
-
-.plus{
-  color:#159a61;
-  font-weight:900;
-}
-
-.minus{
-  color:#ef4d5c;
-  font-weight:900;
-}
-
-.empty{
-  padding:30px;
-  text-align:center;
-  color:#a1a8b3;
-  font-size:13px;
-}
-
-.modalBg{
-  display:none;
-  position:fixed;
-  inset:0;
-  background:rgba(10,15,25,.48);
-  z-index:100;
-  align-items:flex-end;
-  justify-content:center;
-  padding:12px;
-}
-
-.modalBg.show{
-  display:flex;
-}
-
-.modal{
-  width:min(600px,100%);
-  max-height:90vh;
-  overflow:auto;
-  background:white;
-  border-radius:28px;
-  padding:22px;
-  animation:up .2s ease;
-}
-
-@keyframes up{
-  from{
-    transform:translateY(30px);
-    opacity:0;
-  }
-  to{
-    transform:translateY(0);
-    opacity:1;
-  }
-}
-
-.modalHeader{
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
-  margin-bottom:18px;
-}
-
-.modalTitle{
-  font-size:20px;
-  font-weight:900;
-}
-
-.close{
-  width:38px;
-  height:38px;
-  border-radius:12px;
-  background:#f1f3f6;
-  font-size:20px;
-}
-
-label{
-  display:block;
-  margin:13px 0 7px;
-  font-size:12px;
-  color:#777f8b;
-  font-weight:800;
-}
-
-input,select{
-  width:100%;
-  height:50px;
-  border:1px solid #e1e5eb;
-  border-radius:15px;
-  padding:0 14px;
-  outline:none;
-  background:#fafbfc;
-}
-
-input:focus,select:focus{
-  border-color:#8c96a5;
-  background:white;
-}
-
-.formGrid{
-  display:grid;
-  grid-template-columns:1fr 1fr;
-  gap:10px;
-}
-
-.modalButton{
-  width:100%;
-  height:53px;
-  margin-top:15px;
-  border-radius:16px;
-  background:#111827;
-  color:white;
-  font-weight:900;
-}
-
-.modalButton.gray{
-  background:#f0f2f5;
-  color:#222;
-}
-
-.modalButton.red{
-  background:#ef4d5c;
-}
-
-.adminPanel{
-  display:none;
-}
-
-.adminPanel.show{
-  display:block;
-}
-
-.adminCard{
-  background:white;
-  border-radius:22px;
-  padding:18px;
-  margin-bottom:12px;
-  box-shadow:0 5px 20px rgba(30,40,60,.05);
-}
-
-.adminCard h3{
-  margin:0 0 12px;
-  font-size:16px;
-}
-
-.adminInfo{
-  background:#f7f8fa;
-  border-radius:16px;
-  padding:14px;
-  line-height:1.8;
-  font-size:13px;
-}
-
-.danger{
-  color:#e84655;
-}
-
-.toast{
-  position:fixed;
-  left:50%;
-  bottom:25px;
-  transform:translateX(-50%) translateY(20px);
-  background:#111827;
-  color:white;
-  padding:12px 18px;
-  border-radius:15px;
-  font-size:13px;
-  font-weight:700;
-  opacity:0;
-  pointer-events:none;
-  transition:.2s;
-  z-index:300;
-  white-space:nowrap;
-}
-
-.toast.show{
-  opacity:1;
-  transform:translateX(-50%) translateY(0);
-}
-
-@media(max-width:500px){
-  .header{
-    padding:0 14px;
-  }
-
-  .container{
-    padding:18px 12px 70px;
-  }
-
-  .bankCard{
-    min-height:235px;
-    padding:21px;
-  }
-
-  .balance{
-    font-size:24px;
-  }
-
-  .formGrid{
-    grid-template-columns:1fr;
-  }
-}
+:root{--bg:#f4f6fb;--ink:#202635;--muted:#8b93a3;--line:#e9edf3;--primary:#172033;--white:#fff}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:Arial,"Noto Sans KR",sans-serif}
+button,input,select{font:inherit}
+button{cursor:pointer;border:0}
+button:focus-visible,input:focus-visible,select:focus-visible{outline:2px solid #7998ff;outline-offset:2px}
+header{height:70px;background:white;border-bottom:1px solid var(--line);display:flex;align-items:center;justify-content:space-between;padding:0 20px;position:sticky;top:0;z-index:10}
+.brand{display:flex;align-items:center;gap:10px;font-size:21px;font-weight:900}
+.brand-icon{width:42px;height:42px;border-radius:14px;background:#172033;color:white;display:grid;place-items:center}
+.gear{width:42px;height:42px;border-radius:14px;background:#f0f2f6;font-size:19px}
+main{width:min(680px,100%);margin:auto;padding:22px 15px 75px}
+.muted{font-size:12px;font-weight:800;color:var(--muted);margin:18px 4px 9px}
+.panel{background:white;padding:13px;border-radius:20px;margin-bottom:12px;box-shadow:0 4px 18px #17203308}
+.nav{display:flex;align-items:center;gap:10px}
+.arrow{width:44px;height:44px;flex-shrink:0;border-radius:14px;background:#f0f2f6;font-size:24px}
+.navcenter{text-align:center;flex:1;min-width:0}
+.navtitle{font-size:17px;font-weight:900;overflow-wrap:anywhere}
+.sub{font-size:11px;color:var(--muted);margin-top:4px;line-height:1.5}
+.card{--ball:#5878ff;position:relative;overflow:hidden;min-height:246px;margin:14px 0;background:#172033;color:white;border-radius:27px;padding:23px;box-shadow:0 16px 32px #17203320}
+.card:before{content:"";position:absolute;width:230px;height:230px;border-radius:50%;right:-80px;top:-95px;background:#ffffff0a}
+.card:after{content:"";position:absolute;width:150px;height:150px;border-radius:50%;left:-90px;bottom:-110px;background:#ffffff08}
+.cardtop{position:relative;z-index:1;display:flex;align-items:center;justify-content:space-between;gap:12px}
+.ball{width:48px;height:48px;flex-shrink:0;border-radius:50%;background:var(--ball);box-shadow:inset -8px -9px 15px #0002,inset 6px 6px 13px #ffffff50,0 6px 15px #0003}
+.bank{font-size:14px;font-weight:900}
+.representative{font-size:10px;color:#e7d59a;margin-top:5px;text-align:right}
+.cardlabel{position:relative;z-index:1;font-size:12px;color:#c2c9d5;margin-top:23px}
+.number{position:relative;z-index:1;font-size:16px;font-weight:800;line-height:1.8;margin-top:5px;overflow-wrap:anywhere;word-break:break-word;letter-spacing:.3px}
+.balance-label{position:relative;z-index:1;color:#b8c0ce;font-size:12px;margin-top:16px}
+.balance{position:relative;z-index:1;font-size:29px;font-weight:900;margin-top:4px;overflow-wrap:anywhere}
+.actions{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:9px}
+.btn{min-height:49px;padding:13px 10px;border-radius:15px;background:#edf0f5;color:#222b3a;font-size:13px;font-weight:850}
+.btn.primary{background:#172033;color:white}
+.btn.danger{background:#fff0f1;color:#d53e4d}
+.btn.outline{background:white;border:1px solid #e4e8ef}
+.summary{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:15px}
+.stat{background:white;border-radius:19px;padding:17px;min-width:0}
+.statname{font-size:12px;color:var(--muted)}
+.statvalue{font-size:21px;font-weight:900;margin-top:7px;overflow-wrap:anywhere}
+.sectionhead{display:flex;justify-content:space-between;align-items:center;gap:10px;font-size:16px;font-weight:900;margin:23px 3px 11px}
+.sectionhead small{font-size:11px;color:var(--muted);font-weight:600}
+.searchrow{display:flex;gap:8px;margin-bottom:10px}
+input,select{width:100%;min-width:0;min-height:47px;padding:12px 13px;border:1px solid #e0e5ed;border-radius:13px;background:#fafbfd;color:#202635}
+input:focus,select:focus{border-color:#9aa9d0;background:white;outline:none}
+.history{background:white;border-radius:20px;overflow:hidden}
+.tx{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:16px;border-bottom:1px solid #f0f2f6}
+.tx:last-child{border-bottom:0}
+.txleft{min-width:0}
+.txname{font-size:14px;font-weight:800;overflow-wrap:anywhere}
+.txdate{font-size:11px;color:#969eac;margin-top:5px;line-height:1.5}
+.txamount{font-size:14px;font-weight:900;white-space:nowrap}
+.income{color:#15965c}.expense{color:#e14d5a}
+.empty{padding:28px 14px;text-align:center;color:#9ba3b0;font-size:13px;line-height:1.8}
+.modalbg{display:none;position:fixed;inset:0;background:#11182780;z-index:30;align-items:flex-end;justify-content:center;padding:10px}
+.modalbg.show{display:flex}
+.modal{width:min(610px,100%);max-height:91vh;overflow:auto;background:white;border-radius:26px;padding:21px}
+.modalhead{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-bottom:15px}
+.modaltitle{font-size:20px;font-weight:900}
+.close{width:39px;height:39px;border-radius:12px;background:#f0f2f6;font-size:21px;flex-shrink:0}
+label{display:block;font-size:12px;color:#7e8795;font-weight:800;margin:14px 0 7px}
+.formgrid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.wide{width:100%;margin-top:11px}
+.info{padding:15px;border-radius:15px;background:#f5f7fa;font-size:13px;line-height:2;overflow-wrap:anywhere}
+.adminbox{background:white;border-radius:20px;padding:17px;margin-top:12px;box-shadow:0 4px 16px #17203307}
+.adminbox h3{font-size:15px;margin:0 0 12px}
+#toast{position:fixed;z-index:60;bottom:22px;left:50%;transform:translate(-50%,12px);opacity:0;pointer-events:none;background:#172033;color:white;padding:13px 17px;border-radius:14px;font-size:13px;max-width:90%;text-align:center;transition:.2s}
+#toast.show{opacity:1;transform:translate(-50%,0)}
+.hidden{display:none!important}
+@media(max-width:430px){header{padding:0 13px}main{padding:16px 12px 60px}.card{padding:20px;min-height:235px}.balance{font-size:25px}.formgrid{grid-template-columns:1fr}.tx{padding:14px 12px}.txamount{font-size:12px}}
 </style>
 </head>
-
 <body>
-
-<header class="header">
-  <div class="logo">
-    <div class="logoIcon">🏦</div>
-    <span>가상은행</span>
-  </div>
-  <button class="gear" onclick="openAdminLogin()">⚙️</button>
+<header>
+  <div class="brand"><div class="brand-icon">🏦</div><span>가상은행</span></div>
+  <button class="gear" onclick="openAdminLogin()" aria-label="관리자">⚙️</button>
 </header>
 
-<main class="container">
-
-  <div id="mainPage">
-
-    <div class="sectionTitle">계좌 소유자</div>
-
-    <div class="personBox">
-      <div class="personRow">
-        <button class="arrow" onclick="previousPerson()">‹</button>
-        <div class="personName" id="personName"></div>
-        <button class="arrow" onclick="nextPerson()">›</button>
-      </div>
-    </div>
-
-    <div class="sectionTitle">계좌 선택</div>
-
-    <div class="accountSelector">
-      <div class="accountRow">
-        <button class="arrow" onclick="previousAccount()">‹</button>
-
-        <div class="accountInfo">
-          <div class="accountBank" id="selectedBank"></div>
-          <div class="accountNick" id="selectedNick"></div>
-          <div class="accountCount" id="accountCount"></div>
-        </div>
-
-        <button class="arrow" onclick="nextAccount()">›</button>
-      </div>
-    </div>
-
-    <div id="accountArea"></div>
-
-    <div class="summary">
-      <div class="summaryTitle">이 사람이 보유한 총 자산</div>
-      <div class="summaryMoney" id="totalMoney">0원</div>
-    </div>
-
-    <div class="history">
-      <div class="historyHeader">
-        <div class="historyTitle">최근 거래내역</div>
-      </div>
-
-      <div class="historyList" id="historyList"></div>
-    </div>
-
+<main>
+<section id="home">
+  <div class="muted">계좌 소유자 선택</div>
+  <div class="panel nav">
+    <button class="arrow" onclick="movePerson(-1)">‹</button>
+    <div class="navcenter"><div class="navtitle" id="personName">-</div><div class="sub" id="personMeta"></div></div>
+    <button class="arrow" onclick="movePerson(1)">›</button>
   </div>
 
-  <div class="adminPanel" id="adminPanel">
-
-    <div class="sectionTitle">관리자 · 사람 선택</div>
-
-    <div class="personBox">
-      <div class="personRow">
-        <button class="arrow" onclick="adminPreviousPerson()">‹</button>
-        <div class="personName" id="adminPersonName"></div>
-        <button class="arrow" onclick="adminNextPerson()">›</button>
-      </div>
-    </div>
-
-    <div class="sectionTitle">관리자 · 계좌 선택</div>
-
-    <div class="accountSelector">
-      <div class="accountRow">
-        <button class="arrow" onclick="adminPreviousAccount()">‹</button>
-
-        <div class="accountInfo">
-          <div class="accountBank" id="adminBank"></div>
-          <div class="accountNick" id="adminNick"></div>
-          <div class="accountCount" id="adminCount"></div>
-        </div>
-
-        <button class="arrow" onclick="adminNextAccount()">›</button>
-      </div>
-    </div>
-
-    <div class="adminCard">
-      <h3>현재 계좌</h3>
-      <div class="adminInfo" id="adminInfo"></div>
-    </div>
-
-    <div class="adminCard">
-      <h3>잔액 관리</h3>
-      <input id="adminBalance" type="number" placeholder="새 잔액">
-      <button class="modalButton" onclick="changeBalance()">잔액 변경</button>
-    </div>
-
-    <div class="adminCard">
-      <h3>계좌 관리</h3>
-
-      <button class="modalButton" onclick="openAddAccountForPerson()">
-        ➕ 이 사람에게 계좌 추가
-      </button>
-
-      <button class="modalButton gray" onclick="openNewPersonAccount()">
-        👤 새로운 사람 + 계좌 만들기
-      </button>
-
-      <button class="modalButton red" onclick="deleteSelectedAccount()">
-        🗑️ 선택한 계좌 삭제
-      </button>
-    </div>
-
-    <div class="adminCard">
-      <h3>시스템</h3>
-
-      <button class="modalButton gray" onclick="closeAdmin()">
-        메인으로 돌아가기
-      </button>
-
-      <button class="modalButton red" onclick="resetAllData()">
-        ⚠️ 전체 데이터 초기화
-      </button>
-    </div>
-
+  <div class="muted">은행 계좌 선택</div>
+  <div class="panel nav">
+    <button class="arrow" onclick="moveAccount(-1)">‹</button>
+    <div class="navcenter"><div class="navtitle" id="accountBank">-</div><div class="sub" id="accountMeta"></div></div>
+    <button class="arrow" onclick="moveAccount(1)">›</button>
   </div>
 
+  <div id="accountCard"></div>
+
+  <div class="actions">
+    <button class="btn primary" onclick="openSend()">💸 송금하기</button>
+    <button class="btn" onclick="openDetails()">🧾 계좌정보</button>
+    <button class="btn" onclick="openCreate(false)">➕ 계좌 추가</button>
+    <button class="btn" onclick="setRepresentative()">⭐ 대표계좌 설정</button>
+    <button class="btn" onclick="openPasswordChange()">🔐 비밀번호 변경</button>
+    <button class="btn" onclick="copyAccountNumber()">📋 계좌번호 복사</button>
+  </div>
+
+  <div class="summary">
+    <div class="stat"><div class="statname">선택한 사람의 총자산</div><div class="statvalue" id="totalAssets">0원</div></div>
+    <div class="stat"><div class="statname">보유 계좌 수</div><div class="statvalue" id="accountTotal">0개</div></div>
+  </div>
+
+  <div class="sectionhead">계좌 찾기 <small>은행과 번호로 검색</small></div>
+  <div class="panel">
+    <label>은행</label><select id="lookupBank"></select>
+    <label>계좌번호</label><input id="lookupNumber" placeholder="하이픈 없이 입력 가능">
+    <button class="btn primary wide" onclick="lookupAccount()">계좌 조회</button>
+    <div id="lookupResult"></div>
+  </div>
+
+  <div class="sectionhead">거래내역 <small id="historyCount">0건</small></div>
+  <div class="searchrow">
+    <input id="historySearch" placeholder="거래명·날짜 검색" oninput="renderHistory()">
+    <select id="historyFilter" style="max-width:115px" onchange="renderHistory()">
+      <option value="all">전체</option><option value="in">입금</option><option value="out">출금</option>
+    </select>
+  </div>
+  <div class="history" id="historyList"></div>
+</section>
+
+<section id="admin" class="hidden">
+  <div class="sectionhead">관리자 계좌 관리</div>
+  <div class="panel nav">
+    <button class="arrow" onclick="adminMovePerson(-1)">‹</button>
+    <div class="navcenter"><div class="navtitle" id="adminPerson">-</div><div class="sub">예금주 선택</div></div>
+    <button class="arrow" onclick="adminMovePerson(1)">›</button>
+  </div>
+  <div class="panel nav">
+    <button class="arrow" onclick="adminMoveAccount(-1)">‹</button>
+    <div class="navcenter"><div class="navtitle" id="adminBank">-</div><div class="sub" id="adminCount"></div></div>
+    <button class="arrow" onclick="adminMoveAccount(1)">›</button>
+  </div>
+  <div class="adminbox"><h3>계좌 상세정보</h3><div id="adminInfo" class="info"></div></div>
+  <div class="adminbox">
+    <h3>잔액 관리</h3>
+    <input id="adminBalance" type="number" min="0" step="1" placeholder="새 잔액">
+    <button class="btn primary wide" onclick="changeBalance()">잔액 변경</button>
+  </div>
+  <div class="adminbox">
+    <h3>계좌 개설 및 관리</h3>
+    <button class="btn wide" onclick="openCreate(false)">➕ 선택한 사람의 계좌 추가</button>
+    <button class="btn wide" onclick="openCreate(true)">👤 새 예금주 계좌 개설</button>
+    <button class="btn wide" onclick="adminChangePassword()">🔐 비밀번호 변경</button>
+    <button class="btn danger wide" onclick="deleteAccount()">🗑️ 선택 계좌 삭제</button>
+  </div>
+  <div class="adminbox">
+    <h3>시스템 관리</h3>
+    <button class="btn wide" onclick="closeAdmin()">메인 화면으로</button>
+    <button class="btn danger wide" onclick="resetData()">⚠️ 전체 데이터 초기화</button>
+  </div>
+</section>
 </main>
 
+<div class="modalbg" id="sendModal"><div class="modal">
+  <div class="modalhead"><div class="modaltitle">💸 송금하기</div><button class="close" onclick="closeModal('sendModal')">×</button></div>
+  <div class="info" id="senderInfo"></div>
+  <label>받는 은행</label><select id="toBank"></select>
+  <label>받는 계좌번호</label><input id="toNumber" placeholder="하이픈은 생략해도 돼">
+  <label>송금 금액</label><input id="toAmount" type="number" min="1" step="1" placeholder="보낼 금액">
+  <label>계좌 비밀번호</label><input id="toPassword" type="password" placeholder="내 계좌 비밀번호">
+  <button class="btn primary wide" onclick="transfer()">송금 확인</button>
+</div></div>
 
-<!-- 송금 -->
-<div class="modalBg" id="sendModal">
-  <div class="modal">
-
-    <div class="modalHeader">
-      <div class="modalTitle">💸 송금하기</div>
-      <button class="close" onclick="closeModal('sendModal')">×</button>
-    </div>
-
-    <label>받는 은행</label>
-    <select id="sendBank"></select>
-
-    <label>받는 계좌번호</label>
-    <input id="sendNumber" placeholder="예: 482-731-905164">
-
-    <label>송금 금액</label>
-    <input id="sendAmount" type="number" placeholder="보낼 금액">
-
-    <label>내 계좌 비밀번호</label>
-    <input id="sendPassword" type="password" placeholder="비밀번호">
-
-    <button class="modalButton" onclick="sendMoney()">송금하기</button>
+<div class="modalbg" id="createModal"><div class="modal">
+  <div class="modalhead"><div class="modaltitle" id="createTitle">계좌 개설</div><button class="close" onclick="closeModal('createModal')">×</button></div>
+  <label>예금주</label><input id="newOwner" placeholder="이름">
+  <label>은행 이름</label><input id="newBank" placeholder="비우면 기본 은행 중 선택">
+  <label>계좌번호</label><input id="newNumber" placeholder="비우면 자동 생성">
+  <div class="formgrid">
+    <div><label>초기 잔액</label><input id="newMoney" type="number" min="0" step="1" value="0"></div>
+    <div><label>계좌 비밀번호</label><input id="newPassword" type="password" placeholder="비밀번호"></div>
   </div>
-</div>
+  <button class="btn primary wide" onclick="createAccount()">계좌 개설하기</button>
+</div></div>
 
+<div class="modalbg" id="detailsModal"><div class="modal">
+  <div class="modalhead"><div class="modaltitle">🧾 계좌정보</div><button class="close" onclick="closeModal('detailsModal')">×</button></div>
+  <div class="info" id="detailsInfo"></div>
+  <button class="btn wide" onclick="closeModal('detailsModal')">닫기</button>
+</div></div>
 
-<!-- 계좌정보 -->
-<div class="modalBg" id="infoModal">
-  <div class="modal">
+<div class="modalbg" id="loginModal"><div class="modal">
+  <div class="modalhead"><div class="modaltitle">🔐 관리자 로그인</div><button class="close" onclick="closeModal('loginModal')">×</button></div>
+  <label>관리자 비밀번호</label><input id="adminPass" type="password" placeholder="관리자 비밀번호">
+  <button class="btn primary wide" onclick="adminLogin()">로그인</button>
+</div></div>
 
-    <div class="modalHeader">
-      <div class="modalTitle">🧾 계좌정보</div>
-      <button class="close" onclick="closeModal('infoModal')">×</button>
-    </div>
+<div class="modalbg" id="passwordModal"><div class="modal">
+  <div class="modalhead"><div class="modaltitle">🔐 비밀번호 변경</div><button class="close" onclick="closeModal('passwordModal')">×</button></div>
+  <label>현재 비밀번호</label><input id="oldPassword" type="password">
+  <label>새 비밀번호</label><input id="newPasswordValue" type="password">
+  <label>새 비밀번호 확인</label><input id="confirmPasswordValue" type="password">
+  <button class="btn primary wide" onclick="saveNewPassword()">변경하기</button>
+</div></div>
 
-    <div class="adminInfo" id="fullAccountInfo"></div>
-
-    <button class="modalButton gray" onclick="closeModal('infoModal')">
-      닫기
-    </button>
-  </div>
-</div>
-
-
-<!-- 관리자 로그인 -->
-<div class="modalBg" id="loginModal">
-  <div class="modal">
-
-    <div class="modalHeader">
-      <div class="modalTitle">🔐 관리자 로그인</div>
-      <button class="close" onclick="closeModal('loginModal')">×</button>
-    </div>
-
-    <label>관리자 비밀번호</label>
-    <input id="adminPassword" type="password" placeholder="비밀번호">
-
-    <button class="modalButton" onclick="adminLogin()">로그인</button>
-  </div>
-</div>
-
-
-<!-- 계좌 생성 -->
-<div class="modalBg" id="createModal">
-  <div class="modal">
-
-    <div class="modalHeader">
-      <div class="modalTitle" id="createTitle">➕ 계좌 만들기</div>
-      <button class="close" onclick="closeModal('createModal')">×</button>
-    </div>
-
-    <label>예금주</label>
-    <input id="newOwner" placeholder="이름">
-
-    <label>은행</label>
-    <input id="newBank" placeholder="비워두면 랜덤 은행">
-
-    <label>계좌 별명</label>
-    <input id="newNickname" placeholder="예: 생활비 통장">
-
-    <label>계좌번호</label>
-    <input id="newNumber" placeholder="비워두면 자동 생성">
-
-    <div class="formGrid">
-      <div>
-        <label>초기 잔액</label>
-        <input id="newMoney" type="number" value="0">
-      </div>
-
-      <div>
-        <label>비밀번호</label>
-        <input id="newPassword" placeholder="예: 1234">
-      </div>
-    </div>
-
-    <button class="modalButton" onclick="createAccount()">
-      계좌 만들기
-    </button>
-
-  </div>
-</div>
-
-
-<div class="toast" id="toast"></div>
-
+<div id="toast" role="status"></div>
 
 <script>
+"use strict";
 
-const STORAGE_KEY = "virtual_bank_complete_v1";
-const ADMIN_PASSWORD = "5555000";
+const STORAGE_KEY="virtual_bank_complete_v3";
+const ADMIN_PASSWORD="5555000";
+const DEFAULT_BANKS=["대한은행","두리은행","수난은행"];
+const BALL_COLORS=["#ff5d68","#ff9f43","#ffd43b","#69d56d","#35c98a","#42b8ff","#5878ff","#8764ff","#c45cff","#ff63b8","#55cfd8","#8a9a68"];
 
-const DEFAULT_BANKS = [
-  "대한은행",
-  "두리은행",
-  "수난은행"
-];
-
-const BALL_COLORS = [
-  "#ff5d68",
-  "#ff9f43",
-  "#ffd43b",
-  "#69d56d",
-  "#35c98a",
-  "#42b8ff",
-  "#5878ff",
-  "#8764ff",
-  "#c45cff",
-  "#ff63b8",
-  "#55cfd8",
-  "#8a9a68"
-];
-
-function id(){
-  return Date.now().toString(36) +
-         Math.random().toString(36).slice(2,8);
+function uid(){return Date.now().toString(36)+Math.random().toString(36).slice(2,9)}
+function freshData(){
+ return {accounts:[{id:uid(),owner:"강리노",bank:"대한은행",number:"482-731-905164",password:"1234",money:100000,history:[{type:"in",title:"계좌 개설",amount:100000,date:new Date().toLocaleString("ko-KR")}],representative:true}],colors:{"대한은행":"#5878ff"},person:0,account:0};
 }
-
-function defaultData(){
-
-  return {
-    accounts:[
-      {
-        id:id(),
-        owner:"강리노",
-        bank:"대한은행",
-        nickname:"주거래 통장",
-        number:"482-731-905164",
-        password:"1234",
-        money:100000,
-        history:[]
-      }
-    ],
-
-    bankColors:{
-      "대한은행":"#5878ff"
-    },
-
-    currentPerson:0,
-    currentAccount:0
-  };
-}
-
 let data;
+try{data=JSON.parse(localStorage.getItem(STORAGE_KEY))}catch(e){data=null}
+if(!data||!Array.isArray(data.accounts))data=freshData();
+data.accounts.forEach(a=>{
+ a.history=Array.isArray(a.history)?a.history:[];
+ a.money=Number(a.money)||0;
+ delete a.nickname;
+});
+data.colors ||= {};
+let adminPersonIndex=0,adminAccountIndex=0,createForNewPerson=false;
 
-try{
-  data = JSON.parse(localStorage.getItem(STORAGE_KEY));
-}catch(e){
-  data = null;
+function save(){localStorage.setItem(STORAGE_KEY,JSON.stringify(data))}
+function money(n){return Number(n||0).toLocaleString("ko-KR")+"원"}
+function cleanNumber(s){return String(s??"").replace(/\D/g,"")}
+function escapeHtml(s){return String(s??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]))}
+function people(){return [...new Set(data.accounts.map(a=>a.owner))]}
+function personAccounts(owner){return data.accounts.filter(a=>a.owner===owner)}
+function currentPerson(){
+ let p=people();if(!p.length)return null;
+ data.person=Math.max(0,Math.min(data.person,p.length-1));
+ return p[data.person];
 }
-
-if(!data || !Array.isArray(data.accounts)){
-  data = defaultData();
-  saveData();
+function currentAccount(){
+ let list=personAccounts(currentPerson());if(!list.length)return null;
+ data.account=Math.max(0,Math.min(data.account,list.length-1));
+ return list[data.account];
 }
-
-function saveData(){
-  localStorage.setItem(
-    STORAGE_KEY,
-    JSON.stringify(data)
-  );
+function getColor(bank){
+ if(!data.colors[bank]){
+  let available=BALL_COLORS.filter(c=>!Object.values(data.colors).includes(c));
+  data.colors[bank]=available.length?available[Math.floor(Math.random()*available.length)]:BALL_COLORS[Math.floor(Math.random()*BALL_COLORS.length)];
+  save();
+ }
+ return data.colors[bank];
 }
-
-function getPeople(){
-
-  const people=[];
-
-  data.accounts.forEach(account=>{
-    if(!people.includes(account.owner)){
-      people.push(account.owner);
-    }
-  });
-
-  return people;
-}
-
-function getPersonAccounts(owner){
-
-  return data.accounts.filter(
-    account => account.owner === owner
-  );
-}
-
-function getCurrentPerson(){
-
-  const people=getPeople();
-
-  if(!people.length){
-    return null;
-  }
-
-  if(data.currentPerson >= people.length){
-    data.currentPerson=people.length-1;
-  }
-
-  if(data.currentPerson<0){
-    data.currentPerson=0;
-  }
-
-  return people[data.currentPerson];
-}
-
-function getCurrentAccount(){
-
-  const person=getCurrentPerson();
-
-  if(!person){
-    return null;
-  }
-
-  const accounts=getPersonAccounts(person);
-
-  if(!accounts.length){
-    return null;
-  }
-
-  if(data.currentAccount >= accounts.length){
-    data.currentAccount=accounts.length-1;
-  }
-
-  if(data.currentAccount<0){
-    data.currentAccount=0;
-  }
-
-  return accounts[data.currentAccount];
-}
-
-
-/* =========================
-   은행 색상
-========================= */
-
-function getBankColor(bank){
-
-  if(!data.bankColors){
-    data.bankColors={};
-  }
-
-  if(!data.bankColors[bank]){
-
-    const used=Object.values(data.bankColors);
-
-    const available=
-      BALL_COLORS.filter(
-        color=>!used.includes(color)
-      );
-
-    let color;
-
-    if(available.length){
-      color=
-        available[
-          Math.floor(
-            Math.random()*available.length
-          )
-        ];
-    }else{
-      color=
-        BALL_COLORS[
-          Math.floor(
-            Math.random()*BALL_COLORS.length
-          )
-        ];
-    }
-
-    data.bankColors[bank]=color;
-    saveData();
-  }
-
-  return data.bankColors[bank];
-}
-
-
-/* =========================
-   사람 이동
-========================= */
-
-function previousPerson(){
-
-  const people=getPeople();
-
-  if(!people.length) return;
-
-  data.currentPerson--;
-
-  if(data.currentPerson<0){
-    data.currentPerson=people.length-1;
-  }
-
-  data.currentAccount=0;
-
-  saveData();
-  render();
-}
-
-function nextPerson(){
-
-  const people=getPeople();
-
-  if(!people.length) return;
-
-  data.currentPerson++;
-
-  if(data.currentPerson>=people.length){
-    data.currentPerson=0;
-  }
-
-  data.currentAccount=0;
-
-  saveData();
-  render();
-}
-
-
-/* =========================
-   계좌 이동
-========================= */
-
-function previousAccount(){
-
-  const person=getCurrentPerson();
-
-  if(!person) return;
-
-  const accounts=getPersonAccounts(person);
-
-  if(!accounts.length) return;
-
-  data.currentAccount--;
-
-  if(data.currentAccount<0){
-    data.currentAccount=accounts.length-1;
-  }
-
-  saveData();
-  render();
-}
-
-function nextAccount(){
-
-  const person=getCurrentPerson();
-
-  if(!person) return;
-
-  const accounts=getPersonAccounts(person);
-
-  if(!accounts.length) return;
-
-  data.currentAccount++;
-
-  if(data.currentAccount>=accounts.length){
-    data.currentAccount=0;
-  }
-
-  saveData();
-  render();
-}
-
-
-/* =========================
-   메인 렌더
-========================= */
-
-function render(){
-
-  const person=getCurrentPerson();
-  const account=getCurrentAccount();
-
-  if(!person || !account){
-
-    document.getElementById("accountArea").innerHTML=
-      `<div class="empty">등록된 계좌가 없어.</div>`;
-
-    return;
-  }
-
-  const accounts=getPersonAccounts(person);
-
-  document.getElementById("personName").textContent=
-    person+"님";
-
-  document.getElementById("selectedBank").textContent=
-    account.bank;
-
-  document.getElementById("selectedNick").textContent=
-    account.nickname || "계좌";
-
-  document.getElementById("accountCount").textContent=
-    `${data.currentAccount+1} / ${accounts.length}개 계좌`;
-
-  const color=getBankColor(account.bank);
-
-  document.getElementById("accountArea").innerHTML=`
-
-    <div class="bankCard" style="--ball:${color}">
-
-      <div class="cardTop">
-
-        <div class="bankMark"></div>
-
-        <div class="bankName">
-          ${escapeHtml(account.bank)}
-        </div>
-
-      </div>
-
-      <div class="owner">
-        예금주
-      </div>
-
-      <div class="nickname">
-        ${escapeHtml(account.nickname || "계좌")}
-      </div>
-
-      <div class="accountNumber">
-        ${escapeHtml(account.number)}
-      </div>
-
-      <div class="balanceLabel">
-        현재 잔액
-      </div>
-
-      <div class="balance">
-        ${money(account.money)}
-      </div>
-
-    </div>
-
-    <div class="actions">
-
-      <button class="action primary"
-        onclick="openSend()">
-        💸 송금하기
-      </button>
-
-      <button class="action"
-        onclick="openAccountInfo()">
-        🧾 계좌정보
-      </button>
-
-    </div>
-  `;
-
-  let total=0;
-
-  accounts.forEach(a=>{
-    total += Number(a.money)||0;
-  });
-
-  document.getElementById("totalMoney").textContent=
-    money(total);
-
-  renderHistory(account);
-}
-
-function renderHistory(account){
-
-  const list=document.getElementById("historyList");
-
-  if(!account.history || !account.history.length){
-
-    list.innerHTML=
-      `<div class="empty">아직 거래내역이 없어.</div>`;
-
-    return;
-  }
-
-  const history=[
-    ...account.history
-  ].reverse();
-
-  list.innerHTML=history.slice(0,30).map(item=>`
-
-    <div class="historyItem">
-
-      <div class="historyLeft">
-
-        <div class="historyTitleText">
-          ${escapeHtml(item.title)}
-        </div>
-
-        <div class="historyDate">
-          ${escapeHtml(item.date)}
-        </div>
-
-      </div>
-
-      <div class="${item.type==="in"?"plus":"minus"}">
-        ${item.type==="in"?"+":"-"}${money(item.amount)}
-      </div>
-
-    </div>
-
-  `).join("");
-}
-
-
-/* =========================
-   송금
-========================= */
-
-function openSend(){
-
-  const select=
-    document.getElementById("sendBank");
-
-  const banks=[
-    ...new Set(
-      data.accounts.map(a=>a.bank)
-    )
-  ];
-
-  select.innerHTML=
-    banks.map(bank=>
-      `<option value="${escapeHtml(bank)}">
-        ${escapeHtml(bank)}
-      </option>`
-    ).join("");
-
-  document.getElementById("sendNumber").value="";
-  document.getElementById("sendAmount").value="";
-  document.getElementById("sendPassword").value="";
-
-  openModal("sendModal");
-}
-
-function sendMoney(){
-
-  const sender=getCurrentAccount();
-
-  if(!sender){
-    toast("내 계좌를 찾을 수 없어.");
-    return;
-  }
-
-  const bank=
-    document.getElementById("sendBank").value;
-
-  const number=
-    document.getElementById("sendNumber").value.trim();
-
-  const amount=
-    Number(
-      document.getElementById("sendAmount").value
-    );
-
-  const password=
-    document.getElementById("sendPassword").value;
-
-  if(password !== sender.password){
-    toast("계좌 비밀번호가 틀렸어.");
-    return;
-  }
-
-  if(!number){
-    toast("받는 계좌번호를 입력해.");
-    return;
-  }
-
-  if(!amount || amount<=0){
-    toast("송금 금액을 확인해.");
-    return;
-  }
-
-  if(sender.money<amount){
-    toast("잔액이 부족해.");
-    return;
-  }
-
-  const receiver=data.accounts.find(
-    account =>
-      account.bank===bank &&
-      account.number===number
-  );
-
-  if(!receiver){
-    toast("받는 계좌를 찾을 수 없어.");
-    return;
-  }
-
-  if(receiver.id===sender.id){
-    toast("자기 계좌로는 송금할 수 없어.");
-    return;
-  }
-
-  sender.money -= amount;
-  receiver.money += amount;
-
-  const now=new Date().toLocaleString("ko-KR");
-
-  sender.history.push({
-    type:"out",
-    title:`${receiver.owner}님에게 송금`,
-    amount:amount,
-    date:now
-  });
-
-  receiver.history.push({
-    type:"in",
-    title:`${sender.owner}님에게 입금`,
-    amount:amount,
-    date:now
-  });
-
-  saveData();
-
-  closeModal("sendModal");
-
-  render();
-
-  toast(
-    `${money(amount)} 송금 완료`
-  );
-}
-
-
-/* =========================
-   계좌정보
-========================= */
-
-function openAccountInfo(){
-
-  const account=getCurrentAccount();
-
-  if(!account) return;
-
-  document.getElementById("fullAccountInfo").innerHTML=`
-
-    <b>예금주</b> : ${escapeHtml(account.owner)}<br>
-    <b>은행</b> : ${escapeHtml(account.bank)}<br>
-    <b>계좌 별명</b> : ${escapeHtml(account.nickname || "계좌")}<br>
-    <b>계좌번호</b> : ${escapeHtml(account.number)}<br>
-    <b>현재 잔액</b> : ${money(account.money)}<br>
-    <b>계좌 비밀번호</b> : ••••
-  `;
-
-  openModal("infoModal");
-}
-
-
-/* =========================
-   관리자
-========================= */
-
-let adminPersonIndex=0;
-let adminAccountIndex=0;
-let addAccountOwner=null;
-
-function openAdminLogin(){
-  document.getElementById("adminPassword").value="";
-  openModal("loginModal");
-}
-
-function adminLogin(){
-
-  const password=
-    document.getElementById("adminPassword").value;
-
-  if(password!==ADMIN_PASSWORD){
-    toast("관리자 비밀번호가 틀렸어.");
-    return;
-  }
-
-  closeModal("loginModal");
-
-  adminPersonIndex=
-    Math.max(
-      0,
-      Math.min(
-        data.currentPerson,
-        getPeople().length-1
-      )
-    );
-
-  adminAccountIndex=0;
-
-  document.getElementById("mainPage")
-    .style.display="none";
-
-  document.getElementById("adminPanel")
-    .classList.add("show");
-
-  renderAdmin();
-}
-
-function closeAdmin(){
-
-  document.getElementById("adminPanel")
-    .classList.remove("show");
-
-  document.getElementById("mainPage")
-    .style.display="block";
-
-  render();
-}
-
-function getAdminPerson(){
-
-  const people=getPeople();
-
-  if(!people.length) return null;
-
-  if(adminPersonIndex>=people.length)
-    adminPersonIndex=people.length-1;
-
-  if(adminPersonIndex<0)
-    adminPersonIndex=0;
-
-  return people[adminPersonIndex];
-}
-
-function getAdminAccounts(){
-
-  const person=getAdminPerson();
-
-  if(!person) return [];
-
-  return getPersonAccounts(person);
-}
-
-function getAdminAccount(){
-
-  const accounts=getAdminAccounts();
-
-  if(!accounts.length) return null;
-
-  if(adminAccountIndex>=accounts.length)
-    adminAccountIndex=accounts.length-1;
-
-  if(adminAccountIndex<0)
-    adminAccountIndex=0;
-
-  return accounts[adminAccountIndex];
-}
-
-function adminPreviousPerson(){
-
-  const people=getPeople();
-
-  if(!people.length) return;
-
-  adminPersonIndex--;
-
-  if(adminPersonIndex<0)
-    adminPersonIndex=people.length-1;
-
-  adminAccountIndex=0;
-
-  renderAdmin();
-}
-
-function adminNextPerson(){
-
-  const people=getPeople();
-
-  if(!people.length) return;
-
-  adminPersonIndex++;
-
-  if(adminPersonIndex>=people.length)
-    adminPersonIndex=0;
-
-  adminAccountIndex=0;
-
-  renderAdmin();
-}
-
-function adminPreviousAccount(){
-
-  const accounts=getAdminAccounts();
-
-  if(!accounts.length) return;
-
-  adminAccountIndex--;
-
-  if(adminAccountIndex<0)
-    adminAccountIndex=accounts.length-1;
-
-  renderAdmin();
-}
-
-function adminNextAccount(){
-
-  const accounts=getAdminAccounts();
-
-  if(!accounts.length) return;
-
-  adminAccountIndex++;
-
-  if(adminAccountIndex>=accounts.length)
-    adminAccountIndex=0;
-
-  renderAdmin();
-}
-
-function renderAdmin(){
-
-  const person=getAdminPerson();
-  const accounts=getAdminAccounts();
-  const account=getAdminAccount();
-
-  document.getElementById("adminPersonName").textContent=
-    person ? person+"님" : "계좌 없음";
-
-  document.getElementById("adminBank").textContent=
-    account ? account.bank : "";
-
-  document.getElementById("adminNick").textContent=
-    account ? account.nickname : "";
-
-  document.getElementById("adminCount").textContent=
-    accounts.length
-      ? `${adminAccountIndex+1} / ${accounts.length}개 계좌`
-      : "계좌 없음";
-
-  if(!account){
-
-    document.getElementById("adminInfo").innerHTML=
-      "선택할 계좌가 없어.";
-
-    return;
-  }
-
-  document.getElementById("adminBalance").value=
-    account.money;
-
-  document.getElementById("adminInfo").innerHTML=`
-
-    <b>예금주</b> : ${escapeHtml(account.owner)}<br>
-    <b>은행</b> : ${escapeHtml(account.bank)}<br>
-    <b>별명</b> : ${escapeHtml(account.nickname || "계좌")}<br>
-    <b>계좌번호</b> : ${escapeHtml(account.number)}<br>
-    <b>잔액</b> : ${money(account.money)}
-  `;
-}
-
-
-/* =========================
-   잔액 변경
-========================= */
-
-function changeBalance(){
-
-  const account=getAdminAccount();
-
-  if(!account) return;
-
-  const value=
-    Number(
-      document.getElementById("adminBalance").value
-    );
-
-  if(!Number.isFinite(value) || value<0){
-    toast("잔액을 올바르게 입력해.");
-    return;
-  }
-
-  account.money=value;
-
-  saveData();
-  renderAdmin();
-
-  data.currentPerson=
-    getPeople().indexOf(account.owner);
-
-  data.currentAccount=
-    getPersonAccounts(account.owner)
-      .findIndex(a=>a.id===account.id);
-
-  saveData();
-
-  render();
-
-  toast("잔액을 변경했어.");
-}
-
-
-/* =========================
-   계좌 추가
-========================= */
-
-function openAddAccountForPerson(){
-
-  const person=getAdminPerson();
-
-  if(!person) return;
-
-  addAccountOwner=person;
-
-  document.getElementById("createTitle").textContent=
-    "➕ 계좌 추가";
-
-  document.getElementById("newOwner").value=
-    person;
-
-  document.getElementById("newOwner").readOnly=true;
-
-  clearCreateForm();
-
-  document.getElementById("newOwner").value=
-    person;
-
-  openModal("createModal");
-}
-
-function openNewPersonAccount(){
-
-  addAccountOwner=null;
-
-  document.getElementById("createTitle").textContent=
-    "👤 새로운 사람 계좌 만들기";
-
-  document.getElementById("newOwner").readOnly=false;
-
-  clearCreateForm();
-
-  openModal("createModal");
-}
-
-function clearCreateForm(){
-
-  document.getElementById("newOwner").value=
-    addAccountOwner || "";
-
-  document.getElementById("newBank").value="";
-  document.getElementById("newNickname").value="";
-  document.getElementById("newNumber").value="";
-  document.getElementById("newMoney").value="0";
-  document.getElementById("newPassword").value="";
-}
-
-function createAccount(){
-
-  let owner=
-    document.getElementById("newOwner")
-      .value.trim();
-
-  let bank=
-    document.getElementById("newBank")
-      .value.trim();
-
-  let nickname=
-    document.getElementById("newNickname")
-      .value.trim();
-
-  let number=
-    document.getElementById("newNumber")
-      .value.trim();
-
-  const moneyValue=
-    Number(
-      document.getElementById("newMoney").value
-    );
-
-  const password=
-    document.getElementById("newPassword")
-      .value.trim();
-
-  if(!owner){
-    toast("예금주 이름을 입력해.");
-    return;
-  }
-
-  if(!bank){
-
-    bank=
-      DEFAULT_BANKS[
-        Math.floor(
-          Math.random()*DEFAULT_BANKS.length
-        )
-      ];
-  }
-
-  if(!nickname){
-    nickname="주거래 통장";
-  }
-
-  if(!number){
-    number=generateAccountNumber();
-  }
-
-  if(
-    data.accounts.some(
-      a=>a.number===number
-    )
-  ){
-    toast("이미 존재하는 계좌번호야.");
-    return;
-  }
-
-  if(!Number.isFinite(moneyValue) || moneyValue<0){
-    toast("초기 잔액을 확인해.");
-    return;
-  }
-
-  if(!password){
-    toast("계좌 비밀번호를 입력해.");
-    return;
-  }
-
-  const account={
-    id:id(),
-    owner:owner,
-    bank:bank,
-    nickname:nickname,
-    number:number,
-    password:password,
-    money:moneyValue,
-    history:[
-      {
-        type:"in",
-        title:"계좌 개설",
-        amount:moneyValue,
-        date:new Date().toLocaleString("ko-KR")
-      }
-    ]
-  };
-
-  data.accounts.push(account);
-
-  getBankColor(bank);
-
-  saveData();
-
-  closeModal("createModal");
-
-  /*
-    새로 만든 계좌를 바로 선택
-  */
-
-  const people=getPeople();
-
-  data.currentPerson=
-    people.indexOf(owner);
-
-  data.currentAccount=
-    getPersonAccounts(owner)
-      .findIndex(a=>a.id===account.id);
-
-  adminPersonIndex=
-    people.indexOf(owner);
-
-  adminAccountIndex=
-    getPersonAccounts(owner)
-      .findIndex(a=>a.id===account.id);
-
-  saveData();
-
-  render();
-  renderAdmin();
-
-  toast("새 계좌가 만들어졌어.");
-}
-
-
-/* =========================
-   계좌번호 생성
-========================= */
-
-function generateAccountNumber(){
-
-  let number;
-
-  do{
-
-    const a=
-      String(
-        Math.floor(
-          100+Math.random()*900
-        )
-      );
-
-    const b=
-      String(
-        Math.floor(
-          100+Math.random()*900
-        )
-      );
-
-    const c=
-      String(
-        Math.floor(
-          100000+
-          Math.random()*900000
-        )
-      );
-
-    number=`${a}-${b}-${c}`;
-
-  }while(
-    data.accounts.some(
-      account=>account.number===number
-    )
-  );
-
-  return number;
-}
-
-
-/* =========================
-   계좌 삭제
-========================= */
-
-function deleteSelectedAccount(){
-
-  const account=getAdminAccount();
-
-  if(!account){
-    toast("삭제할 계좌가 없어.");
-    return;
-  }
-
-  const ok=
-    confirm(
-      `${account.owner}님의\n${account.bank} ${account.nickname} 계좌를 삭제할까?`
-    );
-
-  if(!ok) return;
-
-  const idToDelete=account.id;
-
-  data.accounts=
-    data.accounts.filter(
-      a=>a.id!==idToDelete
-    );
-
-  if(!data.accounts.length){
-
-    data.accounts.push({
-      id:id(),
-      owner:"강리노",
-      bank:"대한은행",
-      nickname:"주거래 통장",
-      number:generateAccountNumber(),
-      password:"1234",
-      money:0,
-      history:[]
-    });
-  }
-
-  const people=getPeople();
-
-  data.currentPerson=
-    Math.max(
-      0,
-      Math.min(
-        data.currentPerson,
-        people.length-1
-      )
-    );
-
-  data.currentAccount=0;
-
-  adminPersonIndex=
-    Math.max(
-      0,
-      Math.min(
-        adminPersonIndex,
-        people.length-1
-      )
-    );
-
-  adminAccountIndex=0;
-
-  saveData();
-
-  render();
-  renderAdmin();
-
-  toast("계좌를 삭제했어.");
-}
-
-
-/* =========================
-   전체 초기화
-========================= */
-
-function resetAllData(){
-
-  const first=
-    confirm(
-      "⚠️ 정말 전체 데이터를 초기화할까?"
-    );
-
-  if(!first) return;
-
-  const second=
-    confirm(
-      "모든 사람, 계좌, 잔액, 거래내역이 삭제돼.\n정말 초기화할까?"
-    );
-
-  if(!second) return;
-
-  data=defaultData();
-
-  saveData();
-
-  adminPersonIndex=0;
-  adminAccountIndex=0;
-
-  render();
-  renderAdmin();
-
-  toast("전체 데이터를 초기화했어.");
-}
-
-
-/* =========================
-   모달
-========================= */
-
-function openModal(id){
-  document.getElementById(id)
-    .classList.add("show");
-}
-
-function closeModal(id){
-  document.getElementById(id)
-    .classList.remove("show");
-}
-
-
-/* =========================
-   유틸
-========================= */
-
-function money(value){
-
-  return Number(value||0)
-    .toLocaleString("ko-KR")+"원";
-}
-
-function escapeHtml(value){
-
-  return String(value)
-    .replaceAll("&","&amp;")
-    .replaceAll("<","&lt;")
-    .replaceAll(">","&gt;")
-    .replaceAll('"',"&quot;")
-    .replaceAll("'","&#039;");
-}
-
-let toastTimer;
-
 function toast(message){
-
-  const el=document.getElementById("toast");
-
-  el.textContent=message;
-  el.classList.add("show");
-
-  clearTimeout(toastTimer);
-
-  toastTimer=setTimeout(()=>{
-    el.classList.remove("show");
-  },2200);
+ const el=document.getElementById("toast");
+ el.textContent=message;el.classList.add("show");
+ clearTimeout(toast.timer);toast.timer=setTimeout(()=>el.classList.remove("show"),2300);
 }
-
-
-/* =========================
-   시작
-========================= */
-
+function movePerson(d){
+ let list=people();if(!list.length)return;
+ data.person=(data.person+d+list.length)%list.length;data.account=0;save();render();
+}
+function moveAccount(d){
+ let list=personAccounts(currentPerson());if(!list.length)return;
+ data.account=(data.account+d+list.length)%list.length;save();render();
+}
+function render(){
+ const p=currentPerson(),a=currentAccount();
+ if(!a){
+  document.getElementById("accountCard").innerHTML='<div class="empty">등록된 계좌가 없어.</div>';
+  return;
+ }
+ const list=personAccounts(p);
+ document.getElementById("personName").textContent=p+"님";
+ document.getElementById("personMeta").textContent=(data.person+1)+" / "+people().length+"명";
+ document.getElementById("accountBank").textContent=a.bank;
+ document.getElementById("accountMeta").textContent=(data.account+1)+" / "+list.length+"개 계좌"+(a.representative?" · ⭐ 대표계좌":"");
+ document.getElementById("accountCard").innerHTML=`
+ <div class="card" style="--ball:${getColor(a.bank)}">
+  <div class="cardtop"><div class="ball"></div><div><div class="bank">${escapeHtml(a.bank)}</div><div class="representative">${a.representative?"⭐ 대표계좌":""}</div></div></div>
+  <div class="cardlabel">예금주 · ${escapeHtml(a.owner)}</div>
+  <div class="number">${escapeHtml(a.number)}</div>
+  <div class="balance-label">사용 가능 잔액</div>
+  <div class="balance">${money(a.money)}</div>
+ </div>`;
+ document.getElementById("totalAssets").textContent=money(list.reduce((sum,x)=>sum+(Number(x.money)||0),0));
+ document.getElementById("accountTotal").textContent=list.length+"개";
+ renderHistory();
+ renderLookupBanks();
+}
+function renderHistory(){
+ const a=currentAccount();if(!a)return;
+ const q=(document.getElementById("historySearch").value||"").toLowerCase();
+ const filter=document.getElementById("historyFilter").value;
+ const rows=[...a.history].reverse().filter(t=>{
+  let matches=(String(t.title)+" "+String(t.date)).toLowerCase().includes(q);
+  return matches&&(filter==="all"||t.type===filter);
+ });
+ document.getElementById("historyCount").textContent=rows.length+"건";
+ document.getElementById("historyList").innerHTML=rows.length?rows.slice(0,100).map(t=>`
+ <div class="tx"><div class="txleft"><div class="txname">${escapeHtml(t.title)}</div><div class="txdate">${escapeHtml(t.date)}</div></div><div class="txamount ${t.type==="in"?"income":"expense"}">${t.type==="in"?"+":"−"}${money(t.amount)}</div></div>`).join(""):'<div class="empty">검색 결과가 없거나 거래내역이 없어.</div>';
+}
+function renderLookupBanks(){
+ const select=document.getElementById("lookupBank");
+ const old=select.value;
+ const banks=[...new Set(data.accounts.map(a=>a.bank))];
+ select.innerHTML=banks.map(b=>`<option value="${escapeHtml(b)}">${escapeHtml(b)}</option>`).join("");
+ if(banks.includes(old))select.value=old;
+}
+function lookupAccount(){
+ const bank=document.getElementById("lookupBank").value;
+ const number=cleanNumber(document.getElementById("lookupNumber").value);
+ const result=document.getElementById("lookupResult");
+ if(!number){result.innerHTML='<div class="empty">계좌번호를 입력해.</div>';return}
+ const a=data.accounts.find(x=>x.bank===bank&&cleanNumber(x.number)===number);
+ if(!a){result.innerHTML='<div class="empty">일치하는 계좌가 없어.</div>';return}
+ result.innerHTML=`<div class="info" style="margin-top:12px">은행: ${escapeHtml(a.bank)}<br>예금주: ${escapeHtml(a.owner)}<br>계좌번호: ${escapeHtml(a.number)}<br>계좌 상태: 정상(가상)<br><button class="btn wide" onclick="selectFoundAccount('${a.id}')">이 계좌 선택</button></div>`;
+}
+function selectFoundAccount(id){
+ const a=data.accounts.find(x=>x.id===id);if(!a)return;
+ data.person=people().indexOf(a.owner);data.account=personAccounts(a.owner).findIndex(x=>x.id===id);
+ save();render();window.scrollTo({top:0,behavior:"smooth"});
+}
+function openModal(id){document.getElementById(id).classList.add("show")}
+function closeModal(id){document.getElementById(id).classList.remove("show")}
+function openSend(){
+ const from=currentAccount();if(!from)return;
+ const banks=[...new Set(data.accounts.map(a=>a.bank))];
+ document.getElementById("toBank").innerHTML=banks.map(b=>`<option value="${escapeHtml(b)}">${escapeHtml(b)}</option>`).join("");
+ document.getElementById("senderInfo").textContent=`보내는 계좌: ${from.bank} · ${from.number} · 잔액 ${money(from.money)}`;
+ document.getElementById("toNumber").value="";
+ document.getElementById("toAmount").value="";
+ document.getElementById("toPassword").value="";
+ openModal("sendModal");
+}
+function transfer(){
+ const from=currentAccount();if(!from)return;
+ const bank=document.getElementById("toBank").value;
+ const num=cleanNumber(document.getElementById("toNumber").value);
+ const amount=Number(document.getElementById("toAmount").value);
+ const password=document.getElementById("toPassword").value;
+ if(password!==from.password)return toast("계좌 비밀번호가 맞지 않아.");
+ if(!num)return toast("받는 계좌번호를 입력해.");
+ if(!Number.isSafeInteger(amount)||amount<=0)return toast("송금 금액을 확인해.");
+ if(from.money<amount)return toast("잔액이 부족해.");
+ const to=data.accounts.find(a=>a.bank===bank&&cleanNumber(a.number)===num);
+ if(!to)return toast("해당 은행에서 계좌를 찾을 수 없어.");
+ if(to.id===from.id)return toast("같은 계좌로는 송금할 수 없어.");
+ from.money-=amount;to.money+=amount;
+ const date=new Date().toLocaleString("ko-KR");
+ from.history.push({type:"out",title:to.owner+"님에게 송금 · "+to.bank,amount,date});
+ to.history.push({type:"in",title:from.owner+"님에게 입금 · "+from.bank,amount,date});
+ save();closeModal("sendModal");render();toast("가상 송금이 완료됐어.");
+}
+function openDetails(){
+ const a=currentAccount();if(!a)return;
+ document.getElementById("detailsInfo").innerHTML=`은행: ${escapeHtml(a.bank)}<br>예금주: ${escapeHtml(a.owner)}<br>계좌번호: ${escapeHtml(a.number)}<br>현재 잔액: ${money(a.money)}<br>대표계좌: ${a.representative?"예":"아니오"}<br>거래내역: ${a.history.length}건`;
+ openModal("detailsModal");
+}
+function setRepresentative(){
+ const a=currentAccount();if(!a)return;
+ personAccounts(a.owner).forEach(x=>x.representative=false);a.representative=true;save();render();toast("대표계좌를 설정했어.");
+}
+function copyAccountNumber(){
+ const a=currentAccount();if(!a)return;
+ if(navigator.clipboard&&navigator.clipboard.writeText){
+  navigator.clipboard.writeText(a.number).then(()=>toast("계좌번호를 복사했어.")).catch(()=>toast("계좌번호: "+a.number));
+ }else toast("계좌번호: "+a.number);
+}
+function openCreate(newPerson=false){
+ createForNewPerson=newPerson;
+ document.getElementById("createTitle").textContent=newPerson?"새 예금주 계좌 개설":"계좌 추가";
+ document.getElementById("newOwner").value=newPerson?"":(currentPerson()||"");
+ document.getElementById("newOwner").readOnly=!newPerson;
+ document.getElementById("newBank").value="";
+ document.getElementById("newNumber").value="";
+ document.getElementById("newMoney").value="0";
+ document.getElementById("newPassword").value="";
+ openModal("createModal");
+}
+function randomDigits(n){let s="";for(let i=0;i<n;i++)s+=Math.floor(Math.random()*10);return s}
+function generateAccountNumber(){
+ const patterns=[
+ ()=>randomDigits(3)+"-"+randomDigits(3)+"-"+randomDigits(6),
+ ()=>randomDigits(2)+"-"+randomDigits(4)+"-"+randomDigits(5),
+ ()=>randomDigits(8)+"-"+randomDigits(3),
+ ()=>randomDigits(3)+"-"+randomDigits(2)+"-"+randomDigits(4)+"-"+randomDigits(3),
+ ()=>randomDigits(14),
+ ()=>randomDigits(4)+"-"+randomDigits(7),
+ ()=>randomDigits(5)+"-"+randomDigits(5)+"-"+randomDigits(4),
+ ()=>randomDigits(6)+"-"+randomDigits(8),
+ ()=>randomDigits(3)+"-"+randomDigits(7),
+ ()=>randomDigits(10),
+ ()=>randomDigits(4)+"-"+randomDigits(4)+"-"+randomDigits(4)
+ ];
+ let n;
+ do{n=patterns[Math.floor(Math.random()*patterns.length)]()}
+ while(data.accounts.some(a=>cleanNumber(a.number)===cleanNumber(n)));
+ return n;
+}
+function createAccount(){
+ const owner=document.getElementById("newOwner").value.trim();
+ let bank=document.getElementById("newBank").value.trim();
+ let number=document.getElementById("newNumber").value.trim();
+ const amount=Number(document.getElementById("newMoney").value);
+ const password=document.getElementById("newPassword").value;
+ if(!owner)return toast("예금주 이름을 입력해.");
+ if(!bank)bank=DEFAULT_BANKS[Math.floor(Math.random()*DEFAULT_BANKS.length)];
+ if(!number)number=generateAccountNumber();
+ if(!/^[0-9-]+$/.test(number)||cleanNumber(number).length<6)return toast("계좌번호는 숫자 6자리 이상으로 입력해.");
+ if(data.accounts.some(a=>cleanNumber(a.number)===cleanNumber(number)))return toast("이미 등록된 계좌번호야.");
+ if(!Number.isSafeInteger(amount)||amount<0)return toast("초기 잔액을 확인해.");
+ if(!password.trim())return toast("계좌 비밀번호를 설정해.");
+ const hasAccount=personAccounts(owner).length>0;
+ const a={id:uid(),owner,bank,number,password,money:amount,history:[{type:"in",title:"계좌 개설",amount,date:new Date().toLocaleString("ko-KR")}],representative:!hasAccount};
+ data.accounts.push(a);getColor(bank);
+ data.person=people().indexOf(owner);data.account=personAccounts(owner).findIndex(x=>x.id===a.id);
+ adminPersonIndex=data.person;adminAccountIndex=data.account;
+ save();closeModal("createModal");render();
+ if(!document.getElementById("admin").classList.contains("hidden"))renderAdmin();
+ toast("계좌가 개설됐어.");
+}
+function openAdminLogin(){document.getElementById("adminPass").value="";openModal("loginModal")}
+function adminLogin(){
+ if(document.getElementById("adminPass").value!==ADMIN_PASSWORD)return toast("관리자 비밀번호가 틀렸어.");
+ closeModal("loginModal");
+ document.getElementById("home").classList.add("hidden");
+ document.getElementById("admin").classList.remove("hidden");
+ adminPersonIndex=Math.max(0,data.person);adminAccountIndex=data.account;renderAdmin();
+}
+function closeAdmin(){document.getElementById("admin").classList.add("hidden");document.getElementById("home").classList.remove("hidden");render()}
+function adminOwner(){const p=people();if(!p.length)return null;adminPersonIndex=Math.max(0,Math.min(adminPersonIndex,p.length-1));return p[adminPersonIndex]}
+function adminList(){return personAccounts(adminOwner())}
+function adminSelected(){const a=adminList();if(!a.length)return null;adminAccountIndex=Math.max(0,Math.min(adminAccountIndex,a.length-1));return a[adminAccountIndex]}
+function adminMovePerson(d){const p=people();if(!p.length)return;adminPersonIndex=(adminPersonIndex+d+p.length)%p.length;adminAccountIndex=0;renderAdmin()}
+function adminMoveAccount(d){const a=adminList();if(!a.length)return;adminAccountIndex=(adminAccountIndex+d+a.length)%a.length;renderAdmin()}
+function renderAdmin(){
+ const p=adminOwner(),list=adminList(),a=adminSelected();
+ document.getElementById("adminPerson").textContent=p?p+"님":"계좌 없음";
+ document.getElementById("adminBank").textContent=a?a.bank:"계좌 없음";
+ document.getElementById("adminCount").textContent=a?`${adminAccountIndex+1} / ${list.length}개 계좌`:"";
+ document.getElementById("adminInfo").innerHTML=a?`은행: ${escapeHtml(a.bank)}<br>예금주: ${escapeHtml(a.owner)}<br>계좌번호: ${escapeHtml(a.number)}<br>잔액: ${money(a.money)}<br>대표계좌: ${a.representative?"예":"아니오"}`:"등록된 계좌가 없어.";
+ document.getElementById("adminBalance").value=a?a.money:"";
+}
+function changeBalance(){
+ const a=adminSelected(),v=Number(document.getElementById("adminBalance").value);if(!a)return;
+ if(!Number.isSafeInteger(v)||v<0)return toast("올바른 잔액을 입력해.");
+ const delta=v-a.money;a.money=v;
+ if(delta!==0)a.history.push({type:delta>0?"in":"out",title:"관리자 잔액 조정",amount:Math.abs(delta),date:new Date().toLocaleString("ko-KR")});
+ save();renderAdmin();render();toast("잔액을 변경했어.");
+}
+function adminChangePassword(){
+ const a=adminSelected();if(!a)return;
+ const p=prompt("새 계좌 비밀번호를 입력해.");if(p===null)return;
+ if(!p.trim())return toast("비밀번호를 입력해.");
+ a.password=p;save();toast("비밀번호를 변경했어.");
+}
+function deleteAccount(){
+ const a=adminSelected();if(!a)return toast("삭제할 계좌가 없어.");
+ if(!confirm(`${a.owner}님의 ${a.bank} 계좌를 삭제할까?`))return;
+ data.accounts=data.accounts.filter(x=>x.id!==a.id);
+ if(!data.accounts.length)data=freshData();
+ data.person=Math.max(0,Math.min(data.person,people().length-1));data.account=0;
+ adminPersonIndex=Math.max(0,Math.min(adminPersonIndex,people().length-1));adminAccountIndex=0;
+ save();render();renderAdmin();toast("계좌를 삭제했어.");
+}
+function resetData(){
+ if(!confirm("모든 계좌, 잔액, 거래내역을 삭제할까?"))return;
+ if(!confirm("이 작업은 되돌릴 수 없어. 정말 초기화할까?"))return;
+ data=freshData();adminPersonIndex=0;adminAccountIndex=0;save();render();renderAdmin();toast("초기화했어.");
+}
+function openPasswordChange(){
+ const a=currentAccount();if(!a)return;
+ document.getElementById("oldPassword").value="";
+ document.getElementById("newPasswordValue").value="";
+ document.getElementById("confirmPasswordValue").value="";
+ openModal("passwordModal");
+}
+function saveNewPassword(){
+ const a=currentAccount();if(!a)return;
+ const old=document.getElementById("oldPassword").value;
+ const next=document.getElementById("newPasswordValue").value;
+ const confirmValue=document.getElementById("confirmPasswordValue").value;
+ if(old!==a.password)return toast("현재 비밀번호가 맞지 않아.");
+ if(!next.trim())return toast("새 비밀번호를 입력해.");
+ if(next!==confirmValue)return toast("새 비밀번호가 서로 달라.");
+ a.password=next;save();closeModal("passwordModal");toast("비밀번호를 변경했어.");
+}
 render();
-
 </script>
-
 </body>
-      </html>
+</html>
