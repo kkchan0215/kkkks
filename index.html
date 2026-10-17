@@ -3,468 +3,410 @@
 <html lang="ko">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>모아뱅크 ULTRA</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>MOA BANK INFINITY</title>
 <style>
-@import url('https://fonts.googleapis.com/css2?family=Pretendard:wght@400;500;600;700;800;900&display=swap');
-
+@import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&family=Noto+Serif+KR:wght@400;500;600;700;800;900&display=swap');
 :root{
-  --bg:#f7f4ed;--card:#fffdf8;--text:#28271f;--muted:#8d897e;
-  --gold:#c69b47;--gold2:#f3d99a;--line:#ece5d7;
-  --green:#198b67;--red:#d45e58;--shadow:0 16px 50px #6b53200d;
+ --bg:#f5f2ea;--paper:#fffdf8;--ink:#202b30;--muted:#898b84;
+ --gold:#bd9858;--gold2:#f1dfb4;--line:#e8e1d3;--navy:#17282d;
+ --green:#267a5b;--red:#bc5650;--shadow:0 22px 65px #24302b0c;
 }
 *{box-sizing:border-box}
-body{
- margin:0;background:
- radial-gradient(ellipse at 5% 0%,#f7e9c8 0,transparent 35%),
- radial-gradient(ellipse at 100% 20%,#e9e4d4 0,transparent 30%),var(--bg);
- color:var(--text);font-family:Pretendard,'Malgun Gothic',sans-serif;
- min-height:100vh;transition:background .45s,color .35s;
-}
-body.dark{--bg:#171713;--card:#23231e;--text:#f8f2e5;--muted:#aaa392;--line:#3b392f;--shadow:0 18px 60px #0005;background:radial-gradient(ellipse at 0% 0%,#493b20 0,transparent 38%),var(--bg)}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:"DM Sans","Noto Serif KR",sans-serif;transition:background .4s,color .4s;min-height:100vh}
+body:before{content:"";position:fixed;inset:0;pointer-events:none;opacity:.24;background-image:radial-gradient(#bda773 0.55px,transparent .55px);background-size:17px 17px;z-index:-1}
+body.dark{--bg:#101719;--paper:#192225;--ink:#f4f0e6;--muted:#a5aaa4;--line:#344043;--navy:#101719;--shadow:0 22px 65px #0003}
 button,input,select{font:inherit}
-button{cursor:pointer;transition:transform .2s,filter .2s,box-shadow .2s}
-button:hover{filter:brightness(1.04);transform:translateY(-2px)}
-button:active{transform:scale(.96)}
-.topbar{position:sticky;top:0;z-index:10;background:color-mix(in srgb,var(--bg) 85%,transparent);backdrop-filter:blur(20px);border-bottom:1px solid var(--line)}
-.topinner{max-width:1180px;margin:auto;padding:17px 22px;display:flex;align-items:center;justify-content:space-between;gap:15px}
-.brand{display:flex;align-items:center;gap:11px;font-size:21px;font-weight:900;letter-spacing:-1px}
-.logo{width:42px;height:42px;border-radius:15px;background:linear-gradient(135deg,#f9e7b6,#b88835);display:grid;place-items:center;color:#fff;font-size:22px;box-shadow:0 7px 18px #b98b3938;animation:logoFloat 4s ease-in-out infinite}
-.brand small{display:block;color:var(--muted);font-size:10px;letter-spacing:2px;margin-top:3px}
-.topactions{display:flex;gap:8px}
-.iconbtn{border:1px solid var(--line);background:var(--card);color:var(--text);border-radius:13px;padding:11px 13px}
-.wrap{max-width:1180px;margin:30px auto;padding:0 22px 60px}
-.welcome{display:flex;align-items:end;justify-content:space-between;gap:16px;margin:15px 0 25px;animation:rise .65s both}
-.eyebrow{font-size:11px;font-weight:800;letter-spacing:2.5px;color:var(--gold);text-transform:uppercase}
-h1{font-size:clamp(27px,4vw,40px);letter-spacing:-1.8px;margin:9px 0 7px}
-.sub{color:var(--muted);font-size:13px;line-height:1.7}
-.pill{display:inline-flex;align-items:center;gap:6px;border-radius:100px;padding:8px 12px;background:#d9efe5;color:#187953;font-size:11px;font-weight:800}
-.layout{display:grid;grid-template-columns:minmax(0,1.55fr) minmax(270px,.8fr);gap:20px}
-.left,.right{display:grid;align-content:start;gap:20px}
-.card{background:var(--card);border:1px solid var(--line);border-radius:25px;padding:24px;box-shadow:var(--shadow);animation:rise .65s both;position:relative;overflow:hidden}
-.card:nth-child(2){animation-delay:.08s}.card:nth-child(3){animation-delay:.16s}
-.balance{background:linear-gradient(125deg,#302b20,#51432a 55%,#8e6b32);color:#fff;border:0;min-height:255px}
-.balance:before{content:"";position:absolute;width:290px;height:290px;right:-70px;top:-140px;border-radius:50%;border:1px solid #ffffff25;box-shadow:0 0 0 28px #ffffff09,0 0 0 57px #ffffff06}
-.balance:after{content:"";position:absolute;width:190px;height:190px;right:45px;bottom:-140px;border-radius:50%;background:#f3d99a18;filter:blur(10px)}
-.balance .eyebrow{color:#e8cb85}
-.balanceTop{display:flex;justify-content:space-between;align-items:center;gap:12px;position:relative;z-index:1}
-.balanceLabel{font-size:13px;color:#eee1c6}
-.accountSelect{max-width:230px;background:#ffffff17;color:#fff;border:1px solid #ffffff30;border-radius:12px;padding:10px;font-size:12px}
-.accountSelect option{color:#222}
-.amount{font-size:clamp(30px,4.5vw,47px);font-weight:900;letter-spacing:-2px;margin:25px 0 8px;position:relative;z-index:1;word-break:break-word}
-.amount.bump{animation:amountBump .45s ease}
-.accountMeta{font-size:12px;color:#e5d7ba;position:relative;z-index:1}
-.balanceBottom{display:flex;gap:10px;margin-top:25px;position:relative;z-index:1}
-.btn{border:0;border-radius:13px;padding:12px 16px;font-weight:800;font-size:12px}
-.btnGold{background:linear-gradient(120deg,#f9e6b5,#d8ad5b);color:#392b12;box-shadow:0 6px 16px #0002}
-.btnGlass{background:#ffffff16;border:1px solid #ffffff30;color:#fff}
-.btnLight{background:var(--bg);border:1px solid var(--line);color:var(--text)}
-.btnRed{background:#f9e4e1;color:#ad3c34}
-.btnGreen{background:#dff3e9;color:#176c4d}
-.sectionHead{display:flex;justify-content:space-between;align-items:center;gap:10px;margin-bottom:20px}
-.sectionHead h2{font-size:17px;letter-spacing:-.5px;margin:0}
-.sectionHead small{font-size:11px;color:var(--muted)}
-.quickGrid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}
-.quick{background:var(--bg);border:1px solid var(--line);border-radius:18px;padding:16px 5px;color:var(--text);font-weight:700;font-size:12px}
-.quick .qicon{width:40px;height:40px;margin:0 auto 10px;border-radius:14px;display:grid;place-items:center;font-size:19px;background:linear-gradient(135deg,#fff1cb,#f0dfb4)}
-.quick:hover .qicon{animation:wiggle .4s}
-.field{margin-bottom:14px}
-.field label{display:block;font-size:12px;font-weight:800;margin-bottom:8px}
-.field input,.field select{width:100%;border:1px solid var(--line);background:var(--bg);color:var(--text);padding:13px 14px;border-radius:13px;outline:none;transition:border .2s,box-shadow .2s}
-.field input:focus,.field select:focus{border-color:var(--gold);box-shadow:0 0 0 4px #c69b471c}
+button{cursor:pointer;transition:transform .2s,box-shadow .25s,background .25s,filter .2s}
+button:hover{transform:translateY(-2px);filter:brightness(1.04)}
+button:active{transform:scale(.97)}
+.top{position:sticky;top:0;z-index:10;background:color-mix(in srgb,var(--bg) 86%,transparent);backdrop-filter:blur(22px);border-bottom:1px solid var(--line)}
+.topin{max-width:1240px;margin:auto;padding:17px 25px;display:flex;align-items:center;justify-content:space-between;gap:15px}
+.brand{display:flex;align-items:center;gap:13px}
+.emblem{height:45px;width:45px;border-radius:50%;display:grid;place-items:center;background:linear-gradient(145deg,#f8e6ba,#aa8240);color:#fff;font-size:23px;box-shadow:0 5px 25px #bd98584a;animation:emblem 5s ease-in-out infinite}
+.brandname{font-family:"Noto Serif KR",serif;font-size:20px;font-weight:900;letter-spacing:-1px}
+.brandname small{display:block;font:700 9px "DM Sans",sans-serif;letter-spacing:3px;color:var(--gold);margin-top:4px}
+.topright{display:flex;gap:8px}
+.outline{background:var(--paper);border:1px solid var(--line);color:var(--ink);padding:11px 14px;border-radius:12px;font-size:12px;font-weight:700}
+.wrap{max-width:1240px;margin:38px auto;padding:0 25px 50px}
+.hero{display:flex;align-items:flex-end;justify-content:space-between;gap:20px;margin:20px 0 30px;animation:rise .65s both}
+.kicker{font-size:10px;font-weight:800;letter-spacing:3px;color:var(--gold)}
+h1{font-family:"Noto Serif KR",serif;font-size:clamp(29px,4.2vw,47px);letter-spacing:-2px;line-height:1.3;margin:11px 0}
+.hero p{font-size:12px;color:var(--muted);line-height:1.9;margin:0}
+.status{border:1px solid var(--line);border-radius:100px;padding:9px 13px;color:var(--muted);font-size:10px;white-space:nowrap}
+.grid{display:grid;grid-template-columns:minmax(0,1.5fr) minmax(285px,.8fr);gap:21px}
+.stack{display:grid;align-content:start;gap:21px}
+.card{background:var(--paper);border:1px solid var(--line);border-radius:23px;padding:24px;box-shadow:var(--shadow);animation:rise .65s both;position:relative;overflow:hidden}
+.card:nth-child(2){animation-delay:.08s}.card:nth-child(3){animation-delay:.15s}
+.balance{background:linear-gradient(125deg,#14262a 0%,#20373a 48%,#705d3b 100%);color:#fff;border:0;min-height:286px;padding:29px}
+.balance:before{content:"";position:absolute;right:-95px;top:-200px;width:360px;height:360px;border-radius:50%;border:1px solid #f2dfb455;box-shadow:0 0 0 30px #ffffff08,0 0 0 65px #ffffff06,0 0 0 100px #ffffff03;animation:orbit 35s linear infinite}
+.balance:after{content:"";position:absolute;inset:auto -20% -75% 25%;height:210px;background:#e9c77b18;filter:blur(30px);pointer-events:none}
+.balanceHead,.balanceFoot{position:relative;z-index:1;display:flex;align-items:center;justify-content:space-between;gap:12px}
+.balance .kicker{color:#e8cd8e}
+.balanceLabel{font-size:12px;color:#e4e0d5;margin-top:7px}
+.select{max-width:230px;background:#ffffff12;border:1px solid #ffffff38;border-radius:11px;color:#fff;padding:10px;font-size:11px}
+.select option{color:#202b30}
+.amount{font-family:"DM Sans",sans-serif;font-weight:800;font-size:clamp(32px,4vw,49px);letter-spacing:-2.3px;margin:31px 0 10px;position:relative;z-index:1;word-break:break-word}
+.amount.bump{animation:countUp .45s}
+.meta{font-size:11px;color:#d9d4c5;position:relative;z-index:1}
+.balanceFoot{justify-content:flex-start;margin-top:29px}
+.btn{border:0;border-radius:12px;padding:12px 16px;font-size:12px;font-weight:800}
+.primary{background:linear-gradient(120deg,#f5e4bd,#c9a15b);color:#342918;box-shadow:0 7px 20px #0002}
+.glass{background:#ffffff12;border:1px solid #ffffff35;color:#fff}
+.soft{background:var(--bg);border:1px solid var(--line);color:var(--ink)}
+.danger{background:#f6e4e0;color:#a23e37}
+.head{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:19px}
+.head h2{font-family:"Noto Serif KR",serif;font-size:16px;letter-spacing:-.5px;margin:0}
+.head small{color:var(--muted);font-size:9px;letter-spacing:1.5px}
+.quickgrid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+.quick{padding:17px 8px;background:var(--bg);border:1px solid var(--line);border-radius:16px;color:var(--ink);font-size:11px;font-weight:700}
+.qicon{height:43px;width:43px;margin:0 auto 11px;display:grid;place-items:center;border-radius:14px;background:linear-gradient(145deg,#f8edcf,#e8d7af);color:#71582b;font-size:19px}
+.quick:hover .qicon{animation:wiggle .35s}
+.field{margin:0 0 14px}
+.field label{display:block;font-size:11px;font-weight:800;margin-bottom:8px}
+.field input,.field select{width:100%;padding:13px 14px;border-radius:12px;border:1px solid var(--line);background:var(--bg);color:var(--ink);outline:none;transition:.2s}
+.field input:focus,.field select:focus{border-color:var(--gold);box-shadow:0 0 0 4px #bd98581c}
 .full{width:100%}
-.historyList{display:grid;gap:0}
-.tx{display:flex;align-items:center;gap:12px;padding:15px 0;border-bottom:1px solid var(--line);animation:rise .35s both}
-.tx:last-child{border:0;padding-bottom:0}
-.txIcon{width:42px;height:42px;border-radius:15px;background:var(--bg);display:grid;place-items:center;font-size:19px;flex-shrink:0}
-.txInfo{min-width:0;flex:1}
-.txInfo strong{font-size:13px;display:block;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-.txInfo small{display:block;color:var(--muted);font-size:11px;margin-top:5px}
-.txAmount{text-align:right;font-weight:900;font-size:13px;white-space:nowrap}
+.tx{display:flex;align-items:center;gap:12px;padding:14px 0;border-bottom:1px solid var(--line);animation:rise .3s both}
+.tx:last-child{border-bottom:0;padding-bottom:0}
+.txicon{width:42px;height:42px;flex-shrink:0;border-radius:14px;background:var(--bg);display:grid;place-items:center;font-size:18px}
+.txinfo{min-width:0;flex:1}
+.txinfo strong{display:block;font-size:12px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.txinfo small{display:block;font-size:10px;color:var(--muted);margin-top:5px;line-height:1.6}
+.txnum{text-align:right;font-size:12px;font-weight:800;white-space:nowrap}
 .plus{color:var(--green)}.minus{color:var(--red)}
-.empty{padding:25px 5px;text-align:center;color:var(--muted);font-size:12px}
-.statgrid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
-.stat{padding:15px;border:1px solid var(--line);border-radius:16px;background:var(--bg)}
-.stat small{color:var(--muted);font-size:11px}
-.stat strong{display:block;margin-top:8px;font-size:20px;letter-spacing:-.7px}
-.notice{padding:13px 14px;border-radius:14px;background:#f6ecd4;color:#74551c;font-size:12px;line-height:1.65;margin-top:14px}
-body.dark .notice{background:#40351e;color:#f1d99c}
-.adminTag{display:inline-block;font-size:10px;font-weight:800;border-radius:8px;background:#f4e4bf;color:#7e5a1b;padding:5px 8px}
-.footer{text-align:center;color:var(--muted);font-size:10px;line-height:1.8;padding:25px 0}
-.modalBack{position:fixed;inset:0;background:#17140ed1;backdrop-filter:blur(9px);z-index:30;display:none;align-items:center;justify-content:center;padding:18px}
-.modalBack.show{display:flex;animation:fadeIn .22s}
-.modal{width:min(450px,100%);max-height:90vh;overflow:auto;background:var(--card);color:var(--text);border:1px solid var(--line);border-radius:25px;padding:25px;box-shadow:0 30px 100px #0005;animation:modalIn .35s cubic-bezier(.2,.8,.2,1)}
-.modal h2{margin:0 0 8px;font-size:22px;letter-spacing:-1px}
-.modal p{color:var(--muted);font-size:12px;line-height:1.7;margin:0 0 22px}
-.modalBtns{display:flex;gap:9px;margin-top:18px}
-.modalBtns>*{flex:1}
-.toastArea{position:fixed;right:20px;bottom:20px;z-index:50;display:grid;gap:10px;width:min(340px,calc(100% - 40px))}
-.toast{padding:15px 17px;background:#302b20;color:#fff;border:1px solid #c69b4770;border-radius:16px;box-shadow:0 14px 35px #0003;font-size:13px;animation:toastIn .4s cubic-bezier(.2,.8,.2,1)}
+.stats{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.stat{border:1px solid var(--line);background:var(--bg);border-radius:15px;padding:15px}
+.stat small{color:var(--muted);font-size:10px}
+.stat strong{display:block;margin-top:8px;font-size:19px;letter-spacing:-.7px}
+.note{margin-top:15px;background:#f4ecd9;color:#765d30;padding:13px;border-radius:12px;font-size:10px;line-height:1.8}
+body.dark .note{background:#342f24;color:#e5d09c}
+.empty{text-align:center;padding:25px 4px;color:var(--muted);font-size:11px;line-height:1.8}
+.tag{font-size:9px;letter-spacing:1px;background:#f1e3c4;color:#765824;border-radius:6px;padding:6px 8px;font-weight:800}
+.footer{text-align:center;padding:30px 0;color:var(--muted);font-size:9px;line-height:2;letter-spacing:.6px}
+.modalback{position:fixed;inset:0;z-index:30;background:#101719c9;backdrop-filter:blur(10px);display:none;align-items:center;justify-content:center;padding:18px}
+.modalback.show{display:flex;animation:fade .2s}
+.modal{width:min(460px,100%);max-height:90vh;overflow:auto;background:var(--paper);border:1px solid var(--line);border-radius:24px;padding:26px;box-shadow:0 35px 100px #0005;animation:modalIn .35s cubic-bezier(.2,.8,.2,1)}
+.modal h2{font-family:"Noto Serif KR",serif;margin:0 0 8px;font-size:22px;letter-spacing:-1px}
+.modal p{font-size:11px;line-height:1.8;color:var(--muted);margin:0 0 22px}
+.modalbuttons{display:flex;gap:9px;margin-top:18px}
+.modalbuttons>*{flex:1}
+.toastarea{position:fixed;z-index:50;right:20px;bottom:20px;display:grid;gap:9px;width:min(330px,calc(100% - 40px))}
+.toast{background:#203034;color:#fff;border:1px solid #bd98587a;padding:15px 17px;border-radius:14px;font-size:12px;box-shadow:0 15px 40px #0003;animation:toastIn .35s}
 .toast.out{animation:toastOut .3s forwards}
-.sparkle{position:fixed;pointer-events:none;z-index:60;width:7px;height:7px;border-radius:50%;background:#e3b657;animation:sparkle .8s ease-out forwards}
+.spark{position:fixed;pointer-events:none;z-index:60;width:6px;height:6px;border-radius:50%;background:#e2bd70;animation:spark .8s ease-out forwards}
 @keyframes rise{from{opacity:0;transform:translateY(18px)}to{opacity:1;transform:translateY(0)}}
-@keyframes fadeIn{from{opacity:0}to{opacity:1}}
+@keyframes emblem{0%,100%{transform:rotate(0) translateY(0)}50%{transform:rotate(5deg) translateY(-3px)}}
+@keyframes orbit{to{transform:rotate(360deg)}}
+@keyframes countUp{0%{transform:scale(1)}45%{transform:scale(1.045);color:#f1d79c}100%{transform:scale(1)}}
+@keyframes wiggle{30%{transform:rotate(-8deg)}70%{transform:rotate(8deg)}}
+@keyframes fade{from{opacity:0}to{opacity:1}}
 @keyframes modalIn{from{opacity:0;transform:translateY(20px) scale(.96)}to{opacity:1;transform:translateY(0) scale(1)}}
-@keyframes logoFloat{0%,100%{transform:translateY(0) rotate(0)}50%{transform:translateY(-3px) rotate(-3deg)}}
-@keyframes amountBump{0%{transform:scale(1)}45%{transform:scale(1.045);color:#f7d88b}100%{transform:scale(1)}}
-@keyframes wiggle{0%,100%{transform:rotate(0)}30%{transform:rotate(-8deg)}70%{transform:rotate(8deg)}}
-@keyframes toastIn{from{opacity:0;transform:translateX(25px)}to{opacity:1;transform:translateX(0)}}
-@keyframes toastOut{to{opacity:0;transform:translateX(35px)}}
-@keyframes sparkle{to{opacity:0;transform:translate(var(--dx),var(--dy)) scale(.1)}}
-@media(max-width:800px){.layout{grid-template-columns:1fr}.right{grid-template-columns:1fr 1fr}.right .card:last-child{grid-column:1/-1}}
-@media(max-width:540px){.topinner{padding:13px 15px}.wrap{padding:0 14px 35px;margin-top:20px}.brand{font-size:18px}.logo{width:37px;height:37px}.topactions .iconbtn{padding:10px}.welcome{align-items:start;flex-direction:column}.card{padding:19px;border-radius:21px}.quickGrid{grid-template-columns:repeat(2,1fr)}.right{grid-template-columns:1fr}.right .card:last-child{grid-column:auto}.amount{font-size:34px}.balance{min-height:240px}.balanceBottom .btn{flex:1}}
+@keyframes toastIn{from{opacity:0;transform:translateX(20px)}to{opacity:1;transform:translateX(0)}}
+@keyframes toastOut{to{opacity:0;transform:translateX(30px)}}
+@keyframes spark{to{opacity:0;transform:translate(var(--x),var(--y)) scale(.1)}}
+@media(max-width:820px){.grid{grid-template-columns:1fr}.right{grid-template-columns:1fr 1fr}.right .card:last-child{grid-column:1/-1}}
+@media(max-width:540px){.topin{padding:13px 14px}.wrap{padding:0 14px 35px;margin-top:22px}.brandname{font-size:17px}.emblem{width:39px;height:39px}.topright .outline{padding:10px;font-size:10px}.hero{align-items:flex-start;flex-direction:column}.card{padding:19px;border-radius:19px}.balance{padding:22px;min-height:260px}.amount{font-size:34px}.quickgrid{grid-template-columns:repeat(3,1fr);gap:6px}.quick{padding:13px 4px;font-size:10px}.qicon{width:37px;height:37px}.right{grid-template-columns:1fr}.right .card:last-child{grid-column:auto}.select{max-width:150px}}
 @media(prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:.01ms!important;transition-duration:.01ms!important}}
 </style>
 </head>
 <body>
-<header class="topbar">
- <div class="topinner">
-  <div class="brand"><div class="logo">✦</div><div>모아뱅크<small>ULTRA PRIVATE BANK</small></div></div>
-  <div class="topactions">
-   <button class="iconbtn" onclick="toggleTheme()" title="테마 변경">◐</button>
-   <button class="iconbtn" onclick="openAdmin()">⚙ 관리자</button>
+<header class="top">
+ <div class="topin">
+  <div class="brand"><div class="emblem">✧</div><div class="brandname">모아뱅크<small>INFINITY PRIVATE BANK</small></div></div>
+  <div class="topright">
+   <button class="outline" onclick="toggleTheme()">◐ 테마</button>
+   <button class="outline" onclick="openAdmin()">♙ 관리자</button>
   </div>
  </div>
 </header>
 
 <main class="wrap">
- <div class="welcome">
-  <div><div class="eyebrow">YOUR MONEY, YOUR WORLD</div><h1>오늘도 반가워요 ✨</h1><div class="sub">나의 자산을 한눈에 확인하고, 간편하게 관리해 보세요.</div></div>
-  <span class="pill">● 가상 시뮬레이터</span>
+ <div class="hero">
+  <div><div class="kicker">A HIGHER LEVEL OF BANKING</div><h1>당신의 자산을,<br>더 특별하게.</h1><p>모아뱅크 INFINITY에서 가상 자산을 관리해 보세요.<br>차분한 디자인과 간편한 계좌 관리가 함께합니다.</p></div>
+  <div class="status">✦ VIRTUAL BANKING EXPERIENCE</div>
  </div>
 
- <div class="layout">
-  <section class="left">
+ <div class="grid">
+  <section class="stack">
    <div class="card balance">
-    <div class="balanceTop"><div><div class="eyebrow">TOTAL BALANCE</div><div class="balanceLabel">선택한 계좌의 잔액</div></div><select class="accountSelect" id="accountSelect" onchange="selectAccount(this.value)"></select></div>
+    <div class="balanceHead"><div><div class="kicker">TOTAL BALANCE</div><div class="balanceLabel">선택 계좌의 현재 잔액</div></div><select class="select" id="accountSelect" onchange="selectAccount(this.value)"></select></div>
     <div class="amount" id="balance">100,000원</div>
-    <div class="accountMeta" id="accountMeta">모아뱅크 · 내 첫 계좌</div>
-    <div class="balanceBottom"><button class="btn btnGold" onclick="openTransfer()">↗ 송금하기</button><button class="btn btnGlass" onclick="copyAccount()">▣ 계좌번호 복사</button></div>
+    <div class="meta" id="accountMeta">모아뱅크 · 내 첫 계좌</div>
+    <div class="balanceFoot"><button class="btn primary" onclick="openTransfer()">↗ 송금하기</button><button class="btn glass" onclick="copyAccount()">계좌번호 복사</button></div>
    </div>
 
    <div class="card">
-    <div class="sectionHead"><h2>빠른 메뉴</h2><small>QUICK ACTIONS</small></div>
-    <div class="quickGrid">
+    <div class="head"><h2>퀵 서비스</h2><small>QUICK SERVICES</small></div>
+    <div class="quickgrid">
      <button class="quick" onclick="openTransfer()"><div class="qicon">↗</div>송금하기</button>
      <button class="quick" onclick="openLookup()"><div class="qicon">⌕</div>계좌 조회</button>
-     <button class="quick" onclick="openAddAccount()"><div class="qicon">＋</div>계좌 추가</button>
      <button class="quick" onclick="exportBackup()"><div class="qicon">⇩</div>백업 저장</button>
     </div>
    </div>
 
    <div class="card">
-    <div class="sectionHead"><h2>최근 거래 내역</h2><button class="btn btnLight" onclick="exportCSV()">CSV 내보내기</button></div>
-    <div class="historyList" id="history"></div>
+    <div class="head"><h2>거래 기록</h2><button class="btn soft" onclick="exportCSV()">CSV 저장</button></div>
+    <div id="history"></div>
    </div>
   </section>
 
-  <aside class="right">
+  <aside class="stack right">
    <div class="card">
-    <div class="sectionHead"><h2>자산 요약</h2><span>✧</span></div>
-    <div class="statgrid">
+    <div class="head"><h2>자산 리포트</h2><span style="color:var(--gold)">✧</span></div>
+    <div class="stats">
      <div class="stat"><small>보유 계좌</small><strong id="accountCount">1개</strong></div>
      <div class="stat"><small>전체 잔액</small><strong id="totalBalance">100,000원</strong></div>
-     <div class="stat"><small>거래 건수</small><strong id="txCount">0건</strong></div>
+     <div class="stat"><small>거래 내역</small><strong id="txCount">0건</strong></div>
      <div class="stat"><small>즐겨찾기</small><strong id="favCount">0개</strong></div>
     </div>
-    <div class="notice">🔒 이 페이지는 브라우저에서 실행되는 가상 은행입니다. 실제 금융기관과 연결되어 있지 않습니다.</div>
+    <div class="note">🔐 가상 시뮬레이터입니다. 실제 은행이나 결제 시스템과 연결되어 있지 않습니다.</div>
    </div>
 
    <div class="card">
-    <div class="sectionHead"><h2>즐겨찾는 계좌</h2><small>FAVORITES</small></div>
+    <div class="head"><h2>즐겨찾는 계좌</h2><small>FAVORITES</small></div>
     <div id="favorites"></div>
-    <button class="btn btnLight full" style="margin-top:14px" onclick="openLookup()">계좌 찾아서 즐겨찾기</button>
+    <button class="btn soft full" style="margin-top:12px" onclick="openLookup()">계좌 조회 후 즐겨찾기</button>
    </div>
 
    <div class="card">
-    <div class="sectionHead"><h2>내 계좌 관리</h2><span class="adminTag">MY ACCOUNTS</span></div>
-    <div class="field"><label>계좌 별칭 변경</label><input id="aliasInput" placeholder="예: 나의 저축 통장" maxlength="30"></div>
-    <button class="btn btnGold full" onclick="saveAlias()">별칭 저장하기</button>
-    <button class="btn btnLight full" style="margin-top:9px" onclick="changeAccountPassword()">계좌 비밀번호 변경</button>
+    <div class="head"><h2>개인 설정</h2><span class="tag">PERSONAL</span></div>
+    <div class="field"><label>현재 계좌 별칭</label><input id="aliasInput" maxlength="30" placeholder="예: 나의 저축 통장"></div>
+    <button class="btn primary full" onclick="saveAlias()">별칭 저장</button>
+    <button class="btn soft full" style="margin-top:9px" onclick="changeAccountPassword()">계좌 비밀번호 변경</button>
    </div>
   </aside>
  </div>
- <div class="footer">MOABANK ULTRA · VIRTUAL FINANCE EXPERIENCE<br>이 사이트의 계좌와 거래 내역은 현재 브라우저에 저장됩니다.</div>
+ <div class="footer">MOA BANK INFINITY · PRIVATE VIRTUAL BANK<br>ACCOUNT MANAGEMENT EXPERIENCE · LOCAL BROWSER STORAGE</div>
 </main>
 
-<div class="modalBack" id="modalBack" onclick="backdropClose(event)">
- <div class="modal" id="modal"><h2 id="modalTitle"></h2><p id="modalDesc"></p><div id="modalBody"></div><div class="modalBtns" id="modalBtns"></div></div>
+<div class="modalback" id="modalBack" onclick="backdropClose(event)">
+ <div class="modal"><h2 id="modalTitle"></h2><p id="modalDesc"></p><div id="modalBody"></div><div class="modalbuttons" id="modalButtons"></div></div>
 </div>
-<div class="toastArea" id="toastArea"></div>
+<div class="toastarea" id="toastArea"></div>
 
 <script>
-const KEY='moabank_ultra_animated_v2';
-const ADMIN_KEY='moabank_ultra_admin_hash_v2';
-const ACCPASS_KEY='moabank_ultra_account_password_v2';
-
-let state=loadState();
-let currentId=state.accounts[0]?.id;
-let favorites=state.favorites||[];
-let transactions=state.transactions||[];
-let lastReceipt=null;
-
-function id(){return 'a'+Date.now().toString(36)+Math.random().toString(36).slice(2,7)}
-function defaultState(){return {accounts:[{id:id(),owner:'나',bank:'모아뱅크',number:'100-2026-0001',alias:'내 첫 계좌',balance:100000}],transactions:[],favorites:[]}}
-function loadState(){
- try{let s=JSON.parse(localStorage.getItem(KEY));if(s&&Array.isArray(s.accounts)&&s.accounts.length)return s}catch(e){}
- let s=defaultState();localStorage.setItem(KEY,JSON.stringify(s));return s;
-}
-function save(){state.favorites=favorites;state.transactions=transactions;localStorage.setItem(KEY,JSON.stringify(state))}
-function current(){return state.accounts.find(a=>a.id===currentId)||state.accounts[0]}
-function money(n){return Math.round(Number(n)||0).toLocaleString('ko-KR')+'원'}
+const DB='moa_infinity_db_v1',ADMIN='moa_infinity_admin_v1',PASSES='moa_infinity_pass_v1';
+function uid(){return 'id'+Date.now().toString(36)+Math.random().toString(36).slice(2,8)}
+function fresh(){return {accounts:[{id:uid(),owner:'나',bank:'모아뱅크',number:'100-2026-0001',alias:'내 첫 계좌',balance:100000}],transactions:[],favorites:[]}}
+function load(){try{const d=JSON.parse(localStorage.getItem(DB));if(d&&Array.isArray(d.accounts)&&d.accounts.length)return d}catch(e){}const d=fresh();localStorage.setItem(DB,JSON.stringify(d));return d}
+let data=load(),currentId=data.accounts[0].id;
+let favorites=data.favorites||[],transactions=data.transactions||[];
+let pending=null;
+function save(){data.favorites=favorites;data.transactions=transactions;localStorage.setItem(DB,JSON.stringify(data))}
+function acct(){return data.accounts.find(a=>a.id===currentId)||data.accounts[0]}
+function won(n){return Math.round(Number(n)||0).toLocaleString('ko-KR')+'원'}
 function esc(s){return String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
 function render(){
- if(!state.accounts.length)state.accounts=defaultState().accounts;
- if(!state.accounts.some(a=>a.id===currentId))currentId=state.accounts[0].id;
- const a=current();
- document.getElementById('accountSelect').innerHTML=state.accounts.map(x=>`<option value="${esc(x.id)}" ${x.id===a.id?'selected':''}>${esc(x.alias||x.owner+' 계좌')}</option>`).join('');
- document.getElementById('balance').textContent=money(a.balance);
+ if(!data.accounts.length)data.accounts=fresh().accounts;
+ if(!data.accounts.some(a=>a.id===currentId))currentId=data.accounts[0].id;
+ const a=acct();
+ document.getElementById('accountSelect').innerHTML=data.accounts.map(x=>`<option value="${esc(x.id)}" ${x.id===a.id?'selected':''}>${esc(x.alias||x.owner+' 계좌')}</option>`).join('');
+ document.getElementById('balance').textContent=won(a.balance);
  document.getElementById('accountMeta').textContent=`${a.bank} · ${a.number} · ${a.owner}`;
- document.getElementById('accountCount').textContent=state.accounts.length+'개';
- document.getElementById('totalBalance').textContent=money(state.accounts.reduce((s,x)=>s+x.balance,0));
+ document.getElementById('accountCount').textContent=data.accounts.length+'개';
+ document.getElementById('totalBalance').textContent=won(data.accounts.reduce((s,x)=>s+x.balance,0));
  document.getElementById('txCount').textContent=transactions.length+'건';
  document.getElementById('favCount').textContent=favorites.length+'개';
- document.getElementById('history').innerHTML=transactions.filter(t=>t.accountId===a.id||t.toId===a.id).slice(0,20).map(t=>{
-   const incoming=t.toId===a.id;
-   const title=incoming?`보낸 사람: ${t.fromName}`:`${t.kind==='adjust'?'관리자 잔액 조정':'송금'} · ${t.toName||''}`;
-   const value=incoming?t.amount:-t.amount;
-   return `<div class="tx"><div class="txIcon">${incoming?'↙':t.kind==='adjust'?'✦':'↗'}</div><div class="txInfo"><strong>${esc(title)}</strong><small>${esc(t.memo||'메모 없음')} · ${esc(t.date)}</small></div><div class="txAmount ${value>=0?'plus':'minus'}">${value>0?'+':''}${money(value)}</div></div>`
- }).join('')||'<div class="empty">아직 거래 내역이 없어요 🌿</div>';
- document.getElementById('favorites').innerHTML=favorites.length?favorites.map(f=>`<div class="tx"><div class="txIcon">☆</div><div class="txInfo"><strong>${esc(f.owner)}</strong><small>${esc(f.bank)} · ${esc(f.number)}</small></div><button class="btn btnLight" onclick="favoriteSend('${esc(f.number)}','${esc(f.bank)}')">송금</button></div>`).join(''):'<div class="empty">즐겨찾는 계좌가 여기에 표시돼요.</div>';
+ document.getElementById('history').innerHTML=transactions.filter(t=>t.fromId===a.id||t.toId===a.id||t.accountId===a.id).slice(0,25).map(t=>{
+  const incoming=t.toId===a.id;
+  const amount=incoming?t.amount:(t.fromId===a.id?-t.amount:(t.delta??t.amount));
+  const title=incoming?`송금 받음 · ${t.fromName||'보낸 사람'}`:t.kind==='adjust'?'관리자 잔액 조정':`송금 · ${t.toName||''}`;
+  return `<div class="tx"><div class="txicon">${incoming?'↙':t.kind==='adjust'?'✧':'↗'}</div><div class="txinfo"><strong>${esc(title)}</strong><small>${esc(t.memo||'메모 없음')}<br>${esc(t.date)}</small></div><div class="txnum ${amount>=0?'plus':'minus'}">${amount>0?'+':''}${won(amount)}</div></div>`
+ }).join('')||'<div class="empty">아직 거래 기록이 없습니다.<br>첫 거래를 시작해 보세요.</div>';
+ document.getElementById('favorites').innerHTML=favorites.length?favorites.map((f,i)=>`<div class="tx"><div class="txicon">☆</div><div class="txinfo"><strong>${esc(f.owner)}</strong><small>${esc(f.bank)} · ${esc(f.number)}</small></div><button class="btn soft" onclick="favoriteSend(${i})">송금</button></div>`).join(''):'<div class="empty">즐겨찾는 계좌가 여기에 표시됩니다.</div>';
  document.getElementById('aliasInput').value=a.alias||'';
 }
-function selectAccount(v){currentId=v;render();toast('계좌를 변경했어요.')}
-function toggleTheme(){document.body.classList.toggle('dark');localStorage.setItem('moabank_dark',document.body.classList.contains('dark'))}
-if(localStorage.getItem('moabank_dark')==='true')document.body.classList.add('dark');
-
-function toast(msg){
- const el=document.createElement('div');el.className='toast';el.textContent=msg;document.getElementById('toastArea').appendChild(el);
- setTimeout(()=>{el.classList.add('out');setTimeout(()=>el.remove(),350)},2600);
-}
-function sparkle(el){
- const r=el.getBoundingClientRect();
- for(let i=0;i<12;i++){const s=document.createElement('i');s.className='sparkle';s.style.left=(r.left+r.width/2)+'px';s.style.top=(r.top+r.height/2)+'px';s.style.setProperty('--dx',(Math.random()*150-75)+'px');s.style.setProperty('--dy',(Math.random()*-100-15)+'px');document.body.appendChild(s);setTimeout(()=>s.remove(),900)}
-}
-function pulseBalance(){const el=document.getElementById('balance');el.classList.remove('bump');void el.offsetWidth;el.classList.add('bump');sparkle(el)}
-function openModal(title,desc,body,buttons){
- document.getElementById('modalTitle').textContent=title;document.getElementById('modalDesc').textContent=desc;
- document.getElementById('modalBody').innerHTML=body;document.getElementById('modalBtns').innerHTML=buttons;
- document.getElementById('modalBack').classList.add('show');
-}
+function toast(msg){const e=document.createElement('div');e.className='toast';e.textContent=msg;document.getElementById('toastArea').appendChild(e);setTimeout(()=>{e.classList.add('out');setTimeout(()=>e.remove(),350)},2600)}
+function sparkle(el){const r=el.getBoundingClientRect();for(let i=0;i<14;i++){const s=document.createElement('i');s.className='spark';s.style.left=r.left+r.width/2+'px';s.style.top=r.top+r.height/2+'px';s.style.setProperty('--x',(Math.random()*150-75)+'px');s.style.setProperty('--y',(Math.random()*-110-15)+'px');document.body.appendChild(s);setTimeout(()=>s.remove(),900)}}
+function balanceEffect(){const e=document.getElementById('balance');e.classList.remove('bump');void e.offsetWidth;e.classList.add('bump');sparkle(e)}
+function selectAccount(v){currentId=v;render();toast('계좌를 변경했습니다.')}
+function toggleTheme(){document.body.classList.toggle('dark');localStorage.setItem('moa_infinity_dark',document.body.classList.contains('dark'))}
+if(localStorage.getItem('moa_infinity_dark')==='true')document.body.classList.add('dark');
+function openModal(title,desc,body,buttons){document.getElementById('modalTitle').textContent=title;document.getElementById('modalDesc').textContent=desc;document.getElementById('modalBody').innerHTML=body;document.getElementById('modalButtons').innerHTML=buttons;document.getElementById('modalBack').classList.add('show')}
 function closeModal(){document.getElementById('modalBack').classList.remove('show')}
 function backdropClose(e){if(e.target.id==='modalBack')closeModal()}
-function field(id,label,placeholder='',type='text'){
- return `<div class="field"><label>${label}</label><input id="${id}" type="${type}" placeholder="${placeholder}" autocomplete="off"></div>`
-}
-function btn(text,fn,cls='btn btnGold'){return `<button class="${cls}" onclick="${fn}">${text}</button>`}
-function copyAccount(){const a=current();navigator.clipboard?.writeText(a.number).then(()=>toast('계좌번호를 복사했어요!')).catch(()=>toast('계좌번호: '+a.number));}
-function saveAlias(){let a=current(),v=document.getElementById('aliasInput').value.trim();if(!v)return toast('별칭을 입력해 줘.');a.alias=v;save();render();toast('계좌 별칭을 저장했어요.')}
-function openAddAccount(){
- openModal('새 계좌 만들기','내가 사용할 가상 계좌 정보를 입력해 줘.',
- field('newAlias','계좌 별칭','예: 여행 저축 통장')+field('newOwner','예금주','이름')+`<div class="field"><label>은행</label><select id="newBank"><option>모아뱅크</option><option>두리은행</option><option>대한은행</option><option>수난은행</option></select></div>`+field('newBalance','시작 잔액','100000','number')+field('newPass','계좌 비밀번호','4자리 이상','password'),
- btn('취소','closeModal()','btn btnLight')+btn('계좌 만들기','createAccount()'));
-}
-function createAccount(){
- const alias=document.getElementById('newAlias').value.trim()||'새 계좌';
- const owner=document.getElementById('newOwner').value.trim()||'나';
- const bank=document.getElementById('newBank').value;
- const balance=Number(document.getElementById('newBalance').value||0);
- const pass=document.getElementById('newPass').value;
- if(!Number.isFinite(balance)||balance<0)return toast('시작 잔액을 확인해 줘.');
- if(pass.length<4)return toast('계좌 비밀번호는 4자리 이상 입력해 줘.');
- const number='100-'+Math.floor(1000+Math.random()*9000)+'-'+String(Date.now()).slice(-4);
- const a={id:id(),owner,bank,number,alias,balance:Math.floor(balance)};
- state.accounts.push(a);localStorage.setItem(ACCPASS_KEY,JSON.stringify({...JSON.parse(localStorage.getItem(ACCPASS_KEY)||'{}'),[a.id]:pass}));
- currentId=a.id;save();closeModal();render();toast('새 계좌가 만들어졌어요! ✨');pulseBalance();
-}
-function openTransfer(prefill=''){
- openModal('송금하기','받는 분의 은행과 계좌번호, 금액을 입력해 줘.',
+function input(id,label,placeholder='',type='text'){return `<div class="field"><label>${label}</label><input id="${id}" type="${type}" placeholder="${placeholder}" autocomplete="off"></div>`}
+function btn(label,action,cls='btn primary'){return `<button class="${cls}" onclick="${action}">${label}</button>`}
+function copyAccount(){const a=acct();if(navigator.clipboard&&navigator.clipboard.writeText)navigator.clipboard.writeText(a.number).then(()=>toast('계좌번호를 복사했습니다.')).catch(()=>toast(a.number));else toast('계좌번호: '+a.number)}
+function saveAlias(){const v=document.getElementById('aliasInput').value.trim();if(!v)return toast('별칭을 입력해 주세요.');acct().alias=v;save();render();toast('별칭을 저장했습니다.')}
+
+/* 일반 사용자 메뉴에는 계좌 추가 기능이 없습니다. */
+function openTransfer(prefill='',bank='모아뱅크'){
+ openModal('송금하기','받는 은행과 계좌번호, 송금 금액을 입력해 주세요.',
  `<div class="field"><label>받는 은행</label><select id="toBank"><option>모아뱅크</option><option>두리은행</option><option>대한은행</option><option>수난은행</option></select></div>`+
- field('toNumber','받는 계좌번호','하이픈 없이 입력해도 돼')+
- field('toAmount','송금 금액','금액 입력','number')+
- field('toMemo','거래 메모','예: 용돈, 정산')+
- `<div id="receiverHint" class="notice" style="display:none"></div>`,
- btn('취소','closeModal()','btn btnLight')+btn('계좌 확인','findRecipient()'));
- if(prefill){document.getElementById('toNumber').value=prefill;findRecipient()}
+ input('toNumber','받는 계좌번호','하이픈 없이 입력 가능')+
+ input('toAmount','송금 금액','금액 입력','number')+
+ input('toMemo','거래 메모','예: 용돈, 정산')+
+ '<div id="receiverHint"></div>',
+ btn('취소','closeModal()','btn soft')+btn('계좌 확인','findRecipient()'));
+ document.getElementById('toBank').value=bank;
+ if(prefill)document.getElementById('toNumber').value=prefill;
 }
 function findRecipient(){
- const bank=document.getElementById('toBank').value;
- const number=document.getElementById('toNumber').value.replace(/\D/g,'');
- const found=state.accounts.find(a=>a.bank===bank&&a.number.replace(/\D/g,'')===number);
- const hint=document.getElementById('receiverHint');
- if(!found){hint.style.display='block';hint.textContent='등록된 계좌를 찾지 못했어요. 계좌번호와 은행을 확인해 줘.';return}
+ const bank=document.getElementById('toBank').value,number=document.getElementById('toNumber').value.replace(/\D/g,'');
+ const to=data.accounts.find(a=>a.bank===bank&&a.number.replace(/\D/g,'')===number);
  const amount=Number(document.getElementById('toAmount').value);
- if(found.id===currentId)return toast('현재 선택한 계좌로는 송금할 수 없어.');
- if(!Number.isFinite(amount)||amount<=0)return toast('송금 금액을 입력해 줘.');
- if(amount>current().balance)return toast('잔액이 부족해.');
- const memo=document.getElementById('toMemo').value.trim();
- openModal('송금 내용을 확인해 줘',`${found.owner}님에게 ${money(amount)}을 송금할까요?`,
- `<div class="notice">받는 분: <b>${esc(found.owner)}</b><br>은행: ${esc(found.bank)}<br>계좌번호: ${esc(found.number)}<br>송금 금액: <b>${money(amount)}</b><br>메모: ${esc(memo||'없음')}</div>`,
- btn('다시 확인','openTransfer()','btn btnLight')+btn('송금 확인','completeTransfer()'));
- window.pendingTransfer={toId:found.id,amount,memo};
+ if(!to)return toast('등록된 계좌를 찾을 수 없습니다.');
+ if(to.id===currentId)return toast('현재 선택한 계좌로 송금할 수 없습니다.');
+ if(!Number.isFinite(amount)||amount<=0)return toast('송금 금액을 확인해 주세요.');
+ if(amount>acct().balance)return toast('잔액이 부족합니다.');
+ pending={toId:to.id,amount,memo:document.getElementById('toMemo').value.trim()};
+ openModal('송금 내용을 확인해 주세요',`${to.owner}님에게 ${won(amount)}을 송금할까요?`,
+ `<div class="note">받는 분: <b>${esc(to.owner)}</b><br>은행: ${esc(to.bank)}<br>계좌번호: ${esc(to.number)}<br>송금 금액: <b>${won(amount)}</b><br>메모: ${esc(pending.memo||'없음')}</div>`,
+ btn('다시 확인','openTransfer()','btn soft')+btn('송금 확인','completeTransfer()'));
 }
 function completeTransfer(){
- const p=window.pendingTransfer;if(!p)return;
- const from=current(),to=state.accounts.find(a=>a.id===p.toId);
- if(!to||p.amount<=0||p.amount>from.balance)return toast('송금 정보를 다시 확인해 줘.');
+ if(!pending)return;
+ const from=acct(),to=data.accounts.find(a=>a.id===pending.toId),p=pending;
+ if(!to||p.amount<=0||p.amount>from.balance)return toast('송금 정보를 확인해 주세요.');
  from.balance-=p.amount;to.balance+=p.amount;
  const date=new Date().toLocaleString('ko-KR');
- transactions.unshift({id:id(),kind:'transfer',accountId:from.id,toId:to.id,fromName:from.owner,toName:to.owner,amount:p.amount,memo:p.memo,date});
- save();closeModal();render();pulseBalance();toast('송금이 완료됐어요! ✨');window.pendingTransfer=null;
+ transactions.unshift({id:uid(),kind:'transfer',fromId:from.id,toId:to.id,fromName:from.owner,toName:to.owner,amount:p.amount,memo:p.memo,date});
+ save();pending=null;closeModal();render();balanceEffect();toast('송금이 완료되었습니다. ✦');
 }
 function openLookup(){
- openModal('계좌 조회','등록된 가상 계좌를 검색할 수 있어.',
- field('lookupNumber','계좌번호','계좌번호 입력')+
- `<div class="field"><label>은행</label><select id="lookupBank"><option>모아뱅크</option><option>두리은행</option><option>대한은행</option><option>수난은행</option></select></div><div id="lookupResult"></div>`,
- btn('닫기','closeModal()','btn btnLight')+btn('조회하기','lookupAccount()'));
+ openModal('계좌 조회','등록된 가상 계좌를 검색할 수 있습니다.',
+ `<div class="field"><label>은행</label><select id="lookupBank"><option>모아뱅크</option><option>두리은행</option><option>대한은행</option><option>수난은행</option></select></div>`+
+ input('lookupNumber','계좌번호','계좌번호 입력')+'<div id="lookupResult"></div>',
+ btn('닫기','closeModal()','btn soft')+btn('조회하기','lookupAccount()'));
 }
 function lookupAccount(){
- const bank=document.getElementById('lookupBank').value;
- const number=document.getElementById('lookupNumber').value.replace(/\D/g,'');
- const a=state.accounts.find(x=>x.bank===bank&&x.number.replace(/\D/g,'')===number);
- const el=document.getElementById('lookupResult');
- if(!a){el.innerHTML='<div class="notice">계좌를 찾지 못했어. 은행과 번호를 확인해 줘.</div>';return}
- el.innerHTML=`<div class="notice">계좌를 찾았어!<br>예금주: <b>${esc(a.owner)}</b><br>은행: ${esc(a.bank)}<br>계좌번호: ${esc(a.number)}<br><br><button class="btn btnGold" onclick="addFavorite('${esc(a.id)}')">☆ 즐겨찾기 추가</button> <button class="btn btnLight" onclick="openTransfer('${esc(a.number)}')">송금하기</button></div>`;
+ const bank=document.getElementById('lookupBank').value,n=document.getElementById('lookupNumber').value.replace(/\D/g,'');
+ const a=data.accounts.find(x=>x.bank===bank&&x.number.replace(/\D/g,'')===n),el=document.getElementById('lookupResult');
+ if(!a){el.innerHTML='<div class="note">계좌를 찾지 못했습니다. 은행과 번호를 확인해 주세요.</div>';return}
+ el.innerHTML=`<div class="note">계좌를 찾았습니다.<br>예금주: <b>${esc(a.owner)}</b><br>은행: ${esc(a.bank)}<br>계좌번호: ${esc(a.number)}<br><br><button class="btn primary" onclick="addFavorite('${esc(a.id)}')">☆ 즐겨찾기 추가</button> <button class="btn soft" onclick="openTransfer('${esc(a.number)}','${esc(a.bank)}')">송금하기</button></div>`;
 }
-function addFavorite(accountId){
- const a=state.accounts.find(x=>x.id===accountId);if(!a)return;
- if(favorites.some(f=>f.number===a.number&&f.bank===a.bank))return toast('이미 즐겨찾기에 있어.');
- favorites.push({owner:a.owner,bank:a.bank,number:a.number});save();render();closeModal();toast('즐겨찾기에 추가했어요!');
+function addFavorite(aid){
+ const a=data.accounts.find(x=>x.id===aid);if(!a)return;
+ if(favorites.some(f=>f.number===a.number&&f.bank===a.bank))return toast('이미 즐겨찾기에 등록되어 있습니다.');
+ favorites.push({owner:a.owner,bank:a.bank,number:a.number});save();render();closeModal();toast('즐겨찾기에 추가했습니다.');
 }
-function favoriteSend(number,bank){
- openTransfer(number);
- setTimeout(()=>{const b=document.getElementById('toBank');if(b)b.value=bank},50);
+function favoriteSend(i){const f=favorites[i];if(f)openTransfer(f.number,f.bank)}
+function changeAccountPassword(){
+ openModal('계좌 비밀번호 변경','현재 계좌 비밀번호를 확인한 뒤 변경해 주세요.',
+ input('oldPass','현재 비밀번호','현재 비밀번호','password')+input('newPass','새 비밀번호','4자리 이상','password'),
+ btn('취소','closeModal()','btn soft')+btn('변경하기','changePassConfirm()'));
 }
-async function hashPassword(pass){
- const data=new TextEncoder().encode(pass);
- const digest=await crypto.subtle.digest('SHA-256',data);
- return Array.from(new Uint8Array(digest)).map(b=>b.toString(16).padStart(2,'0')).join('');
+function changePassConfirm(){
+ const a=acct(),p=JSON.parse(localStorage.getItem(PASSES)||'{}');
+ if(!p[a.id])return toast('이 계좌의 비밀번호가 설정되어 있지 않습니다. 관리자에게 문의해 주세요.');
+ if(p[a.id]!==document.getElementById('oldPass').value)return toast('현재 비밀번호가 일치하지 않습니다.');
+ const n=document.getElementById('newPass').value;if(n.length<4)return toast('새 비밀번호는 4자리 이상이어야 합니다.');
+ p[a.id]=n;localStorage.setItem(PASSES,JSON.stringify(p));closeModal();toast('계좌 비밀번호를 변경했습니다.');
 }
-async function openAdmin(){
- if(!localStorage.getItem(ADMIN_KEY)){
-  openModal('관리자 최초 설정','관리자 비밀번호를 직접 설정해 줘. 이 화면에서는 설정한 비밀번호를 다시 표시하지 않아.',
-   field('adminNew','새 관리자 비밀번호','10자 이상 권장','password')+field('adminNew2','비밀번호 확인','한 번 더 입력','password'),
-   btn('취소','closeModal()','btn btnLight')+btn('설정 완료','setupAdmin()'));
+async function hash(s){const b=await crypto.subtle.digest('SHA-256',new TextEncoder().encode(s));return [...new Uint8Array(b)].map(x=>x.toString(16).padStart(2,'0')).join('')}
+function openAdmin(){
+ if(!localStorage.getItem(ADMIN)){
+  openModal('관리자 최초 설정','관리자 비밀번호를 직접 설정해 주세요. 비밀번호 자체는 화면에 다시 표시하지 않습니다.',
+   input('admin1','새 관리자 비밀번호','8자 이상','password')+input('admin2','비밀번호 확인','한 번 더 입력','password'),
+   btn('취소','closeModal()','btn soft')+btn('설정 완료','setupAdmin()'));
  }else{
-  openModal('관리자 로그인','관리자 비밀번호를 입력해 줘.',
-   field('adminPass','관리자 비밀번호','비밀번호 입력','password'),
-   btn('취소','closeModal()','btn btnLight')+btn('로그인','loginAdmin()'));
+  openModal('관리자 인증','관리자 비밀번호를 입력해 주세요.',
+   input('adminLogin','관리자 비밀번호','비밀번호 입력','password'),
+   btn('취소','closeModal()','btn soft')+btn('로그인','loginAdmin()'));
  }
 }
 async function setupAdmin(){
- const p=document.getElementById('adminNew').value,p2=document.getElementById('adminNew2').value;
- if(p.length<8)return toast('비밀번호는 8자 이상으로 설정해 줘.');
- if(p!==p2)return toast('비밀번호가 서로 달라.');
- localStorage.setItem(ADMIN_KEY,await hashPassword(p));closeModal();toast('관리자 비밀번호 설정 완료!');openAdmin();
+ const a=document.getElementById('admin1').value,b=document.getElementById('admin2').value;
+ if(a.length<8)return toast('비밀번호는 8자리 이상이어야 합니다.');
+ if(a!==b)return toast('비밀번호가 서로 다릅니다.');
+ localStorage.setItem(ADMIN,await hash(a));closeModal();toast('관리자 비밀번호를 설정했습니다.');openAdmin();
 }
 async function loginAdmin(){
- const p=document.getElementById('adminPass').value;
- if(await hashPassword(p)!==localStorage.getItem(ADMIN_KEY))return toast('비밀번호가 일치하지 않아.');
+ if(await hash(document.getElementById('adminLogin').value)!==localStorage.getItem(ADMIN))return toast('관리자 비밀번호가 일치하지 않습니다.');
  adminPanel();
 }
 function adminPanel(){
  closeModal();
- openModal('관리자 패널','가상 계좌를 관리할 수 있어.',
- `<div class="notice">관리자 기능은 이 브라우저에 저장된 가상 데이터에만 적용돼.</div>
- <button class="btn btnLight full" onclick="adminCreate()">＋ 새 사용자 계좌 만들기</button>
- <button class="btn btnLight full" style="margin-top:9px" onclick="adminAdjust()">✦ 잔액 조정</button>
- <button class="btn btnLight full" style="margin-top:9px" onclick="exportBackup()">⇩ 데이터 백업</button>
- <button class="btn btnLight full" style="margin-top:9px" onclick="importBackup()">⇧ 백업 복원</button>
- <button class="btn btnRed full" style="margin-top:9px" onclick="adminDelete()">계좌 삭제</button>`,
- btn('닫기','closeModal()','btn btnLight')+btn('비밀번호 변경','adminChangePassword()'));
+ openModal('INFINITY 관리자','관리자 인증이 완료되었습니다. 계좌 추가는 이 메뉴에서만 가능합니다.',
+ `<div class="note">관리자 기능은 현재 브라우저의 가상 데이터에만 적용됩니다.</div>
+ <button class="btn soft full" onclick="adminCreate()" style="margin-top:12px">＋ 새 계좌 추가</button>
+ <button class="btn soft full" onclick="adminAdjust()" style="margin-top:9px">✧ 잔액 조정</button>
+ <button class="btn soft full" onclick="adminDelete()" style="margin-top:9px">계좌 삭제</button>
+ <button class="btn soft full" onclick="exportBackup()" style="margin-top:9px">백업 내보내기</button>
+ <button class="btn soft full" onclick="importBackup()" style="margin-top:9px">백업 복원</button>`,
+ btn('닫기','closeModal()','btn soft')+btn('비밀번호 변경','adminChange()'));
 }
 function adminCreate(){
- openModal('사용자 계좌 만들기','가상 계좌 정보를 입력해 줘.',
- field('admOwner','예금주','이름')+
- `<div class="field"><label>은행</label><select id="admBank"><option>모아뱅크</option><option>두리은행</option><option>대한은행</option><option>수난은행</option></select></div>`+
- field('admAlias','계좌 별칭','예: 생활비 통장')+field('admBalance','시작 잔액','100000','number')+field('admPass','계좌 비밀번호','4자리 이상','password'),
- btn('취소','adminPanel()','btn btnLight')+btn('계좌 생성','adminCreateConfirm()'));
+ openModal('새 계좌 생성','관리자 권한으로 가상 계좌를 추가합니다.',
+ input('newOwner','예금주','이름')+
+ `<div class="field"><label>은행</label><select id="newBank"><option>모아뱅크</option><option>두리은행</option><option>대한은행</option><option>수난은행</option></select></div>`+
+ input('newAlias','계좌 별칭','예: 생활비 계좌')+
+ input('newBalance','초기 잔액','100000','number')+
+ input('newPassword','계좌 비밀번호','4자리 이상','password'),
+ btn('취소','adminPanel()','btn soft')+btn('계좌 생성','adminCreateConfirm()'));
 }
 function adminCreateConfirm(){
- const owner=document.getElementById('admOwner').value.trim(),bank=document.getElementById('admBank').value,alias=document.getElementById('admAlias').value.trim()||'기본 계좌',balance=Number(document.getElementById('admBalance').value||0),pass=document.getElementById('admPass').value;
- if(!owner)return toast('예금주 이름을 입력해 줘.');
- if(pass.length<4)return toast('계좌 비밀번호는 4자리 이상이어야 해.');
- if(!Number.isFinite(balance)||balance<0)return toast('잔액을 확인해 줘.');
- const a={id:id(),owner,bank,alias,number:'200-'+Math.floor(1000+Math.random()*9000)+'-'+String(Date.now()).slice(-4),balance:Math.floor(balance)};
- state.accounts.push(a);let passwords=JSON.parse(localStorage.getItem(ACCPASS_KEY)||'{}');passwords[a.id]=pass;localStorage.setItem(ACCPASS_KEY,JSON.stringify(passwords));save();currentId=a.id;closeModal();render();toast('사용자 계좌를 만들었어.');pulseBalance();
+ const owner=document.getElementById('newOwner').value.trim(),bank=document.getElementById('newBank').value,alias=document.getElementById('newAlias').value.trim()||'기본 계좌',balance=Number(document.getElementById('newBalance').value||0),pass=document.getElementById('newPassword').value;
+ if(!owner)return toast('예금주 이름을 입력해 주세요.');
+ if(pass.length<4)return toast('계좌 비밀번호는 4자리 이상이어야 합니다.');
+ if(!Number.isFinite(balance)||balance<0)return toast('초기 잔액을 확인해 주세요.');
+ const number='200-'+Math.floor(1000+Math.random()*9000)+'-'+String(Date.now()).slice(-4);
+ const a={id:uid(),owner,bank,number,alias,balance:Math.floor(balance)};
+ data.accounts.push(a);const ps=JSON.parse(localStorage.getItem(PASSES)||'{}');ps[a.id]=pass;localStorage.setItem(PASSES,JSON.stringify(ps));
+ currentId=a.id;save();closeModal();render();balanceEffect();toast('새 계좌를 추가했습니다.');
 }
 function adminAdjust(){
- openModal('잔액 조정','현재 선택한 계좌의 잔액을 조정해.',
- field('adjustAmount','조정 금액','예: 50000 또는 -10000','number')+field('adjustReason','조정 사유','사유 입력'),
- btn('취소','adminPanel()','btn btnLight')+btn('적용','adminAdjustConfirm()'));
+ openModal('잔액 조정','현재 선택한 계좌의 가상 잔액을 조정합니다.',
+ input('adjustValue','조정 금액','예: 50000 또는 -10000','number')+input('adjustMemo','조정 사유','사유 입력'),
+ btn('취소','adminPanel()','btn soft')+btn('적용','adminAdjustConfirm()'));
 }
 function adminAdjustConfirm(){
- const n=Number(document.getElementById('adjustAmount').value),reason=document.getElementById('adjustReason').value.trim()||'관리자 잔액 조정',a=current();
- if(!Number.isFinite(n)||n===0)return toast('0이 아닌 금액을 입력해 줘.');
- if(a.balance+n<0)return toast('잔액이 0원 미만이 될 수 없어.');
- a.balance+=n;transactions.unshift({id:id(),kind:'adjust',accountId:a.id,fromName:'관리자',toName:'관리자 조정',amount:Math.abs(n),memo:reason,date:new Date().toLocaleString('ko-KR')});
- save();closeModal();render();pulseBalance();toast('잔액을 조정했어.');
+ const n=Number(document.getElementById('adjustValue').value),memo=document.getElementById('adjustMemo').value.trim()||'관리자 잔액 조정',a=acct();
+ if(!Number.isFinite(n)||n===0)return toast('0이 아닌 금액을 입력해 주세요.');
+ if(a.balance+n<0)return toast('잔액은 0원 미만이 될 수 없습니다.');
+ a.balance+=n;transactions.unshift({id:uid(),kind:'adjust',accountId:a.id,delta:n,amount:Math.abs(n),memo,date:new Date().toLocaleString('ko-KR')});
+ save();closeModal();render();balanceEffect();toast('잔액을 조정했습니다.');
 }
 function adminDelete(){
- if(state.accounts.length<=1)return toast('마지막 계좌는 삭제할 수 없어.');
- openModal('계좌 삭제','현재 선택한 계좌를 삭제할까? 삭제하면 되돌리기 어려워.',
- `<div class="notice">${esc(current().owner)} · ${esc(current().number)}<br>잔액 ${money(current().balance)}</div>`,
- btn('취소','adminPanel()','btn btnLight')+btn('삭제하기','adminDeleteConfirm()','btn btnRed'));
+ if(data.accounts.length<=1)return toast('마지막 계좌는 삭제할 수 없습니다.');
+ openModal('계좌 삭제','현재 선택한 계좌를 삭제하시겠습니까?',
+ `<div class="note">${esc(acct().owner)} · ${esc(acct().number)}<br>잔액 ${won(acct().balance)}</div>`,
+ btn('취소','adminPanel()','btn soft')+btn('삭제하기','adminDeleteConfirm()','btn danger'));
 }
 function adminDeleteConfirm(){
- const a=current();state.accounts=state.accounts.filter(x=>x.id!==a.id);favorites=favorites.filter(f=>f.number!==a.number);
- let p=JSON.parse(localStorage.getItem(ACCPASS_KEY)||'{}');delete p[a.id];localStorage.setItem(ACCPASS_KEY,JSON.stringify(p));
- currentId=state.accounts[0].id;save();closeModal();render();toast('계좌를 삭제했어.');
+ const a=acct();data.accounts=data.accounts.filter(x=>x.id!==a.id);favorites=favorites.filter(f=>f.number!==a.number);
+ const p=JSON.parse(localStorage.getItem(PASSES)||'{}');delete p[a.id];localStorage.setItem(PASSES,JSON.stringify(p));
+ currentId=data.accounts[0].id;save();closeModal();render();toast('계좌를 삭제했습니다.');
 }
-async function adminChangePassword(){
- openModal('관리자 비밀번호 변경','새 비밀번호를 설정해 줘.',
- field('adminOld','현재 비밀번호','현재 비밀번호','password')+field('adminNext','새 비밀번호','8자 이상','password')+field('adminNext2','새 비밀번호 확인','한 번 더 입력','password'),
- btn('취소','adminPanel()','btn btnLight')+btn('변경하기','adminChangeConfirm()'));
+async function adminChange(){
+ openModal('관리자 비밀번호 변경','현재 비밀번호를 확인하고 새 비밀번호를 설정해 주세요.',
+ input('oldAdmin','현재 비밀번호','현재 비밀번호','password')+input('nextAdmin','새 비밀번호','8자리 이상','password')+input('nextAdmin2','새 비밀번호 확인','한 번 더 입력','password'),
+ btn('취소','adminPanel()','btn soft')+btn('변경하기','adminChangeConfirm()'));
 }
 async function adminChangeConfirm(){
- const old=document.getElementById('adminOld').value,n=document.getElementById('adminNext').value,n2=document.getElementById('adminNext2').value;
- if(await hashPassword(old)!==localStorage.getItem(ADMIN_KEY))return toast('현재 비밀번호가 일치하지 않아.');
- if(n.length<8)return toast('새 비밀번호는 8자 이상으로 설정해 줘.');
- if(n!==n2)return toast('새 비밀번호가 서로 달라.');
- localStorage.setItem(ADMIN_KEY,await hashPassword(n));closeModal();toast('관리자 비밀번호를 변경했어.');
+ const old=document.getElementById('oldAdmin').value,n=document.getElementById('nextAdmin').value,n2=document.getElementById('nextAdmin2').value;
+ if(await hash(old)!==localStorage.getItem(ADMIN))return toast('현재 비밀번호가 일치하지 않습니다.');
+ if(n.length<8)return toast('새 비밀번호는 8자리 이상이어야 합니다.');
+ if(n!==n2)return toast('새 비밀번호가 서로 다릅니다.');
+ localStorage.setItem(ADMIN,await hash(n));closeModal();toast('관리자 비밀번호를 변경했습니다.');
 }
-function changeAccountPassword(){
- const a=current();
- openModal('계좌 비밀번호 변경','현재 비밀번호를 확인한 뒤 새 비밀번호를 설정해 줘.',
- field('oldAccountPass','현재 비밀번호','현재 비밀번호','password')+field('newAccountPass','새 비밀번호','4자리 이상','password'),
- btn('취소','closeModal()','btn btnLight')+btn('변경하기','changeAccountPasswordConfirm()'));
-}
-function changeAccountPasswordConfirm(){
- const a=current(),p=JSON.parse(localStorage.getItem(ACCPASS_KEY)||'{}'),old=document.getElementById('oldAccountPass').value,n=document.getElementById('newAccountPass').value;
- if(!p[a.id]||p[a.id]!==old)return toast('현재 계좌 비밀번호가 일치하지 않아.');
- if(n.length<4)return toast('새 비밀번호는 4자리 이상이어야 해.');
- p[a.id]=n;localStorage.setItem(ACCPASS_KEY,JSON.stringify(p));closeModal();toast('계좌 비밀번호를 변경했어.');
-}
+function download(name,content,type){const u=URL.createObjectURL(new Blob([content],{type})),a=document.createElement('a');a.href=u;a.download=name;a.click();setTimeout(()=>URL.revokeObjectURL(u),1000)}
 function exportBackup(){
- const data={state,favorites,transactions,passwords:localStorage.getItem(ACCPASS_KEY),admin:localStorage.getItem(ADMIN_KEY)};
- downloadFile('moabank-backup.json',JSON.stringify(data,null,2),'application/json');toast('백업 파일을 저장했어.');
+ const backup={data,favorites,transactions,passes:localStorage.getItem(PASSES),admin:localStorage.getItem(ADMIN)};
+ download('moabank-infinity-backup.json',JSON.stringify(backup,null,2),'application/json');toast('백업 파일을 저장했습니다.');
 }
 function importBackup(){
- openModal('백업 복원','이 사이트에서 내보낸 JSON 백업 파일을 선택해 줘.',
- `<div class="field"><label>백업 파일</label><input id="backupFile" type="file" accept=".json,application/json"></div>`,
- btn('취소','closeModal()','btn btnLight')+btn('복원하기','importBackupConfirm()','btn btnGold'));
+ openModal('백업 복원','이전에 내보낸 모아뱅크 JSON 파일을 선택해 주세요.',
+ '<div class="field"><label>백업 파일</label><input type="file" id="backupFile" accept=".json,application/json"></div>',
+ btn('취소','closeModal()','btn soft')+btn('복원하기','importBackupConfirm()'));
 }
 function importBackupConfirm(){
- const file=document.getElementById('backupFile').files[0];if(!file)return toast('백업 파일을 선택해 줘.');
- const reader=new FileReader();reader.onload=()=>{
- try{
-  const d=JSON.parse(reader.result);
-  if(!d.state||!Array.isArray(d.state.accounts)||!Array.isArray(d.state.transactions))throw Error();
-  state=d.state;favorites=d.favorites||state.favorites||[];transactions=d.transactions||state.transactions||[];
-  if(d.passwords)localStorage.setItem(ACCPASS_KEY,d.passwords);
-  if(d.admin)localStorage.setItem(ADMIN_KEY,d.admin);
-  currentId=state.accounts[0]?.id;save();closeModal();render();toast('백업을 복원했어.');
- }catch(e){toast('올바른 모아뱅크 백업 파일이 아니야.')}
- };reader.readAsText(file);
+ const file=document.getElementById('backupFile').files[0];if(!file)return toast('백업 파일을 선택해 주세요.');
+ const r=new FileReader();r.onload=()=>{
+ try{const b=JSON.parse(r.result),d=b.data||b.state;if(!d||!Array.isArray(d.accounts)||!d.accounts.length||!Array.isArray(d.transactions))throw Error();
+ data=d;favorites=b.favorites||d.favorites||[];transactions=b.transactions||d.transactions||[];
+ if(b.passes)localStorage.setItem(PASSES,b.passes);else if(b.passwords)localStorage.setItem(PASSES,b.passwords);
+ if(b.admin)localStorage.setItem(ADMIN,b.admin);
+ currentId=data.accounts[0].id;save();closeModal();render();toast('백업을 복원했습니다.');
+ }catch(e){toast('올바른 백업 파일이 아닙니다.')}
+ };r.readAsText(file);
 }
 function exportCSV(){
  const rows=[['날짜','종류','보낸 사람','받는 사람','금액','메모']];
- transactions.forEach(t=>rows.push([t.date,t.kind,t.fromName,t.toName,t.amount,t.memo]));
- const csv='\uFEFF'+rows.map(r=>r.map(x=>'"'+String(x??'').replace(/"/g,'""')+'"').join(',')).join('\n');
- downloadFile('moabank-transactions.csv',csv,'text/csv;charset=utf-8');toast('거래 내역을 내보냈어.');
-}
-function downloadFile(name,content,type){
- const blob=new Blob([content],{type}),url=URL.createObjectURL(blob),a=document.createElement('a');a.href=url;a.download=name;a.click();setTimeout(()=>URL.revokeObjectURL(url),1000);
+ transactions.forEach(t=>rows.push([t.date,t.kind,t.fromName||'',t.toName||'',t.amount,t.memo||'']));
+ download('moabank-infinity-history.csv','\uFEFF'+rows.map(r=>r.map(v=>'"'+String(v??'').replace(/"/g,'""')+'"').join(',')).join('\n'),'text/csv;charset=utf-8');toast('거래 내역을 저장했습니다.');
 }
 render();
 </script>
